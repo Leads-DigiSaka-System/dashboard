@@ -52,6 +52,9 @@ class FarmController extends Controller
                     ->addColumn('farm_id', function ($farm) {
                         return $farm->farm_id ? $farm->farm_id : 'N/A';
                     })
+                    ->addColumn('role', function ($farm) {
+                        return $farm->farmerDetails && $farm->farmerDetails->roleDetails ? $farm->farmerDetails->roleDetails->title : 'N/A';
+                    })
                     ->addColumn('action', function ($farm) {
                             $btn = '';
                             $btn = '<a href="' . route('farms.show', encrypt($farm->id)) . '" title="View"><i class="fas fa-eye"></i></a>&nbsp;&nbsp;';

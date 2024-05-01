@@ -8,6 +8,7 @@ use App\Models\Page;
 use App\Models\ContactUs;
 use App\Models\Farms; 
 use App\Models\Survey;
+use App\Models\User;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Validator;
 use Carbon\Carbon;
@@ -18,11 +19,14 @@ class HomeController extends Controller
 {
    public function index(Request $request)
    {
+      $user = $request->user();
       $farmer_id=Auth::id();
       $farm_detail=Farms::where('farmer_id',$farmer_id)->first();
       $survey_detail=Survey::where('farmer_id',$farmer_id)->first();
+      $user_detail= $user->findUserById($farmer_id);
       $isFarm=false;
       $isSurvey=false;
+      $isNew=false;
       if(!empty($farm_detail))
       {
         $isFarm=true;
@@ -31,13 +35,45 @@ class HomeController extends Controller
       {
         $isSurvey=true;
       }
+      if(!isset($user_detail->gender)){
+        $isNew = true;
+      }
        $data=[
            'isFarm'=>$isFarm,
            'isSurvey'=>$isSurvey,
-           'farm_detail'=>$farm_detail 
+           'farm_detail'=>$farm_detail,
+           'new_user'=>$isNew
          ];
       
       return returnSuccessResponse('home data get successfully.', $data);
+   }
+
+   public function weatherFromLatLng($apiKey,$latitude,$longitude,$data = "all",$days = 1){
+     $searchWeatherAPI = "https://api.weatherapi.com/v1/forecast.json?key=$apiKey&days=$days&q=" . rawurlencode($this->ajax("https://geocode.maps.co/reverse?lat=$latitude&lon=$longitude&api_key=65efe79c96022483653905xzsda2f39")->display_name);
+     $weatherData = $this->ajax($searchWeatherAPI);
+     if($data != "all"){
+      if($data == "current"){
+        return $weatherData->current; 
+      }else{
+        return $weatherData->forecast; 
+      }
+     }else{
+      return $weatherData; 
+     }
+   }
+
+   public function ajax($url){
+   
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,$url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+    $headers = array();
+    $headers[] = "Accept: application/json";
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    return json_decode($response);
    }
 
    public function getWeather(Request $request)

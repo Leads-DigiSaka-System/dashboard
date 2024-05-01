@@ -12,14 +12,14 @@ class Survey extends Model
     protected $fillable = [
         'farm_id',
         'farmer_id',
+        'survey_id',
         'survey_data',
         'status',
-        
     ];
     const STATUS_COMPLETED = 1;
     const STATUS_PENDING = 0;
 
-     public function getStatus(){
+    public function getStatus(){
 
         $list = [
             self::STATUS_PENDING=>"Pending",
@@ -115,5 +115,9 @@ class Survey extends Model
 
     public  function findSurveyById($id){
         return self::find($id);
+    }
+
+    public static function getAllSurveyByVersion($version){
+        return self::where('version', $version)->get();
     }
 }

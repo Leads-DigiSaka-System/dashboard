@@ -12,21 +12,91 @@ use Illuminate\Support\Facades\Hash;
 use Auth;
 use App\Models\ErrorLog;
 use App\Models\EmailQueue;
+use App\Models\FarmOwnership;
+use App\Models\Role;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use App\Models\File;
 
 
 class AuthController extends Controller
 {
+    public function uploadApp(Request $request){
+        $file = $request->file('file');
+        $allowedTypes = ['apk','svg'];
+        $extension = $file->getClientOriginalExtension();
+        if (!in_array($extension, $allowedTypes)) {
+            return response()->json(['error' => 'Only apk allowed!'], 400);
+        }
+        $fileName = time() . '_' . $file->getClientOriginalName();
+        $file->storeAs('upload/app_files', $fileName, 'public_upload');
+        $uploadedApp[] = [
+            'filename' => $fileName,
+            'created_at' => now(),
+            'modified_at' => now(),
+            'changelog' => $request->changelog,
+            'version' => $request->version,
+        ];
+        DB::table('app')->insert($uploadedApp);
+        return response()->json(['message' => 'Files uploaded successfully'], 200); 
+    }   
+    public function uploadFile(Request $request)
+    {   
+        $files = $request->file('files');
+        if (!is_array($files)) {
+            $files = [$files];
+        }
+
+        if(!isset($files)){
+            return response()->json(['error' => 'No file has been submitted!'], 400);
+        }
+       
+        $uploadedFiles = [];
+        $fileNames = "";
+        $isFirst = true;
+        foreach ($files as $file) {
+            // Validate file type
+            $allowedTypes = ['jpg', 'png', 'pdf', 'jpeg'];
+            $extension = $file->getClientOriginalExtension();
+            if (!in_array($extension, $allowedTypes)) {
+                return response()->json(['error' => 'Only JPG, PNG, JPEG, and PDF files are allowed'], 400);
+            }
+    
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('upload/files', $fileName, 'public_upload'); // Using 'public_upload' disk
+    
+            $fileNames .= ($isFirst ? $fileName : "|" . $fileName);
+        }
+
+        $uploadedFiles = [
+            'filename' => $fileNames,
+            'created_at' => now(),
+            'modified_at' => now(), // Assuming modified_at will be same as created_at initially
+            'created_by' => 'system', // You might need to change this according to your authentication system
+            'modified_by' => 'system', // Same as created_by, // You might need to change this according to your authentication system
+            'farmer_id' =>  $request->farmer_id // Same as created_by
+        ];
+        File::insert($uploadedFiles);
+    
+        return response()->json(['message' => 'Files uploaded successfully'], 200);
+        
+    }
+    
+    
     public function register(Request $request, User $user)
     {
     	$rules = [
-    		'full_name'=>'required',
+    		'full_name'=>'',
+    		'first_name'=>'required',
+    		'last_name'=>'required',
             'phone_code'=>'required',
-            'phone_number' => 'required|unique:users,phone_number,NULL,id,deleted_at,NULL',
+            'email'=>'nullable|email|unique:users,email,NULL,id,deleted_at,NULL',
+            'role'=>'required',
+            'branch_id'=>'required',
+            'phone_number' => 'nullable',
             'password' => 'required',
-           // 'device_type' => 'required|boolean',
-            'fcm_token' => 'required'
-
+            'fcm_token' => 'nullable',
+            'referer' => ''
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -36,26 +106,25 @@ class AuthController extends Controller
         }
 
         $user = $user->fill($request->all());
-       // $user->email_verification_otp = User::generateEmailVerificationOtp();
+        $user->full_name = $request->first_name.' '.$request->last_name;    
+        $user->via_app = 1;    
 
         if(!$user->save()){
             return returnErrorResponse('Unable to register farmer. Please try again later');
         }
 
-
-     /*   EmailQueue::add([
-            'to' => $user->email,
-            'subject' => "Verification Code",
-            'view' => 'mail',
-            'type'=>0,
-            'viewArgs' => [
-                'name' => $user->full_name,
-                'body' => "Your verification otp is: ".$user->email_verification_otp
-            ]
-        ]);*/
-
         return returnSuccessResponse('Farmer registered successfully!', $user->jsonResponse());
     }
+    public function doesExist(Request $request){
+        //$returnArr = $request->req;
+        if($request->req == "email"){
+            $query = DB::table('users')->where('email',$request->value);
+        }else{
+            $query = DB::table('users')->where('phone_number',$request->value);
+        }
+        
+        return returnSuccessResponse('Credential check successfully!', $query->get()->count() >= 1 ? true : false);
+    }   
 
    public function verifyOtp(Request $request, User $user)
    {
@@ -149,12 +218,12 @@ class AuthController extends Controller
 
         if ( ! Hash::check($inputArr['password'], $userObj->password, [])) {
             // return if password
-             $response = [
-                'statusCode' => 422,
-                'data' => (object)[],
-                'message' => "We are sorry but your login credentials do not match!"
-            ];
-            return returnErrorResponse($response);  
+            // $response = [
+             //   'statusCode' => 422,
+             //   'data' => (object)[],
+            //    'message' => "We are sorry but your login credentials do not match!"
+            //];
+            return returnErrorResponse("Password Incorrect!");  
             // return $this->notFoundResponse('Invalid credentials');
         }
         
@@ -166,8 +235,10 @@ class AuthController extends Controller
         $authToken = $userObj->createToken('authToken')->plainTextToken;
         $returnArr = $userObj->jsonResponse();
         $returnArr['auth_token'] = $authToken;
-
-        return returnSuccessResponse('Farmer logged in successfully', $returnArr);
+        $roleList = ["Admin","Leads","Farmer","LGU","Other"];
+        $userRole = $roleList[(int)$returnArr["role"]];
+        
+        return returnSuccessResponse($userRole . ' logged in successfully', $returnArr);
     }
 
      public function logout(Request $request)
@@ -273,14 +344,14 @@ class AuthController extends Controller
                 ]);
                 return "success";
             }else{
-                return $response;//"invalid number";
+                return "invalid number";
             }
         }else{
             $data = $query->first();
             $lastSent = $data->last_sent;
             $diff = Carbon::now()->diffInSeconds($lastSent);
             if($diff > 300){
-                $response = $this->myCurl('To=%2B'.$countryCode.$number.'&Channel=sms');
+                $response = $this->myCurl('To=%2B'.$countryCode.$number.'&Channel=sms',"https://verify.twilio.com/v2/Services/VAd2e21b5c21757f6ee0ee2aef26efa46e/Verifications");
                 if(json_decode($response,true)["status"] == "pending"){
                     $query = DB::table('verifications')->insert([
                         "number" => $fullNumber
@@ -306,7 +377,7 @@ class AuthController extends Controller
             $query = DB::table('verifications')->where('number',$fullNumber)->update(["status"=>"approved"]);
             return "success";
         }else{
-            return $response;//"incorrect verification";
+            return "incorrect verification";
         }
     }
 
@@ -326,5 +397,22 @@ class AuthController extends Controller
 
         curl_close($ch);
         return $response;
+    }
+
+    // Function to get all roles and return as json
+    public function getRoles(){
+        $role = Role::getAllRole();
+        return response()->json([
+            'status' => 'success',
+            'data' => $role
+        ]);
+    }
+    
+    public function getFarmOwnerShip(){
+        $farm = FarmOwnership::getAllFarmOwnerShip();
+        return response()->json([
+            'status' => 'success',
+            'data' => $farm
+        ]);
     }
 }

@@ -63,7 +63,7 @@ class LoginController extends Controller
 
         }
 
-        return redirect()->route('user.home');
+        return redirect()->route('dashboard.index');
 
     }
 

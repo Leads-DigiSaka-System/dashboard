@@ -23,15 +23,22 @@ Route::middleware('prevent-back-history')->group(function (){
         
         return Redirect::back()->with('success', 'All cache cleared successfully.');
     });
-    Route::get('/install/{diawi}', function($diawi){
-        return view('install',['diawi'=>$diawi]);
+    Route::get('/install', function(){
+        $app = DB::table("app")->orderByDesc("id")->first();
+        //print_r($app->filename);
+        return view('install',['app'=>$app]);
     })->name('install.app');
-    
+    Route::get('/upload-app', function(){
+        
+        return view('uploadApp');
+    })->name('upload.app');
+      
     Auth::routes();
     
     Route::middleware('auth')->group(function(){
         Route::get('/', 'HomeController@index')->name('user.home');
         Route::resource('farmers', 'UserController');
+        Route::get('leads', 'UserController@leadsUser');
         
         Route::get('/farmer/changeStatus/{id}','UserController@changeStatus')->name('farmer.changeStatus');
         Route::get('user/profile','UserController@profile')->name('user.profile');
@@ -46,4 +53,37 @@ Route::middleware('prevent-back-history')->group(function (){
         Route::get('/export-items/{id}', 'ExportController@exportItems')->name('export.items');
         Route::get('/export-survey/{id}', 'ExportController@exportSurveyItems')->name('export_survey_items');
     });
+    Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index');
+    Route::get('/dashboard/getCountCountry', 'DashboardController@getCountCountry');
+    Route::get('/dashboard/getCountReco', 'DashboardController@getCountReco');
+    Route::get('/dashboard/graphs', 'DashboardController@surveyGraphs');
+    Route::get('/dashboard/getAgeChartData', 'DashboardController@getAgeChartData');
+    Route::get('/dashboard/getGenderChartData', 'DashboardController@getGenderChartData');
+    Route::get('/dashboard/getfarmCountChartData', 'DashboardController@getfarmCountChartData');
+    Route::get('/dashboard/getfarmOwnershipChartData', 'DashboardController@getfarmOwnershipChartData');
+    Route::get('/dashboard/getfarmEquipChartData', 'DashboardController@getfarmEquipChartData');
+    Route::get('/dashboard/getfarmIrrigatedChartData', 'DashboardController@getfarmIrrigatedChartData');
+    Route::get('/dashboard/getharvestChartData', 'DashboardController@getharvestChartData');
+    Route::get('/dashboard/getseedTypeChartData', 'DashboardController@getseedTypeChartData');
+    Route::get('/dashboard/getcropPracticeChartData', 'DashboardController@getcropPracticeChartData');
+    Route::get('/dashboard/getfertilizerChartData', 'DashboardController@getfertilizerChartData');
+    Route::get('/dashboard/getfarmProblemChartData', 'DashboardController@getfarmProblemChartData');
+    Route::get('/dashboard/getfarmNoticeChartData', 'DashboardController@getfarmNoticeChartData');
+    Route::get('/dashboard/getcommonPestChartData', 'DashboardController@getcommonPestChartData');
+    Route::get('/dashboard/getsellChartData', 'DashboardController@getsellChartData');
+    Route::get('/dashboard/getpriceFactorChartData', 'DashboardController@getpriceFactorChartData');
+    Route::get('/dashboard/getappBasedChartData', 'DashboardController@getappBasedChartData');
+    Route::get('/dashboard/getinitiativesChartData', 'DashboardController@getinitiativesChartData');
+    Route::get('/dashboard/getphoneClassChartData', 'DashboardController@getphoneClassChartData');
+    Route::get('/dashboard/getsmartphoneAppChartData', 'DashboardController@getsmartphoneAppChartData');
+    Route::get('/dashboard/getfarmGroupAppChartData', 'DashboardController@getfarmGroupAppChartData');
+    Route::get('/dashboard/getAreaPlantedPerVariety', 'DashboardController@getAreaPlantedPerVariety');
+    Route::get('/dashboard/getVarietyPlantedPerRegion', 'DashboardController@getVarietyPlantedPerRegion');
+    Route::get('/dashboard/getProvinceByArea/{area}', 'DashboardController@getProvinceByArea');
+    Route::get('/dashboard/getDemoPerformed/{product}/{area}/{province}', 'DashboardController@getDemoPerformed');
+    Route::get('/dashboard/getSampleUsed/{product}/{area}/{province}', 'DashboardController@getSampleUsed');
+    Route::get('/dashboard/getPoints/{product}/{area}/{province}', 'DashboardController@getPoints'); 
+    Route::get('/dashboard/getCropStandPerRegion', 'DashboardController@getCropStandPerRegion');
+    Route::get('/dashboard/getDistinctFilters', 'DashboardController@getDistinctFilters');
+    Route::get('/dashboard/getLegend', 'DashboardController@getLegend');
 });

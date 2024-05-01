@@ -29,7 +29,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $guarded = [];
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -46,7 +45,11 @@ class User extends Authenticatable
      * @var array<string, string>
      */
    
-    
+    // In your User model
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id', 'id');
+    }
     public function getUserRole(){
         return $this->belongsTo(Role::class, 'role');
     }
@@ -60,6 +63,9 @@ class User extends Authenticatable
     }
     public  function findUserById($id){
         return self::find($id);
+    }
+    public  function findUserByReferer($referer){
+        return self::where('referer', $referer);
     }
     public function updateUserById($id,$inputArr){
         return self::where('id',$id)->update($inputArr);
@@ -84,7 +90,10 @@ class User extends Authenticatable
 
         return isset($list[$this->status])?$list[$this->status]:"danger";
     }
-
+    public function roleDetails()
+    {
+        return $this->belongsTo(Role::class, 'role', 'id');
+    }
      public function getRole(){
 
         $list = [
@@ -109,7 +118,7 @@ class User extends Authenticatable
         return isset($list[$value])?$list[$value]:"";
     }
 
-    public function getAllUsers($request = null,$flag = false)
+    public function getAllUsers($request = null,$flag = false, $farmer = 1)
     {
         if(isset($request['order'])){
             $columnNumber = $request['order'][0]['column'];
@@ -128,9 +137,17 @@ class User extends Authenticatable
         if(empty($column)){
             $column = 'id';
         }
-        $query = self::orderBy($column, $order)->where('role','!=',self::ROLE_ADMIN);
+        $query = self::orderBy($column, $order)
+            ->where('role', '!=', self::ROLE_ADMIN)
+            ->leftJoin('roles', 'users.role', '=', 'roles.id')
+            ->select('users.*', 'roles.title AS role_title');
 
-
+            if($farmer==1){
+                $query->where('role', '=', 2);
+            }
+            else{
+                $query->where('role', '!=', 2);
+            }
         if(!empty($request)){
 
             $search = $request['search']['value'];
@@ -193,17 +210,32 @@ class User extends Authenticatable
 
         $json['id'] = $this->id;
         $json['full_name'] = $this->full_name;
+        $json['first_name'] = $this->first_name;
+        $json['last_name'] = $this->last_name;
         $json['email'] = $this->email;
         $json['profile_image'] = $this->profile_image;
         $json['role'] = $this->role;
         $json['status'] = $this->status;
         $json['phone_code'] = $this->phone_code;
         $json['phone_number'] = $this->phone_number;
+        $json['branch_id'] = $this->branch_id;
+        $json['gender'] = $this->gender;
+        $json['dob'] = $this->dob;
+        $json['barangay'] = $this->barangay;
+        $json['region'] = $this->region;
+        $json['province'] = $this->province;
+        $json['municipality'] = $this->municipality;
+        $json['farming_years'] = $this->farming_years;
+        $json['farmer_ownership'] = $this->farmer_ownership;
+        $json['crops'] = $this->crops;
+        $json['referer'] = $this->referer;
         $json['notification'] = $this->notification;
         $json['email_notification'] = $this->email_notification;
         $json['email_verified_at'] = $this->email_verified_at;
         $json['created_at'] = $this->created_at->toDateTimeString();
         $json['updated_at'] = $this->updated_at->toDateTimeString();
+        $json['reward_points'] = $this->reward_points;
+        $json['verified'] = $this->verified;
 
         return $json;
     }

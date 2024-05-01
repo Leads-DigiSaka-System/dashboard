@@ -5,16 +5,26 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\File;
  
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 class AccountController extends Controller
 {
-     public function changePassword(Request $request){
+    public function getFarmerByReferer($referer){
+        $farmers = DB::select("select id, first_name, last_name, phone_code, phone_number,verified from users where referer = $referer");
+ 
+        return response()->json([
+            'status' => 'success',
+            'data' => $farmers
+        ]);
+    }
+    public function changePassword(Request $request){
 
      	$rules = [
             'old_password' => 'required',
@@ -29,7 +39,7 @@ class AccountController extends Controller
         }
         $userObj = $request->user();
         if (!$userObj) {
-            return returnNotAuthorizedResponse('User is not authorized');
+            return returnErrorResponse('User is not authorized');
         }
 
         if(!Hash::check($request->old_password, $userObj->password)){
@@ -50,7 +60,7 @@ class AccountController extends Controller
     {
         $userObj = $request->user();
         if (!$userObj) {
-            return returnNotAuthorizedResponse('User is not authorized');
+            return returnErrorResponse('User is not authorized');
         }
 
         $returnArr = $userObj->jsonResponse();
@@ -60,6 +70,19 @@ class AccountController extends Controller
         return returnSuccessResponse('Farmer profile', $returnArr);
     }
 
+    public function getFarmerInfo(Int $user_id)
+    {
+        $user = User::where('role', '2')
+        ->where('id', $user_id)
+        ->get();
+        if (count($user) == 0) {
+            return returnErrorResponse('Farmer not found');
+        }else{
+            return returnSuccessResponse('Farmer profile', $user);
+        }
+
+    }
+    
     public function notification(Request $request){
 
     	$rules = [
@@ -94,22 +117,33 @@ class AccountController extends Controller
     }
 
     public function updateProfile(Request $request){
-
-        $rules = [
-            'full_name' => 'required_without:profile_image',
-            'profile_image' => 'required_without:full_name',
+            $rules = [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'profile_image' => '',
+            'gender' => 'required',
+            'dob' => 'required',
+            'barangay' => 'required',
+            'region' => 'required',
+            'province' => 'required',
+            'municipality' => 'required',
+            'farming_years' => 'required',
+            'farmer_ownership' => 'required',
+            'crops' => 'required',
         ];
-         $inputArr = $request->all();
+        
+        $inputArr = $request->all();
         $validator = Validator::make($inputArr, $rules);
         if ($validator->fails()) {
             $errorMessages = $validator->errors()->all();
             throw new HttpResponseException(returnValidationErrorResponse($errorMessages[0]));
         }
+
         $userObj = $request->user();
         if (!$userObj) {
-            return returnNotAuthorizedResponse('Farmer is not authorized');
+            return returnErrorResponse('Farmer is not authorized');
         }
-         if ($file = $request->file('profile_image')) {
+        if ($file = $request->file('profile_image')) {
                  $name = $file->getClientOriginalName();
                     $path = 'upload/images';
                     $file->move($path, $name);
@@ -117,12 +151,76 @@ class AccountController extends Controller
                     $userObj->profile_image = $profile_image;     
             }
 
-        $userObj->full_name = $request->full_name;
+        $userObj->fill($request->all());
+        $userObj->full_name = $request->first_name . ' ' . $request->last_name;
+        
+        
         if(!$userObj->save()){
             return returnErrorResponse('Unable to save data');
         }
-
+        
+        
         $returnArr = $userObj->jsonResponse();
         return returnSuccessResponse('Profile updated successfully', $returnArr);
+    }
+    public function updateProfileAdmin(Request $request){
+        $rules = [
+        'id' => '',
+        'first_name' => 'required',
+        'last_name' => 'required',
+        'profile_image' => '',
+        'gender' => 'required',
+        'dob' => 'required',
+        'barangay' => 'required',
+        'region' => 'required',
+        'province' => 'required',
+        'municipality' => 'required',
+        'farming_years' => 'required',
+        'farmer_ownership' => 'required',
+        'crops' => 'required',
+    ];
+    
+    $inputArr = $request->all();
+    $validator = Validator::make($inputArr, $rules);
+    if ($validator->fails()) {
+        $errorMessages = $validator->errors()->all();
+        throw new HttpResponseException(returnValidationErrorResponse($errorMessages[0]));
+    }
+
+    $userObj = User::find($request->id);
+    if (!$userObj) {
+        return returnErrorResponse('Farmer is not authorized');
+    }
+    if ($file = $request->file('profile_image')) {
+             $name = $file->getClientOriginalName();
+                $path = 'upload/images';
+                $file->move($path, $name);
+                $profile_image = $path . '/' . $name;
+                $userObj->profile_image = $profile_image;     
+        }
+
+    $userObj->fill($request->all());
+    $userObj->full_name = $request->first_name . ' ' . $request->last_name;
+    
+    
+    if(!$userObj->save()){
+        return returnErrorResponse('Unable to save data');
+    }
+    
+    
+    $returnArr = $userObj->jsonResponse();
+    return returnSuccessResponse('Profile updated successfully', $returnArr);
+    }
+
+    public function getProof($farmerId){
+        $files = File::select(['filename'])->where('farmer_id', $farmerId)->orderBy('id', 'desc')->first();
+        return returnSuccessResponse('get proof successful',$files);
+    }
+
+    public function verifyFarmer(Request $request){
+        User::whereId($request->farmerId)->update([
+            'verified' => 1,
+        ]);
+        return returnSuccessResponse('verification successful');
     }
 }

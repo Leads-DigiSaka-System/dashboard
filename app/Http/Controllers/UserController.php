@@ -16,17 +16,18 @@ class UserController extends Controller
     public function index(Request $request, User $user)
     {
         if ($request->ajax()) {
-            $users = $user->getAllUsers($request);
-            $totalUsers = User::where('role','!=',User::ROLE_ADMIN)->count();
+            $users = $user->getAllUsers($request, false, 1);
+            $totalUsers = User::where('role', '!=', User::ROLE_ADMIN)
+            ->where('role', 2)
+            ->count();
             $search = $request['search']['value'];
             $setFilteredRecords = $totalUsers;
 
             if (! empty($search)) {
-                $setFilteredRecords = $user->getAllUsers($request, true);
+                $setFilteredRecords = $user->getAllUsers($request, true, 1);
                 if(empty($setFilteredRecords))
                     $totalUsers = 0;
             }
-
             return datatables()
                     ->of($users)
                     ->addIndexColumn()
@@ -38,6 +39,12 @@ class UserController extends Controller
                     })
                     ->addColumn('phone_number', function ($user) {
                         return $user->phone_number ? $user->phone_number : 'N/A';
+                    })
+                    ->addColumn('role', function ($user) {
+                        return $user->role_title ? $user->role_title : 'N/A';
+                    })
+                    ->addColumn('via_app', function ($user) {
+                        return $user->via_app == 1 ? "YES" : 'NO';
                     })
                     ->addColumn('employee_id', function ($user) {
                         return $user->employee_id ? $user->employee_id : 'N/A';
@@ -60,6 +67,61 @@ class UserController extends Controller
         }
 
         return view('user.index');
+    }
+    public function leadsUser(Request $request, User $user)
+    {
+        if ($request->ajax()) {
+            $users = $user->getAllUsers($request, false, 0);
+            $totalUsers = User::where('role', '!=', User::ROLE_ADMIN)
+            ->where('role','!=', 2)
+            ->count();
+            $search = $request['search']['value'];
+            $setFilteredRecords = $totalUsers;
+
+            if (! empty($search)) {
+                $setFilteredRecords = $user->getAllUsers($request, true, 0);
+                if(empty($setFilteredRecords))
+                    $totalUsers = 0;
+            }
+            return datatables()
+                    ->of($users)
+                    ->addIndexColumn()
+                    ->addColumn('status', function ($user) {
+                        return '<span class="badge badge-light-' . $user->getStatusBadge() . '">' . $user->getStatus() . '</span>';
+                    })
+                    ->addColumn('created_at', function ($user) {
+                        return $user->created_at;
+                    })
+                    ->addColumn('phone_number', function ($user) {
+                        return $user->phone_number ? $user->phone_number : 'N/A';
+                    })
+                    ->addColumn('role', function ($user) {
+                        return $user->role_title ? $user->role_title : 'N/A';
+                    })
+                    ->addColumn('via_app', function ($user) {
+                        return $user->via_app == 1 ? "YES" : 'NO';
+                    })
+                    ->addColumn('employee_id', function ($user) {
+                        return $user->employee_id ? $user->employee_id : 'N/A';
+                    })
+                    ->addColumn('action', function ($user) {
+                            $btn = '';
+                            $btn = '<a href="' . route('farmers.show', encrypt($user->id)) . '" title="View"><i class="fas fa-eye"></i></a>&nbsp;&nbsp;';
+                            /*$btn .= '<a href="' . route('farmers.edit', encrypt($user->id)) . '" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;';*/
+                            $btn .= '<a href="javascript:void(0);" delete_form="delete_customer_form"  data-id="' . encrypt($user->id) . '" class="delete-datatable-record text-danger delete-users-record" title="Delete"><i class="fas fa-trash"></i></a>';
+                        return $btn;
+                    })
+                    ->rawColumns([
+                        'action',
+                        'status'        
+                    ])
+                    ->setTotalRecords($totalUsers)
+                    ->setFilteredRecords($setFilteredRecords)
+                    ->skipPaging()
+                    ->make(true);
+        }
+
+        return view('user.leads');
     }
 
     public function create(Role $role)

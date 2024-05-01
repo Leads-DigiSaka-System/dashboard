@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,23 +23,64 @@ Route::prefix('v1')->namespace('Api')->group(function () {
         Route::post('/register', 'AuthController@register')->name('register');
         Route::post('/resendOtp', 'AuthController@resendOtp')->name('resendOtp');
         Route::post('/verifyOtp', 'AuthController@verifyOtp')->name('verifyOtp');
+		Route::post('/exist', 'AuthController@doesExist')->name('doesExist');
+        Route::post('/upload', 'AuthController@uploadFile')->name('uploadFile');
+		Route::post('/uploadApp', 'AuthController@uploadApp')->name('uploadApp');
+		// Role data fetching
+        Route::get('/getRoles', 'AuthController@getRoles')->name('getRole');
+		
+		// Regions data fetching
+        Route::get('/regions', 'LocationController@getRegions')->name('getRegions');
+
+		// Province data fetching
+        Route::get('/regions/{regionCode}/provinces', 'LocationController@getProvinces')->name('getProvinces');
+
+		// Municipality data fetching
+        Route::get('/regions/{regionCode}/provinces/{provinceCode}/municipalities', 'LocationController@getMunicipalities')->name('getMunicipalities');
+
+        // Farm ownership fetching
+        Route::get('/farmOwnership', 'AuthController@getFarmOwnership')->name('getFarmOwnership');
+
+		// Survey data fetching by id
+        Route::get('/survey/{surveyId}', 'SurveyController@getSurvey')->name('getSurvey');
+
+        // Survey data fetching by farmer id
+        Route::get('/farmer-surveys/{farmerId}', 'SurveyController@getSurveyByFarmer')->name('getSurveyByFarmer');
+
+		// Survey data fetching by farm id - nikko ( temporary )
+        Route::post('/farm-surveys', 'SurveyController@get_completed')->name('getSurveyByFarm');
+		
+		// Get Farmer by referer
+		Route::get('/farmers/{referer}', 'AccountController@getFarmerByReferer')->name('getFarmerByReferer');
+		
+		Route::get('/farms/{id}', 'FarmController@getFarmsByID')->name('getFarmsByID');
+
+        // Get Weather data base on lat long
+		Route::get('/weather/{api_key}/{latitude}/{longitude}/{data?}/{days?}', 'HomeController@weatherFromLatLng')->name('weatherFromLatLng');
+				
+		// Get Weather data base on lat long
+		Route::get('/is-finished/{surveyId}/{farmerId}/{farmId}', 'SurveyController@isSurveyFinished')->name('isSurveyFinished');
+
+		// Search Location
+		Route::get('/location/search/{search}', 'LocationController@searchLocation')->name('searchLocation');
 
         // User Login Route
         Route::post('/login', 'AuthController@login')->name('login');
 		Route::post('/resendOtp', 'AuthController@resendOtp')->name('resendOtp');
 		Route::post('/forgotPassword', 'AuthController@forgotPassword')->name('forgotPassword');
 		Route::post('/resetPassword', 'AuthController@resetPassword')->name('resetPassword');
-	    Route::get('/getPage', 'HomeController@getPage')->name('getPage');
+	    	Route::get('/getPage', 'HomeController@getPage')->name('getPage');
 		
 		//SMS Verification
 		Route::post('/sendSMSotp', 'AuthController@sendSMSOTP')->name('sendOTP');
 		Route::post('/verifySMSotp', 'AuthController@verifySMSOTP')->name('verifyOTP');
-
+		Route::get('/get-proof/{farmerId}', 'AccountController@getProof')->name('getProof');
 		Route::middleware(['auth:sanctum'])->group(function () {
 			Route::get('/logout', 'AuthController@logout')->name('logout');
 			Route::post('/changePassword', 'AccountController@changePassword')->name('changePassword');
 			Route::get('/profile', 'AccountController@getProfile')->name('profile');
 			Route::post('/updateProfile', 'AccountController@updateProfile')->name('updateProfile');
+			Route::post('/updateProfileAdmin', 'AccountController@updateProfileAdmin')->name('updateProfileAdmin');
 			Route::get('/notification', 'AccountController@notification')->name('notification');
 			Route::post('/contactUs', 'HomeController@contactUs')->name('contactUs');
 			Route::get('/farm-list', 'FarmController@index')->name('farm_list');
@@ -51,14 +91,16 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::get('/home', 'HomeController@index')->name('home');
 			Route::get('/get-weather', 'HomeController@getWeather')->name('getWeather');
 			Route::post('/survey-store', 'SurveyController@store')->name('survey_store');
+			Route::get('/get-farmer-info/{farmerInfo}', 'AccountController@getFarmerInfo')->name('getFarmerInfo');
+			//this should have admin privellege
+			Route::post('/verify-farmer', 'AccountController@verifyFarmer')->name('verifyFarmer');
+			
 		});
     });
 
 
 });
-
-//routes made by nikko
-
+/*
 Route::prefix('v2')->namespace('Api2')->group(function () {
 	Route::post('/login',function(Request $request){
 		$rules = array(
@@ -90,3 +132,4 @@ Route::prefix('v2')->namespace('Api2')->group(function () {
 		";
 	})->name('fweb.login');
 });
+*/

@@ -46,13 +46,17 @@ class FarmController extends Controller
             //'farm_id' =>  'required|unique:farms,farm_id,NULL,id',
             'area_location' => 'required',
             'farm_image'=>'required',
+            'region' => 'required',
+            'province' => 'required',
+            'municipality' => 'required',
+            'area' => 'required',
             'image_latitude'=>'required',
-            'image_longitude'=>'required'
-             
+            'image_longitude'=>'required',
+            'barangay' => 'required'
         );
 
          
-         $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             $errorMessages = $validator->errors()->all();
             throw new HttpResponseException(returnValidationErrorResponse($errorMessages[0]));
@@ -75,11 +79,15 @@ class FarmController extends Controller
                 }
             }
             
-
-            $farmArr['farmer_id']=Auth::id();
+            $farmArr['farmer_id'] = isset($request->farmer_id) ? $request->farmer_id : Auth::id();
             $farmArr['area_location']=$request->area_location;
             $farmArr['image_latitude']=$request->image_latitude;
             $farmArr['image_longitude']=$request->image_longitude;
+            $farmArr['region'] = $request->region;
+            $farmArr['province'] = $request->province;
+            $farmArr['municipality'] = $request->municipality;
+            $farmArr['area'] = $request->area;
+            $farmArr['barangay'] =$request->barangay;
             
             $farmArr['farm_image']=implode(",", $farm_images);
             $farmObj = $farm->saveNewFarm($farmArr);
@@ -89,7 +97,7 @@ class FarmController extends Controller
             $farmObj->farm_id=$farmCode='FARM'.$farmObj->id;
             $farmObj->save();
 
-             return returnSuccessResponse('Farm added successfully!', $farmObj);
+            return returnSuccessResponse('Farm added successfully!', $farmObj);
          }
 
       public function detail(Request $request,Farms $farms)
@@ -97,9 +105,7 @@ class FarmController extends Controller
         $rules = array(
             'farm_id' =>  'required',
         );
-
-         
-         $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             $errorMessages = $validator->errors()->all();
             throw new HttpResponseException(returnValidationErrorResponse($errorMessages[0]));
@@ -114,14 +120,17 @@ class FarmController extends Controller
          return returnNotFoundResponse('farm not found with this farm id');
      }
 
-      public function update(Request $request)
+    public function update(Request $request)
     {
 
         $rules = [
             'id'=>'required',
-            'area_location' => 'required_without:farm_image',
-            'farm_image'=>'required_without:area_location',
-
+            'area_location' => '',
+            'farm_image'=>'',
+            'region' => '',
+            'province' => '',
+            'municipality' => '',
+            'area' => '',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -140,24 +149,23 @@ class FarmController extends Controller
                     $completePath[] = $path . '/' . $name;
                 }
             }
-         
          $farms = Farms::find($id);
-          
-        $farms->area_location=isset($request->area_location)?$request->area_location :$farms->area_location;
-        $farms->image_latitude=isset($request->image_latitude)?$request->image_latitude :$farms->image_latitude;
-        $farms->image_longitude=isset($request->image_longitude)?$request->image_longitude :$farms->image_longitude;
-       isset($completePath) ? $farms->farm_image = implode(",", $completePath) : $farms->farm_image;
-         
+        
+        $farms->area_location ??= $request->area_location;
+        $farms->image_latitude ??= $request->image_latitude;
+        $farms->image_longitude ??= $request->image_longitude;
+        $farms->region ??= $request->region;
+        $farms->province ??= $request->province;
+        $farms->municipality ??= $request->municipality;
+        $farms->barangay ??= $request->barangay;
+        $farms->area ??= $request->area;
+        $farms->farm_image = isset($completePath) ?  implode(",", $completePath) : $farms->farm_image;
+        
         if(!$farms->save()){
             return returnErrorResponse('Unable to update farm. Please try again later');
         }
-         
-
-
-
+        
         return returnSuccessResponse('Farm update successfully',$farms);
-
-
     }
 
       public function delete(Request $request)
@@ -182,5 +190,29 @@ class FarmController extends Controller
         return returnErrorResponse('Unable to delete farm. Please try again later');
 
 
+    }
+
+    public function getFarmsByID($id,Farms $farms){
+        $farmObj=$farms->getFarmList($id);
+        $listArr=array();
+
+        if(!empty($farmObj))
+        {
+            foreach ($farmObj as $key => $value) {
+
+            $survey_detail=Survey::where('farmer_id',Auth::id())->where('farm_id',$value->id)->first();
+            if(!empty($survey_detail))
+            {
+                $value->isSurvey=true;
+            }
+            else{
+                $value->isSurvey=false;
+            }
+
+            $value['farm_image']=explode(',' ,$value->farm_image);
+            array_push($listArr,$value);
+         }
+        }
+        return returnSuccessResponse('Farm list get successfully.', $listArr);
     }
 }

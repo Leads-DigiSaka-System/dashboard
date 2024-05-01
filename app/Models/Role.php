@@ -58,4 +58,9 @@ class Role extends Model
 
 
     }
+
+	public static function getAllRole()
+    {
+        return self::select('id', 'title')->get();
+    }
 }

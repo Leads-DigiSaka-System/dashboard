@@ -15,7 +15,12 @@ class Farms extends Model
         'profile_image',
         'farm_image',
         'image_latitude',
-        'image_longitude'
+        'image_longitude',
+        'region',
+        'province',
+        'municipality',
+        'barangay',
+        'area'
     ];
 
       public static function getColumnForSorting($value){
@@ -70,10 +75,10 @@ class Farms extends Model
 
                     });
 
-                
 
-                
-                       
+
+
+
 
                  if($flag)
                     return $query->count();
@@ -81,8 +86,9 @@ class Farms extends Model
 
             $start =  $request['start'];
             $length = $request['length'];
-            $query->offset($start)->limit($length);
+            $query->with('farmerDetails.roleDetails');
 
+            $query->offset($start)->limit($length);
 
         }
 
@@ -105,5 +111,21 @@ class Farms extends Model
       public function getFarmDetail($farm_id)
     {
         return self::with('farmerDetails')->where('id',$farm_id)->first();
+    }
+
+    //get all farm with farmer details
+    public static function getAllFarmWithFarmerDetails()
+    {
+        return self::with('farmerDetails')->get();
+    }
+
+    public static function getRandomFarmWthFarmerDetails() {
+        return self::whereHas('farmerDetails', function ($query) {
+            $query->where('via_app',1);
+        })
+        ->with('farmerDetails')
+        ->inRandomOrder()
+        ->limit(5)
+        ->get();
     }
 }

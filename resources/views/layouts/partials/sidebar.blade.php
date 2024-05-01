@@ -15,13 +15,15 @@
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
             <li class=" nav-item {{request()->is('/') || request()->is('production')|| request()->is('cutting')?'active':''}}">
-                <a class="d-flex align-items-center" href="{{ route('user.home') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">Dashboard</span></a>
+                <a class="d-flex align-items-center" href="{{ route('dashboard.index') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">Dashboard</span></a>
             </li>
 
                 <li class=" nav-item {{request()->is('farmers') || request()->is('farmers/*')?'active':''}}">
                     <a class="d-flex align-items-center" href="{{route('farmers.index')}}"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="Users">Farmers</span></a>
                 </li>
-
+                <li class=" nav-item {{request()->is('leads') || request()->is('leads/*')?'active':''}}">
+                    <a class="d-flex align-items-center" href="/leads"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="Users">Users</span></a>
+                </li> 
                  <li class=" nav-item {{request()->is('farms') || request()->is('farms/*')?'active':''}}">
                     <a class="d-flex align-items-center" href="{{route('farms.index')}}"><i data-feather="grid"></i><span class="menu-title text-truncate" data-i18n="Kanban">Farms</span></a>
                 </li> 

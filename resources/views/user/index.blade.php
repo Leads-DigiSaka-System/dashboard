@@ -52,7 +52,9 @@
                     <th>S.No</th>
                     <th>Full Name</th>
                     <th>Phone Number</th>
+                    <th>Role</th>
                      <th>Status</th>
+                     <th>Registered via App</th>
                   
                     <th data-orderable="false">Action</th>
                   </tr>
@@ -74,7 +76,7 @@
 
       @include('include.dataTableScripts')   
 
-      <script src="{{ asset('js/pages/farmers/index.js') }}"></script>
+      <script src="{{ asset('js/pages/farmers/index.js?41233123') }}"></script>
 
   @endpush
 
