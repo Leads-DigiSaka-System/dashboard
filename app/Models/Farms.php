@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Farms extends Model
+{
+    use HasFactory;
+    protected $fillable = [
+        'farmer_id',
+        'farm_id',
+        'area_location',
+        'profile_image',
+        'farm_image',
+        'image_latitude',
+        'image_longitude'
+    ];
+
+      public static function getColumnForSorting($value){
+
+        $list = [
+            0=>'id',
+            1=>'name',
+            2=>'farm_id',
+            3=>'area_location',
+            4=>'created_at'
+        ];
+
+        return isset($list[$value])?$list[$value]:"";
+    }
+     public function farmerDetails()
+    {
+        return $this->belongsTo(User::class, 'farmer_id', 'id');
+    }
+      public function getAllFarms($request = null,$flag = false)
+    {
+        if(isset($request['order'])){
+            $columnNumber = $request['order'][0]['column'];
+            $order = $request['order'][0]['dir'];
+        }
+        else {
+            $columnNumber = 4;
+            $order = "desc";
+        }
+
+        $column = self::getColumnForSorting($columnNumber);
+        if($columnNumber == 0){
+            $order = "desc";
+        }
+
+        if(empty($column)){
+            $column = 'id';
+        }
+        $query = self::orderBy($column, $order);
+
+
+        if(!empty($request)){
+
+            $search = $request['search']['value'];
+
+            if(!empty($search)){
+                 $query->whereHas('farmerDetails',function ($query) use($request,$search){
+             $query->orWhere( 'name', 'LIKE', '%'. $search .'%')
+                            ->orWhere('farm_id', 'LIKE', '%'. $search .'%')
+                            ->orWhere('area_location', 'LIKE', '%'. $search .'%')
+                            ->orWhere('created_at', 'LIKE', '%' . $search . '%')
+                            ->orWhere('full_name', 'LIKE', '%'. $search .'%');
+
+                    });
+
+                
+
+                
+                       
+
+                 if($flag)
+                    return $query->count();
+            }
+
+            $start =  $request['start'];
+            $length = $request['length'];
+            $query->offset($start)->limit($length);
+
+
+        }
+
+        $query = $query->get();
+        return $query;
+    }
+
+    public  function findFarmById($id){
+        return self::find($id);
+    }
+
+       public function saveNewFarm($inputArr){
+        return self::create($inputArr);
+    }
+
+    public function getFarmList($farmer_id)
+    {
+        return self::with('farmerDetails')->where('farmer_id',$farmer_id)->get();
+    }
+      public function getFarmDetail($farm_id)
+    {
+        return self::with('farmerDetails')->where('id',$farm_id)->first();
+    }
+}
