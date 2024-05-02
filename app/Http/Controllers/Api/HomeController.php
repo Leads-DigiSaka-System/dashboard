@@ -47,6 +47,16 @@ class HomeController extends Controller
       
       return returnSuccessResponse('home data get successfully.', $data);
    }
+   public function getPoints($farmer_id)
+  {
+      $user = User::find($farmer_id);
+
+      if ($user) {
+          return response()->json(['message' => 'Success', 'reward_points' => $user->reward_points]);
+      } else {
+          return response()->json(['message' => 'User not found'], 404);
+      }
+  }
 
    public function weatherFromLatLng($apiKey,$latitude,$longitude,$data = "all",$days = 1){
      $searchWeatherAPI = "https://api.weatherapi.com/v1/forecast.json?key=$apiKey&days=$days&q=" . rawurlencode($this->ajax("https://geocode.maps.co/reverse?lat=$latitude&lon=$longitude&api_key=65efe79c96022483653905xzsda2f39")->display_name);
