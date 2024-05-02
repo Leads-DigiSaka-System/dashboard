@@ -13,7 +13,10 @@
     <div class="row">
         <ul class="nav nav-tabs" id="myTabs" style="background: #fff; margin-top: -1rem;">
             <li class="nav-item">
-                <a class="nav-link active" id="tab1" data-toggle="tab" href="#content1">Summary</a>
+                <a class="nav-link active" id="tab5" data-toggle="tab" href="#content5">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab1" data-toggle="tab" href="#content1">Summary</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="tab4" data-toggle="tab" href="#content4">Demo Farms</a>
@@ -27,7 +30,8 @@
         </ul>
     </div>
     <div class="tab-content">
-        <div class="tab-pane fade show active  " id="content1">
+        @include('dashboard.tabs.home')
+        <div class="tab-pane fade" id="content1">
             <div class="container-fluid px-6 pt-6">
                 <div class="row row-cols-1 row-cols-md-3">
                     <div class="col h-auto">

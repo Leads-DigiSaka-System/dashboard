@@ -1425,4 +1425,18 @@ class DashboardController extends Controller
 
         return response()->json($legend);
     }
+
+    public function getRecommendations() {
+        $data = [
+            '2014' => 15000,
+            '2015' => 18000,
+            '2016' => 17500,
+            '2017' => 21000,
+            '2018' => 32000,
+            '2019' => 24000,
+            '2020' => 12500 
+        ];
+
+        return response()->json($data);
+    }
 }

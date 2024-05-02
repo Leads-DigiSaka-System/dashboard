@@ -2,6 +2,7 @@
     const colorChart = ['#28c76f'];
 
     function chartScript(response) {
+
     return {
         chart: {
             type: 'bar'
@@ -48,6 +49,107 @@
         }]
     };
 }
+    
+    axios.get('/dashboard/getRecommendations').then(response => {
+        const data = response.data;
+        let xaxis = [];
+        let yaxis = [];
+
+        console.log(data);
+        for (const [x,y] of Object.entries(data)) {
+            xaxis.push(x)
+            yaxis.push(y)
+        }
+
+        // Use Highcharts to create a column chart
+        Highcharts.chart('recommendations', { // Use 'recommendations' as the ID
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: ''
+            },
+            xAxis: {
+                categories: xaxis
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                }
+            },
+            legend: {
+                enabled:false
+            },
+            series: [{
+                name: 'Recommendations',
+                data: yaxis
+            }],
+            plotOptions: {
+                column: {
+                    colorByPoint: true,
+                    colors: colorChart
+                }
+            }
+        });
+    })
+
+    //Total Number of Farmers Registered Chart
+    Highcharts.chart('registered_farmers', {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: ''
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Registered Farmers',
+                data: [
+                {
+                    name: 'Region I',
+                    y : 300
+                },
+                {
+                    name: 'Region II',
+                    y: 200
+                },
+                {
+                    name: 'Region III',
+                    y: 500
+                }],
+            }]
+        });
+
+    //Total Number of Farmers with ID Card Chart
+    Highcharts.chart('farmers_id', {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: ''
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Registered Farmers',
+                data: [
+                {
+                    name: 'Region I',
+                    y : 151
+                },
+                {
+                    name: 'Region II',
+                    y: 93
+                },
+                {
+                    name: 'Region III',
+                    y: 243
+                }],
+            }]
+        });
 
     axios.get('/dashboard/getAgeChartData').then(response => {
         const ageChart = Highcharts.chart('age', chartScript(response));
@@ -224,5 +326,7 @@
     .catch(error => {
         console.error('Error fetching data:', error);
     });
+
+    
 
 </script>
