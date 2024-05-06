@@ -16,6 +16,9 @@
                 <a class="nav-link active" id="tab5" data-toggle="tab" href="#content5">Home</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" id="tab5" data-toggle="tab" href="#content6">Links</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" id="tab1" data-toggle="tab" href="#content1">Summary</a>
             </li>
             <li class="nav-item">
@@ -31,6 +34,7 @@
     </div>
     <div class="tab-content">
         @include('dashboard.tabs.home')
+        @include('dashboard.tabs.links')
         <div class="tab-pane fade" id="content1">
             <div class="container-fluid px-6 pt-6">
                 <div class="row row-cols-1 row-cols-md-3">
