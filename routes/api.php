@@ -26,6 +26,8 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 		Route::post('/exist', 'AuthController@doesExist')->name('doesExist');
         Route::post('/upload', 'AuthController@uploadFile')->name('uploadFile');
 		Route::post('/uploadApp', 'AuthController@uploadApp')->name('uploadApp');
+		Route::get('/latest_app', 'AuthController@latest_app')->name('uploadApp');
+		Route::get('/app_details/{version}', 'AuthController@app_details')->name('uploadApp');
 		// Role data fetching
         Route::get('/getRoles', 'AuthController@getRoles')->name('getRole');
 		

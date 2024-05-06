@@ -17,7 +17,7 @@ use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\File;
-
+use App\Models\AppModel;
 
 class AuthController extends Controller
 {
@@ -187,7 +187,16 @@ class AuthController extends Controller
 
         return returnSuccessResponse('Otp resend successfully!',$userObj->jsonResponse());
     }
+    public function latest_app(){
+        $latestApp = AppModel::latest()->first();
 
+        return response()->json($latestApp);
+    }
+
+    public function app_details($version){
+        $appDetails = AppModel::where('version',$version)->first();
+        return response()->json($appDetails);
+    }
     public function login(Request $request)
     {
     	$rules = [
