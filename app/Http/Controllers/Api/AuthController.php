@@ -192,7 +192,16 @@ class AuthController extends Controller
 
         return response()->json($latestApp);
     }
-
+    public function verify_user($id){
+        $user = User::find($id);
+    
+        if($user){
+            $user->update(['verified' => 1]);
+            return response()->json(['message' => 'User verified successfully'], 200);
+        } else {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+    }
     public function app_details($version){
         $appDetails = AppModel::where('version',$version)->first();
         return response()->json($appDetails);
