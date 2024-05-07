@@ -30,6 +30,9 @@
                  <li class=" nav-item {{request()->is('survey') || request()->is('survey/*')?'active':''}}">
                     <a class="d-flex align-items-center" href="{{route('survey.index')}}"><i data-feather="book"></i><span class="menu-title text-truncate" data-i18n="Kanban">Survey</span></a>
                 </li> 
+                <li class=" nav-item {{request()->is('questions') || request()->is('questions/*')?'active':''}}">
+                    <a class="d-flex align-items-center" href="{{route('questions.index')}}"><i data-feather="book"></i><span class="menu-title text-truncate" data-i18n="Kanban">Questions</span></a>
+                </li> 
         
             
         </ul>

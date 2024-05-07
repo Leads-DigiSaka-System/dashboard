@@ -52,6 +52,8 @@ Route::middleware('prevent-back-history')->group(function (){
 
         Route::get('/export-items/{id}', 'ExportController@exportItems')->name('export.items');
         Route::get('/export-survey/{id}', 'ExportController@exportSurveyItems')->name('export_survey_items');
+
+        Route::resource('questions','QuestionController');
     });
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index');
     Route::get('/dashboard/getCountCountry', 'DashboardController@getCountCountry');
@@ -86,4 +88,5 @@ Route::middleware('prevent-back-history')->group(function (){
     Route::get('/dashboard/getCropStandPerRegion', 'DashboardController@getCropStandPerRegion');
     Route::get('/dashboard/getDistinctFilters', 'DashboardController@getDistinctFilters');
     Route::get('/dashboard/getLegend', 'DashboardController@getLegend');
+    Route::get('/dashboard/getRecommendations', 'DashboardController@getRecommendations');
 });
