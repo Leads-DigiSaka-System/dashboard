@@ -6,7 +6,7 @@
                         <div class="card-body">
                             <div class="row pb-3">
                                 <div class="col-md-6">
-                                    <h4>NUMBER OF RECOMMENDATIONS GENERATED</h4>
+                                    <h4>Number of Recommendations Recommended</h4>
                                 </div>
                                 <div class="col-md-6 text-end">
                                     <h2>{{ number_format('140000') }}</h2>
@@ -24,7 +24,7 @@
                                 <div class="card-body">
                                     <div class="row pb-3">
                                         <div class="col-md-6">
-                                            <h4>TOTAL NUMBER OF FARMERS REGISTERED</h4>
+                                            <h4>Total Number of Farmers Registered</h4>
                                         </div>
                                         <div class="col-md-6 text-end">
                                             <h2>{{ number_format('2615750') }}</h2>
@@ -42,7 +42,7 @@
                                 <div class="card-body">
                                     <div class="row pb-3">
                                         <div class="col-md-6">
-                                            <h4>TOTAL NUMBER OF FARMERS WITH ID CARD</h4>
+                                            <h4>Total Number of Farmer with ID Card</h4>
                                         </div>
                                         <div class="col-md-6 text-end">
                                             <h2>{{ number_format('8244') }}</h2>
