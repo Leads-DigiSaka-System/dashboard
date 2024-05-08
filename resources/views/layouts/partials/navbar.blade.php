@@ -29,7 +29,7 @@
                         <span class="user-status">{{$userObj->getUserRole->title??''}}</span>
                     </div>
                     <span class="avatar">
-                        <img class="round" src="{{$userObj->profile_image ? $userObj->profile_image : asset('images/theme/portrait/small/avatar-s-11.jpg')}}" alt="avatar" height="40" width="40">
+                        <img class="round" src="{{$userObj->profile_image ? asset($userObj->profile_image) : asset('images/theme/portrait/small/avatar-s-11.jpg')}}" alt="avatar" height="40" width="40">
                         <span class="avatar-status-online"></span>
                     </span>
                 </a>

@@ -32,7 +32,7 @@
                 <div class="row">
                     <div class="col-md-3">
 
-                      <img src="{{$userObject->profile_image ? $userObject->profile_image : asset('images/theme/portrait/small/avatar-s-11.jpg')}}" style="width:100%;">
+                      <img src="{{$userObject->profile_image ? asset($userObject->profile_image) : asset('images/theme/portrait/small/avatar-s-11.jpg')}}" style="width:100%;">
 
                     </div>
 

@@ -163,53 +163,54 @@ class AccountController extends Controller
         $returnArr = $userObj->jsonResponse();
         return returnSuccessResponse('Profile updated successfully', $returnArr);
     }
+
     public function updateProfileAdmin(Request $request){
         $rules = [
-        'id' => '',
-        'first_name' => 'required',
-        'last_name' => 'required',
-        'profile_image' => '',
-        'gender' => 'required',
-        'dob' => 'required',
-        'barangay' => 'required',
-        'region' => 'required',
-        'province' => 'required',
-        'municipality' => 'required',
-        'farming_years' => 'required',
-        'farmer_ownership' => 'required',
-        'crops' => 'required',
-    ];
+            'id' => '',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'profile_image' => '',
+            'gender' => 'required',
+            'dob' => 'required',
+            'barangay' => 'required',
+            'region' => 'required',
+            'province' => 'required',
+            'municipality' => 'required',
+            'farming_years' => 'required',
+            'farmer_ownership' => 'required',
+            'crops' => 'required',
+        ];
     
-    $inputArr = $request->all();
-    $validator = Validator::make($inputArr, $rules);
-    if ($validator->fails()) {
-        $errorMessages = $validator->errors()->all();
-        throw new HttpResponseException(returnValidationErrorResponse($errorMessages[0]));
-    }
-
-    $userObj = User::find($request->id);
-    if (!$userObj) {
-        return returnErrorResponse('Farmer is not authorized');
-    }
-    if ($file = $request->file('profile_image')) {
-             $name = $file->getClientOriginalName();
-                $path = 'upload/images';
-                $file->move($path, $name);
-                $profile_image = $path . '/' . $name;
-                $userObj->profile_image = $profile_image;     
+        $inputArr = $request->all();
+        $validator = Validator::make($inputArr, $rules);
+        if ($validator->fails()) {
+            $errorMessages = $validator->errors()->all();
+            throw new HttpResponseException(returnValidationErrorResponse($errorMessages[0]));
         }
 
-    $userObj->fill($request->all());
-    $userObj->full_name = $request->first_name . ' ' . $request->last_name;
-    
-    
-    if(!$userObj->save()){
-        return returnErrorResponse('Unable to save data');
-    }
-    
-    
-    $returnArr = $userObj->jsonResponse();
-    return returnSuccessResponse('Profile updated successfully', $returnArr);
+        $userObj = User::find($request->id);
+        if (!$userObj) {
+            return returnErrorResponse('Farmer is not authorized');
+        }
+        if ($file = $request->file('profile_image')) {
+                 $name = $file->getClientOriginalName();
+                    $path = 'upload/images';
+                    $file->move($path, $name);
+                    $profile_image = $path . '/' . $name;
+                    $userObj->profile_image = $profile_image;     
+            }
+
+        $userObj->fill($request->all());
+        $userObj->full_name = $request->first_name . ' ' . $request->last_name;
+        
+        
+        if(!$userObj->save()){
+            return returnErrorResponse('Unable to save data');
+        }
+        
+        
+        $returnArr = $userObj->jsonResponse();
+        return returnSuccessResponse('Profile updated successfully', $returnArr);
     }
 
     public function getProof($farmerId){
@@ -222,5 +223,29 @@ class AccountController extends Controller
             'verified' => 1,
         ]);
         return returnSuccessResponse('verification successful');
+    }
+
+    public function updateProfilePic(Request $request) {
+
+        $userObj = $request->user();
+
+        if (!$userObj) {
+            return returnErrorResponse('Farmer is not authorized');
+        }
+
+        if ($file = $request->file('profile_image')) {
+                $name = $file->getClientOriginalName();
+                $path = 'upload/images';
+                $file->move($path, $name);
+                $profile_image = $path . '/' . $name;
+                $userObj->profile_image = $profile_image;     
+        }
+
+        if(!$userObj->save()){
+            return returnErrorResponse('Unable to save data');
+        }
+
+        $returnArr = $userObj->jsonResponse();
+        return returnSuccessResponse('Successfully Updated Profile Picture', $returnArr);
     }
 }

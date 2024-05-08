@@ -84,6 +84,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::get('/profile', 'AccountController@getProfile')->name('profile');
 			Route::post('/updateProfile', 'AccountController@updateProfile')->name('updateProfile');
 			Route::post('/updateProfileAdmin', 'AccountController@updateProfileAdmin')->name('updateProfileAdmin');
+			Route::post('/update_profile_pic','AccountController@updateProfilePic')->name('updateProfilePic');
 			Route::get('/notification', 'AccountController@notification')->name('notification');
 			Route::post('/contactUs', 'HomeController@contactUs')->name('contactUs');
 			Route::get('/farm-list', 'FarmController@index')->name('farm_list');
