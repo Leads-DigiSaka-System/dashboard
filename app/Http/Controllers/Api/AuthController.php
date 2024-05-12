@@ -236,12 +236,11 @@ class AuthController extends Controller
 
         if ( ! Hash::check($inputArr['password'], $userObj->password, [])) {
             // return if password
-            // $response = [
-             //   'statusCode' => 422,
-             //   'data' => (object)[],
-            //    'message' => "We are sorry but your login credentials do not match!"
-            //];
-            return returnErrorResponse("Password Incorrect!");  
+            $response = [
+               'statusCode' => 403,
+               'message' => "We are sorry but your login credentials do not match!"
+            ];
+            return $response;  
             // return $this->notFoundResponse('Invalid credentials');
         }
         
