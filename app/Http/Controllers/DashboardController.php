@@ -9,6 +9,7 @@ use App\Models\Farms;
 use App\Models\Product;
 use App\Models\Province;
 use App\Models\Survey;
+use App\Models\Region;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -44,6 +45,7 @@ class DashboardController extends Controller
         $allFarms = Farms::getAllFarmWithFarmerDetails();
         $randomFarms = Farms::getRandomFarmWthFarmerDetails();
         $allArea = Province::getAllArea();
+        $allRegion = Region::all();
         $distinctFilters = Derby::select('region')
         ->distinct()
         ->where('region','!=', '')
@@ -54,7 +56,7 @@ class DashboardController extends Controller
             'regions' => $distinctFilters->pluck('region')->unique()->values()
         ];
 
-        return view('dashboard.index', compact("filters", "users", "farms", "survey", "latest_farmers", "latest_farms", "allFarms", "farmerPercent", "farmPercent", "surveyPercent", "allArea", "top_performer", "randomFarms"));
+        return view('dashboard.index', compact("filters", "users", "farms", "survey", "latest_farmers", "latest_farms", "allFarms", "farmerPercent", "farmPercent", "surveyPercent", "allRegion", "top_performer", "randomFarms"));
     }
 
     public function getDistinctFilters(Request $request)
@@ -1392,24 +1394,24 @@ class DashboardController extends Controller
         return response()->json($result);
     }
 
-    public function getProvinceByArea($area)
+    public function getProvinceByRegion($region)
     {
-        $provinces = Province::where('area', $area)->get();
+        $provinces = Province::where('regcode', $region)->get();
         return response()->json($provinces);
     }
-    public function getDemoPerformed($product, $area, $provcode)
+    public function getDemoPerformed($product, $region, $provcode)
     {
-        $demo = Demo::getDemoPerformed($product, $area, $provcode);
+        $demo = Demo::getDemoPerformed($product, $region, $provcode);
         return response()->json($demo);
     }
-    public function getSampleUsed($product, $area, $provcode)
+    public function getSampleUsed($product, $region, $provcode)
     {
-        $demo = Demo::getSampleUsed($product, $area, $provcode);
+        $demo = Demo::getSampleUsed($product, $region, $provcode);
         return response()->json($demo);
     }
-    public function getPoints($product, $area, $provcode)
+    public function getPoints($product, $region, $provcode)
     {
-        $demo = Demo::getPoints($product, $area, $provcode);
+        $demo = Demo::getPoints($product, $region, $provcode);
         // Capitalize the first letter of each word in farm_location
         foreach ($demo as &$point) {
             $location = $point->barangay == ''

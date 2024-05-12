@@ -43,16 +43,23 @@ class QuestionController extends Controller
                         return $question->field_type;
                     })
                     ->addColumn('sub_field_type', function ($question) {
-                        return $question->sub_field_type;
+                        $sub_field_type = json_decode($question->sub_field_type);
+                        $choices = $sub_field_type->choices;
+
+                        $arr = implode(", ", $choices);
+                        return $arr;
                     })
                     ->addColumn('action', function ($question) {
                             $btn = '';
-                            $btn = '<a href="' . route('farms.show', encrypt($question->id)) . '" title="View"><i class="fas fa-eye"></i></a>&nbsp;&nbsp;';
+                            $btn = '<a href="' . route('questions.edit', encrypt($question->id)) . '" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;';
+                            $btn .= '<a href="javascript:void(0);" delete_form="delete_customer_form"  data-id="' . encrypt($question->id) . '" class="delete-datatable-record text-danger delete-users-record" title="Delete"><i class="fas fa-trash"></i></a>';
                         return $btn;
                     })
+                    ->addColumn('status', function ($question) {
+                        return $question->status == 1 ? 'Active' : 'Not Active';
+                    })
                     ->rawColumns([
-                        'action',
-                        'status'        
+                        'action'        
                     ])
                     ->setTotalRecords($totalQuestions)
                     ->setFilteredRecords($setFilteredRecords)
@@ -92,6 +99,7 @@ class QuestionController extends Controller
             Question::create([
                 'field_name' => $request->field_name,
                 'field_type' => $request->field_type,
+                'required_field' => $request->required_field == 'on' ? 1 : 0,
                 'sub_field_type' => json_encode(['choices' => $request->sub_field_type]),
                 'status' => 1
             ]);
@@ -112,7 +120,10 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        //
+        $id = decrypt($id);
+
+        $question = Question::find($id);
+
     }
 
     /**
@@ -123,7 +134,18 @@ class QuestionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $decrypt_id = decrypt($id);
+
+        $question = Question::find($decrypt_id);
+
+        $data = [
+            'field_name' => $question->field_name,
+            'required_field' => $question->required_field,
+            'field_type' => $question->field_type,
+            'sub_field_type' => json_decode($question->sub_field_type)
+        ];
+
+        return view('questions.edit', ['question' => $data,'id' => $id]);
     }
 
     /**
@@ -135,7 +157,34 @@ class QuestionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+
+        $validated = $request->validate([
+            'field_name' => 'required|string',
+            'field_type' => 'required|string',
+            'sub_field_type' => 'required|array'
+        ]);
+
+        $decrypt_id = decrypt($id);
+        $question = Question::find($decrypt_id);
+
+        DB::beginTransaction();
+        try{
+
+            $question->field_name = $request->field_name;
+            $question->field_type = $request->field_type;
+            $question->required_field = $request->required_field == 'on' ? 1 : 0;
+            $question->sub_field_type = json_encode(['choices' => $request->sub_field_type]);
+            $question->status = 1;
+            $question->save();
+
+
+            DB::commit();
+            return redirect()->route("questions.index")->with('success', 'Question updated successfully.');
+        } catch (Exception $e) {
+            DB::rollback();
+            return redirect()->route("questions.index")->with('error', 'Unable to update question. Please try again later.');
+        }
     }
 
     /**
@@ -146,6 +195,19 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $decrypt_id = decrypt($id);
+        $question = Question::find($decrypt_id);
+
+
+        if (empty($question)) {
+            return returnNotFoundResponse('This question does not exist');
+        }
+
+        $hasDeleted = $question->delete();
+        if ($hasDeleted) {
+            return returnSuccessResponse('Question deleted successfully');
+        }
+
+        return returnErrorResponse('Something went wrong. Please try again later');
     }
 }

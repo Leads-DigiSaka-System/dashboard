@@ -9,7 +9,7 @@ const add_option_btn = document.getElementById('add_option_btn')
 
 const addOptions = function () {
 	const newRow = document.createElement("div")
-	newRow.classList.add("row","mb-1")
+	newRow.classList.add("row","mb-1","additional_option")
 
 	const newCol = document.createElement("div")
 	newCol.classList.add("col-sm-7", "offset-sm-3")
@@ -48,6 +48,13 @@ const addOptions = function () {
 	form_body.appendChild(newRow)
 }
 
+const removeElementsByClass = function(className) {
+	const elements = document.getElementsByClassName(className);
+    while(elements.length > 0){
+        elements[0].parentNode.removeChild(elements[0]);
+    }
+}
+
 field_type.addEventListener('change', function () {
 	const value = this.value
 	let html = ""
@@ -84,8 +91,10 @@ field_type.addEventListener('change', function () {
 				<option value="Number">Number</option>
 			</select>
 			`
-	}
 
+		removeElementsByClass('additional_option')
+	}
+	
 	$('#append_sub').parent().removeClass('d-none')
 	$('#append_sub').html(html)
 })

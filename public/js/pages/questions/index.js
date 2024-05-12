@@ -7,6 +7,7 @@ $(document).ready(function() {
             { data: 'field_type', name: 'field_type' },
             { data: 'sub_field_type', name: 'sub_field_type' },
             { data: 'created_at', name: 'created_at'},
+            { data: 'status', name: 'status'},
             { data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         dom: 'Bfrtip',
@@ -24,3 +25,9 @@ $(document).ready(function() {
     });
 });
 
+$(document).on('click', '.delete-datatable-record', function(e){
+    let url  = site_url + "/questions/" + $(this).attr('data-id');
+    let tableId = 'question_table'
+    
+    deleteDataTableRecord(url, tableId);
+});

@@ -54,6 +54,8 @@ Route::middleware('prevent-back-history')->group(function (){
         Route::get('/export-survey/{id}', 'ExportController@exportSurveyItems')->name('export_survey_items');
 
         Route::resource('questions','QuestionController');
+
+        Route::resource('questionnaires','QuestionnaireController');
     });
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index');
     Route::get('/dashboard/getCountCountry', 'DashboardController@getCountCountry');
@@ -81,7 +83,7 @@ Route::middleware('prevent-back-history')->group(function (){
     Route::get('/dashboard/getfarmGroupAppChartData', 'DashboardController@getfarmGroupAppChartData');
     Route::get('/dashboard/getAreaPlantedPerVariety', 'DashboardController@getAreaPlantedPerVariety');
     Route::get('/dashboard/getVarietyPlantedPerRegion', 'DashboardController@getVarietyPlantedPerRegion');
-    Route::get('/dashboard/getProvinceByArea/{area}', 'DashboardController@getProvinceByArea');
+    Route::get('/dashboard/getProvinceByRegion/{region}', 'DashboardController@getProvinceByRegion');
     Route::get('/dashboard/getDemoPerformed/{product}/{area}/{province}', 'DashboardController@getDemoPerformed');
     Route::get('/dashboard/getSampleUsed/{product}/{area}/{province}', 'DashboardController@getSampleUsed');
     Route::get('/dashboard/getPoints/{product}/{area}/{province}', 'DashboardController@getPoints'); 

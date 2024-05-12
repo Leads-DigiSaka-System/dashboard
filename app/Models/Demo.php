@@ -11,7 +11,7 @@ class Demo extends Model
 
     protected $guarded = [];
 
-    public static function getDemoPerformed($product, $area, $provcode)
+    public static function getDemoPerformed($product, $region, $provcode)
     {
         $query = self::join('provinces', 'demos.province', '=', 'provinces.provcode');
 
@@ -19,8 +19,8 @@ class Demo extends Model
             $query->where('product', $product);
         }
 
-        if ($area !== null && $area !== 'All') {
-            $query->where('area', $area);
+        if ($region !== null && $region !== 'All') {
+            $query->where('regcode', $region);
         }
 
         if ($provcode !== null && $provcode !== 'All' && $provcode !== '1') {
@@ -30,7 +30,7 @@ class Demo extends Model
         return $query->count();
     }
 
-    public static function getSampleUsed($product, $area, $provcode)
+    public static function getSampleUsed($product, $region, $provcode)
     {
         $query = self::join('provinces', 'demos.province', '=', 'provinces.provcode');
 
@@ -38,8 +38,8 @@ class Demo extends Model
             $query->where('product', $product);
         }
 
-        if ($area !== null && $area !== 'All') {
-            $query->where('area', $area);
+        if ($region !== null && $region !== 'All') {
+            $query->where('regcode', $region);
         }
 
         if ($provcode !== null && $provcode !== 'All' && $provcode !== '1') {
@@ -49,7 +49,7 @@ class Demo extends Model
         return $query->sum('quantity');
     }
 
-    public static function getPoints($product, $area, $provcode)
+    public static function getPoints($product, $region, $provcode)
     {
         $query = self::join('users', 'demos.farmer_id', '=', 'users.id')
             ->join('provinces', 'demos.province', '=', 'provinces.provcode')
@@ -60,8 +60,8 @@ class Demo extends Model
             $query->where('demos.product', $product);
         }
 
-        if ($area !== null && $area !== 'All') {
-            $query->where('provinces.area', $area);
+        if ($region !== null && $region !== 'All') {
+            $query->where('provinces.regcode', $region);
         }
 
         if ($provcode !== null && $provcode !== 'All' && $provcode !== '1') {

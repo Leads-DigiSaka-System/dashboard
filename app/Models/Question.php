@@ -12,6 +12,7 @@ class Question extends Model
     protected $fillable = [
         'field_name',
         'field_type',
+        'required_field',
         'sub_field_type',
         'status'
     ];

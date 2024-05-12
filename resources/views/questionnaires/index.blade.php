@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title')Questions @endsection
+@section('title')Questionnaires @endsection
 
 @section('content')
 
@@ -14,9 +14,9 @@
 	                <ol class="breadcrumb">
 	                    <li class="breadcrumb-item"><a href="{{route('user.home')}}">Home</a>
 	                    </li>
-	                    <li class="breadcrumb-item"><a href="{{route('questions.index')}}">Questions</a>
+	                    <li class="breadcrumb-item"><a href="{{route('questionnaires.index')}}">Questionnaires</a>
 	                    </li>
-	                    <li class="breadcrumb-item active">Question List
+	                    <li class="breadcrumb-item active">Questionnaire List
 	                    </li>
 	                </ol>
 	            </div>
@@ -47,23 +47,22 @@
 				
 				<div class="card-header">
 				  <div class="heading-text">
-				    <h4 class="m-0"><i class="fas fa-book mr-2"></i>&nbsp;{{ __('Questions') }}</h4>
+				    <h4 class="m-0"><i class="fas fa-book mr-2"></i>&nbsp;{{ __('Questionnaires') }}</h4>
 				  </div>
 				
 					<div class="right-side mr-2">
-	                	<a href="{{ route('questions.create') }}" class="dt-button btn btn-primary"><i class="fas fa-plus"></i>&nbsp;&nbsp;Create New Question</a>
+	                	<a href="{{ route('questionnaires.create') }}" class="dt-button btn btn-primary"><i class="fas fa-plus"></i>&nbsp;&nbsp;Create New Questionnaire</a>
 	            	</div>
 				</div>
 				<!-- /.card-header -->
 				
 				<div class="card-body">
-					<table id="question_table" class="table table-bordered table-hover">
+					<table id="questionnaire_table" class="table table-bordered table-hover">
 					  <thead>
 					  <tr>
 					    <th>#</th>
-					    <th>Field Name</th>
-					    <th>Field Type</th>
-					    <th>Sub-Field Type / Choices Option</th>
+					    <th>Title</th>
+					    <th>Description</th>
 					  	<th>Date Created</th>
 					  	<th data-orderable="false">Status</th>
 					    <th data-orderable="false">Action</th>
@@ -85,5 +84,5 @@
 
 @push('page_script')
 	@include('include.dataTableScripts')   
-	<script src="{{ asset('js/pages/questions/index.js') }}"></script>
+	<script src="{{ asset('js/pages/questionnaires/index.js') }}"></script>
 @endpush

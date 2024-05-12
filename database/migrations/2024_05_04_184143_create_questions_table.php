@@ -16,6 +16,7 @@ class CreateQuestionsTable extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->string('field_name');
+            $table->integer('required_fied')->default(0);
             $table->string('field_type');
             $table->longText('sub_field_type');
             $table->integer('status');

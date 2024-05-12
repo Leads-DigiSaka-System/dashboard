@@ -33,6 +33,9 @@
                 <li class=" nav-item {{request()->is('questions') || request()->is('questions/*')?'active':''}}">
                     <a class="d-flex align-items-center" href="{{route('questions.index')}}"><i data-feather="book"></i><span class="menu-title text-truncate" data-i18n="Kanban">Questions</span></a>
                 </li> 
+                <li class=" nav-item {{request()->is('questionnaires') || request()->is('questionnaires/*')?'active':''}}">
+                    <a class="d-flex align-items-center" href="{{route('questionnaires.index')}}"><i data-feather="book"></i><span class="menu-title text-truncate" data-i18n="Kanban">Questionnaires</span></a>
+                </li> 
         
             
         </ul>

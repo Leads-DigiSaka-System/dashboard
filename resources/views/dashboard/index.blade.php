@@ -3,6 +3,13 @@
     Dashboard
 @endsection
 
+@section('header_css')
+    <style>
+        .gm-style .gm-style-iw-c {
+            max-height:500px !important;
+        }
+    </style>
+@endsection
 @section('header_scripts')
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -11,6 +18,7 @@
 
 @section('content')
     <div class="row">
+        <!-- Button trigger modal -->
         <ul class="nav nav-tabs" id="myTabs" style="background: #fff; margin-top: -1rem;">
             <li class="nav-item">
                 <a class="nav-link active" id="tab5" data-toggle="tab" href="#content5">Home</a>
@@ -22,8 +30,9 @@
                 <a class="nav-link" id="tab1" data-toggle="tab" href="#content1">Summary</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="tab4" data-toggle="tab" href="#content4">Demo Farms</a>
+                <a class="nav-link" id="tab4" data-toggle="tab" href="#content4">Maps</a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link" id="tab2" data-toggle="tab" href="#content2">Survey Results</a>
             </li>
@@ -55,7 +64,7 @@
                             </a>
                             <hr>
                             <div class="text-center">
-                                <p><span class="font-weight-bold" style="color: #28c76f;">{{ $farmerPercent . '%' }}</span>
+                                <p>1pan class="font-weight-bold" style="color: #28c76f;">{{ $farmerPercent . '%' }}</span>
                                     than
                                     last
                                     week</p>
@@ -461,6 +470,20 @@
 
         <div class="tab-pane fade" id="content4" style="padding-right: 10px;">
             <div class="row">
+                <div class="col-md-3">
+                    <div class="card mb-1 shadow-sm rounded-3">
+                        <div class="card-body">
+                            <select class="form-select" id="map_selection">
+                                <option id="demo_map" value="demo_map">Demo</option>
+                                <option id="product_map" value="product_map">Product</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="row" id="demo_map_div">
                 <div class="col-md-8">
                     <div class="card rounded-3 shadow-sm">
                         <div class="card-body">
@@ -475,10 +498,11 @@
                                     </select>
                                 </div>
                                 <div class="col-md-3">
-                                    <label class="form-label" for="area">Area</label>
-                                    <select class="form-select" id="area" name="area">
-                                        @foreach ($allArea as $area)
-                                            <option value="{{ $area['value'] }}">{{ $area['label'] }}</option>
+                                    <label class="form-label" for="region_demo">Region</label>
+                                    <select class="form-select" id="region_demo" name="region_demo">
+                                        <option value="All">All</option>
+                                        @foreach ($allRegion as $region)
+                                            <option value="{{ $region['regcode'] }}">{{ $region['name'] }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -543,8 +567,22 @@
                     </div> --}}
                 </div>
             </div>
+
+            <div class="row d-none" id="product_map_div">
+                <div class="col-md-8">
+                    <div class="card rounded-3 shadow-sm">
+                        <div class="card-body">
+                            <h4 class="mb-1">Product Locations</h4>
+                            @include('dashboard.product-map-viewer')
+                            <div id="legend"></div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
         </div>
     </div>
+    
 @endsection
 
 @section('footer_scripts')
@@ -734,20 +772,32 @@ function setDropdownEventListeners() {
         //count demo performed when filter is clicked
         $('#filter').on('click', function() {
             var product = $('#product').val();
-            var area = $('#area').val();
+            var region = $('#region_demo').val();
             var province = $('#province_demo').val();
-            axios.get('/dashboard/getDemoPerformed/' + product + '/' + area + '/' + province).then(response => {
+            axios.get('/dashboard/getDemoPerformed/' + product + '/' + region + '/' + province).then(response => {
                 $('#demoPerformed').text(response.data);
             });
-            axios.get('/dashboard/getSampleUsed/' + product + '/' + area + '/' + province).then(response => {
+            axios.get('/dashboard/getSampleUsed/' + product + '/' + region + '/' + province).then(response => {
                 $('#sampleUsed').text(response.data);
 
                 // Load Google Map and add markers
-                loadDemoMap(product, area, province);
+                loadDemoMap(product, region, province);
             });
         });
 
-        function loadDemoMap(product, area, province) {
+        $('#map_selection').on('change', function() {
+            const value = $(this).val();
+            console.log(value)
+            if(value == 'demo_map') {
+                $('#demo_map_div').removeClass('d-none').addClass('d-flex')
+                $('#product_map_div').removeClass('d-flex').addClass('d-none')
+            } else {
+                $('#product_map_div').removeClass('d-none').addClass('d-flex')
+                $('#demo_map_div').removeClass('d-flex').addClass('d-none')
+            }
+        })
+
+        function loadDemoMap(product, region, province) {
             // Initialize Google Map
             const map = new google.maps.Map(document.getElementById('demo_farm_location'), {
                 center: {
@@ -769,7 +819,7 @@ function setDropdownEventListeners() {
                     '</div>';
                 })
             // Make AJAX request to get points data
-            axios.get('/dashboard/getPoints/' + product + '/' + area + '/' + province).then(response => {
+            axios.get('/dashboard/getPoints/' + product + '/' + region + '/' + province).then(response => {
                 var points = response.data;
 
                 // Add markers to the map
@@ -797,6 +847,7 @@ function setDropdownEventListeners() {
                         // Create farm images HTML
                         var farmImagesHTML = '';
                         point.farm_image.split(',').forEach(function(image) {
+                            console.log(image)
                             farmImagesHTML += '<a href="' + image + '" target="_blank"><img src="' +
                                 image +
                                 '" alt="Farm Image" width="150px" style="padding: 5px;"></a>';
@@ -810,22 +861,53 @@ function setDropdownEventListeners() {
                         // Optional: Add an info window for each marker to display additional information
                         var infoWindow = new google.maps.InfoWindow({
 
-                            content: '<table>' +
-                                '<tr><td>Farm ID:</td><td>' + point.farm_id + '</td></tr>' +
-                                '<tr><td style="padding-right: 10px;">Farm Address:</td><td>' +
-                                point.farm_location +
-                                '</td></tr>' +
-                                '<tr><td>Area:</td><td>' + point.area + '</td></tr>' +
-                                '<tr><td>Leads Farmer:</td><td>' + point.full_name + '</td></tr>' +
-                                '<tr><td>Product:</td><td>' + point.productname + '</td></tr>' +
-                                '<tr><td>Quantity:</td><td>' + point.quantity + '</td></tr>' +
-                                '<tr><td>Unit:</td><td>' + point.unit + '</td></tr>' +
-                                '<tr><td>Demo Date:</td><td>' + formattedDate + '</td></tr>' +
-                                '</table><hr/><div class="map_image" style="text-align: center;">' +
-                                farmImagesHTML + '</div>',
+                            content: `
+                                <table style="100%">
+                                    <tr>
+                                        <td class="fw-bold fs-5" style="width:20%;"> Farm ID:</td>
+                                        <td class="fw-bold fs-5"> ${point.farm_id}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold fs-5"> Farm Address:</td>
+                                        <td class="fw-bold fs-5"> ${point.farm_location}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold fs-5"> Area:</td>
+                                        <td class="fw-bold fs-5"> ${point.area}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold fs-5"> Leads Farmer:</td>
+                                        <td class="fw-bold fs-5"> ${point.full_name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold fs-5"> Product:</td>
+                                        <td class="fw-bold fs-5"> ${point.productname}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold fs-5"> Quantity:</td>
+                                        <td class="fw-bold fs-5"> ${point.quantity}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold fs-5"> Unit:</td>
+                                        <td class="fw-bold fs-5"> ${point.unit}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold fs-5">Demo Date:</td>
+                                        <td class="fw-bold fs-5"> ${formattedDate}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold fs-5 d-flex">Feedback:</td>
+                                        <td class="fw-bold fs-5"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. .</td>
+                                    </tr>
+                                </table>
+                                <hr/>
+                                <div class="map_image" style="text-align: center;">
+                                ${farmImagesHTML}
+                                </div>
+                            `,
 
-                            maxWidth: 1200, // Set the maximum width
-                            minHeight: 150, // Set the minimum height
+                            maxWidth: 800, // Set the maximum width
+                            minHeight: 300, // Set the minimum height
                         });
 
                         // Attach click event to marker to open info window
@@ -851,14 +933,14 @@ function setDropdownEventListeners() {
         })
         }
 
-        //load the province option when area is changed
-        $('#area').on('change', function() {
-            var area = $(this).val();
-            axios.get('/dashboard/getProvinceByArea/' + area).then(response => {
-                $('#province').empty();
-                $('#province').append('<option value="1">All</option>');
+        //load the province option when region is changed
+        $('#region_demo').on('change', function() {
+            var region = $(this).val();
+            axios.get('/dashboard/getProvinceByRegion/' + region).then(response => {
+                $('#province_demo').empty();
+                $('#province_demo').append('<option value="1">All</option>');
                 response.data.forEach(element => {
-                    $('#province').append('<option value="' + element.provcode + '">' + element
+                    $('#province_demo').append('<option value="' + element.provcode + '">' + element
                         .name + '</option>');
                 });
             });
@@ -928,5 +1010,7 @@ function setDropdownEventListeners() {
                 ]
             }]
         });
+
+
     </script>
 @endpush
