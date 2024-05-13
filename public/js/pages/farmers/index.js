@@ -52,7 +52,7 @@ $(document).ready(function() {
     // Apply the filter
     $('.filter').each(function () {
         var title = $(this).text();
-        $(this).html('<input type="text" placeholder="Search ' + title + '" name="filter_' + title.toLowerCase().replace(/\s/g, '_') + '" />');
+        if(title!='Registered via App') $(this).html('<input type="text" placeholder="Search ' + title + '" name="filter_' + title.toLowerCase().replace(/\s/g, '_') + '" />');
     });
 
     // Apply the filter
