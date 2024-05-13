@@ -848,7 +848,7 @@ function setDropdownEventListeners() {
                         var farmImagesHTML = '';
                         point.farm_image.split(',').forEach(function(image) {
                             console.log(image)
-                            farmImagesHTML += '<a href="' + image + '" target="_blank"><img src="' +
+                            farmImagesHTML += '<a href="' + image + '" target="_blank"><img src="https://digisaka.info/' +
                                 image +
                                 '" alt="Farm Image" width="150px" style="padding: 5px;"></a>';
                         });
@@ -862,7 +862,7 @@ function setDropdownEventListeners() {
                         var infoWindow = new google.maps.InfoWindow({
 
                             content: `
-                                <table style="100%">
+                                <table width="100%">
                                     <tr>
                                         <td class="fw-bold fs-5" style="width:20%;"> Farm ID:</td>
                                         <td class="fw-bold fs-5"> ${point.farm_id}</td>
@@ -901,11 +901,35 @@ function setDropdownEventListeners() {
                                     </tr>
                                 </table>
                                 <hr/>
-                                <div class="map_image" style="text-align: center;">
-                                ${farmImagesHTML}
-                                </div>
+                                <table width="100%">
+                                    <tr>
+                                        <td class="text-center fw-bold fs-5">Before</td>
+                                        <td class="text-center fw-bold fs-5">During</td>
+                                        <td class="text-center fw-bold fs-5">After</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">
+                                            <a href="https://dummyimage.com/200x300/000/fff&text=No+image+available" target="_blank">
+                                                <img src="https://dummyimage.com/200x300/000/fff&text=No+image+available" alt="Farm Image" width="150px" style="padding:5px;"></a>
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="https://dummyimage.com/200x300/000/fff&text=No+image+available" target="_blank">
+                                                <img src="https://dummyimage.com/200x300/000/fff&text=No+image+available" alt="Farm Image" width="150px" style="padding:5px;"></a>
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="https://dummyimage.com/200x300/000/fff&text=No+image+available" target="_blank">
+                                                <img src="https://dummyimage.com/200x300/000/fff&text=No+image+available" alt="Farm Image" width="150px" style="padding:5px;"></a>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
                             `,
-
+                            // <div class="map_image" style="text-align: center;">
+                                
+                            //     </div>
                             maxWidth: 800, // Set the maximum width
                             minHeight: 300, // Set the minimum height
                         });
