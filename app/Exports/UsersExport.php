@@ -29,6 +29,7 @@ class UsersExport implements FromCollection, WithHeadings
             'Status',
             'Via App',
             'Created At',
+            'Registered By',
         ];
     }
 }

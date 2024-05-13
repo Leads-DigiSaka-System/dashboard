@@ -49,11 +49,12 @@
                   <thead>
                   <tr>
                     <th>S.No</th>
-                    <th>Full Name</th>
-                    <th>Phone Number</th>
+                    <th class="filter">Full Name</th>
+                    <th class="filter">Phone Number</th>
                     <th>Role</th>
-                     <th>Status</th>
+                    <th class="filter">Status</th>
                      <th>Registered via App</th>
+                     <th>Registered date</th>
                   
                     <th data-orderable="false">Action</th>
                   </tr>
@@ -75,7 +76,7 @@
 
       @include('include.dataTableScripts')   
 
-      <script src="{{ asset('js/pages/farmers/index2.js?41233123') }}"></script>
+      <script src="{{ asset('js/pages/farmers/index2.js') }}"></script>
 
   @endpush
 

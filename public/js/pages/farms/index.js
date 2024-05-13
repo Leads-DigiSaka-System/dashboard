@@ -12,7 +12,9 @@ $(document).ready(function() {
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             { data: 'full_name', name: 'full_name' },
             { data: 'farm_id', name: 'farm_id' },
+            { data: 'role', name: 'role' },
             { data: 'area_location', name: 'area_location' },
+            { data: 'registered_date', name: 'registered_date' },
             
             { data: 'action', name: 'action', orderable: false, searchable: false},
         ],

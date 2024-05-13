@@ -52,9 +52,11 @@
                     <th>S.No</th>
                     <th class="filter">Full Name</th>
                     <th class="filter">Phone Number</th>
-                    <th class="filter">Role</th>
+                    <th  style="width:50px;">Role</th>
                     <th class="filter">Status</th>
-                    <th class="filter">Registered via App</th>
+                    <th>Registered via App</th>
+                    <th name="registered_by" class="filter">Registered by</th>
+                    <th>Registered date</th>
                   
                     <th data-orderable="false">Action</th>
                   </tr>

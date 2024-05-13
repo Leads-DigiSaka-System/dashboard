@@ -51,6 +51,12 @@ class UserController extends Controller
                     ->addColumn('employee_id', function ($user) {
                         return $user->employee_id ? $user->employee_id : 'N/A';
                     })
+                    ->addColumn('registered_by', function ($user) {
+                        return $user->referer ? $user->referer : 'N/A';
+                    })
+                    ->addColumn('registered_date', function ($user) {
+                        return $user->registered_date ? $user->registered_date : 'N/A';
+                    })
                     ->addColumn('action', function ($user) {
                             $btn = '';
                             $btn = '<a href="' . route('farmers.show', encrypt($user->id)) . '" title="View"><i class="fas fa-eye"></i></a>&nbsp;&nbsp;';
@@ -95,6 +101,7 @@ class UserController extends Controller
                     $item->getStatus(),
                     $item->via_app == 1 ? "YES" : 'NO',
                     $item->created_at,
+                    $item->referer,
                 ];
             });
 
@@ -136,6 +143,9 @@ class UserController extends Controller
                     })
                     ->addColumn('employee_id', function ($user) {
                         return $user->employee_id ? $user->employee_id : 'N/A';
+                    })
+                    ->addColumn('registered_date', function ($user) {
+                        return $user->registered_date ? $user->registered_date : 'N/A';
                     })
                     ->addColumn('action', function ($user) {
                             $btn = '';

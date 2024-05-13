@@ -1,20 +1,19 @@
 $(document).on('click', '.delete-datatable-record', function(e){
-    let url  = site_url + "/farmers/" + $(this).attr('data-id');
+    let url  = site_url + "/leads/" + $(this).attr('data-id');
     let tableId = 'farmersTable';
     deleteDataTableRecord(url, tableId);
 });
+
 $(document).ready(function() {
-    var dataTable = $('#farmersTable').DataTable({
-        processing: true,
-        serverSide: true,
+    $('#farmersTable').DataTable({
         ajax: {
-            url: site_url + "/farmers/",
+            url: site_url + "/leads/",
             data: function (d) {
                 d.filter_column1 = $('input[name=filter_full_name]').val(); // Full Name
                 d.filter_column2 = $('input[name=filter_phone_number]').val(); // Phone Number
                 d.filter_column3 = $('input[name=filter_role]').val(); // Role
                 d.filter_column4 = $('input[name=filter_status]').val(); // Status
-                d.filter_column5 = $('input[name=filter_registered_by]').val(); // Registered via App
+                d.filter_column5 = $('input[name=registered_by]').val(); // Registered via App
             }
         },
         columns: [
@@ -24,7 +23,6 @@ $(document).ready(function() {
             {data: 'role', name: 'role'},
             {data: 'status', name: 'status'},
             {data: 'via_app', name: 'via_app'},
-            {data: 'registered_by', name: 'registered_by'},
             {data: 'registered_date', name: 'registered_date'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
@@ -34,13 +32,7 @@ $(document).ready(function() {
             className: "btn-sm btn-success",
             titleAttr: 'Export in Excel',
             text: '<i class="fa fa-file-export"></i>',
-            action: function ( e, dt, button, config ) {
-                window.location = site_url + "/farmers/export";
-            },
             exportOptions: {
-                modifier: {
-                    page: 'all'
-                },
                 columns: ':not(:last-child)',
             },
         }],
@@ -54,16 +46,15 @@ $(document).ready(function() {
     // Apply the filter
     $('.filter').each(function () {
         var title = $(this).text();
-       $(this).html('<input type="text" placeholder="Search ' + title + '" name="filter_' + title.toLowerCase().replace(/\s/g, '_') + '" />');
+        $(this).html('<input type="text" placeholder="Search ' + title + '" name="filter_' + title.toLowerCase().replace(/\s/g, '_') + '" />');
     });
 
     // Apply the filter
     $('input[name^="filter_"]').on('keyup change', function () {
         var index = $(this).attr('name').split('_')[1];
-        dataTable.column(index).search(this.value).draw();
+        $('#farmersTable').DataTable().column(index).search(this.value).draw();
     });
 });
-
 
 
 $("#upload_file").change(function(event){

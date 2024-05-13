@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Farms extends Model
 {
@@ -93,6 +94,10 @@ class Farms extends Model
         }
 
         $query = $query->get();
+
+        foreach ($query as $result) {
+            $result->registered_date = $result->created_at ? Carbon::parse($result->created_at)->format('M d, Y g:iA') : 'N/A';
+        }
         return $query;
     }
 
