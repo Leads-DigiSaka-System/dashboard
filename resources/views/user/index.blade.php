@@ -50,11 +50,11 @@
                   <thead>
                   <tr>
                     <th>S.No</th>
-                    <th>Full Name</th>
-                    <th>Phone Number</th>
-                    <th>Role</th>
-                     <th>Status</th>
-                     <th>Registered via App</th>
+                    <th class="filter">Full Name</th>
+                    <th class="filter">Phone Number</th>
+                    <th class="filter">Role</th>
+                    <th class="filter">Status</th>
+                    <th class="filter">Registered via App</th>
                   
                     <th data-orderable="false">Action</th>
                   </tr>

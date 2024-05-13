@@ -155,8 +155,7 @@ class User extends Authenticatable
             if(!empty($search)){
                  $query->where(function ($query) use($request,$search){
                         $query->orWhere( 'full_name', 'LIKE', '%'. $search .'%')
-                            ->orWhere( 'email', 'LIKE', '%'. $search .'%')
-                            ->orWhere('created_at', 'LIKE', '%' . $search . '%');
+                            ->orWhere( 'email', 'LIKE', '%'. $search .'%');
                     });
 
                  if(empty(strcasecmp("Inactive",$search))){
@@ -177,11 +176,25 @@ class User extends Authenticatable
 
                  //        }
                        
-
+                
                  if($flag)
                     return $query->count();
             }
-
+            if (!empty($request['filter_column1'])) {
+                $query->where('full_name', 'like', '%' . $request['filter_column1'] . '%');
+            }
+    
+            if (!empty($request['filter_column2'])) {
+                $query->where('phone_number', 'like', '%' . $request['filter_column2'] . '%');
+            }
+    
+            if (!empty($request['filter_column3'])) {
+                $query->where('role', 'like', '%' . $request['filter_column3'] . '%');
+            }
+    
+            if (!empty($request['filter_column4'])) {
+                $query->where('status', $request['filter_column4'] === 'Active' ? 1 : 0);
+            }
             $start =  $request['start'];
             $length = $request['length'];
             $query->offset($start)->limit($length);

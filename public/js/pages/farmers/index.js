@@ -3,20 +3,28 @@ $(document).on('click', '.delete-datatable-record', function(e){
     let tableId = 'farmersTable';
     deleteDataTableRecord(url, tableId);
 });
-
 $(document).ready(function() {
-    $('#farmersTable').DataTable({
+    var dataTable = $('#farmersTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: site_url + "/farmers/",
+        ajax: {
+            url: site_url + "/farmers/",
+            data: function (d) {
+                d.filter_column1 = $('input[name=filter_full_name]').val(); // Full Name
+                d.filter_column2 = $('input[name=filter_phone_number]').val(); // Phone Number
+                d.filter_column3 = $('input[name=filter_role]').val(); // Role
+                d.filter_column4 = $('input[name=filter_status]').val(); // Status
+                d.filter_column5 = $('input[name=filter_via_app]').val(); // Registered via App
+            }
+        },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-            { data: 'full_name', name: 'full_name' },
-            { data: 'phone_number', name: 'phone_number' },
-            { data: 'role', name: 'role' },
-            { data: 'status', name: 'status' },
-            { data: 'via_app', name: 'via_app' },
-            { data: 'action', name: 'action', orderable: false, searchable: false},
+            {data: 'full_name', name: 'full_name'},
+            {data: 'phone_number', name: 'phone_number'},
+            {data: 'role', name: 'role'},
+            {data: 'status', name: 'status'},
+            {data: 'via_app', name: 'via_app'},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         dom: 'Bfrtip',
         buttons: [{
@@ -39,6 +47,18 @@ $(document).ready(function() {
 
     $(".buttons-excel").hover(function() {
         $(this).attr('title', 'Export all records');
+    });
+
+    // Apply the filter
+    $('.filter').each(function () {
+        var title = $(this).text();
+        $(this).html('<input type="text" placeholder="Search ' + title + '" name="filter_' + title.toLowerCase().replace(/\s/g, '_') + '" />');
+    });
+
+    // Apply the filter
+    $('input[name^="filter_"]').on('keyup change', function () {
+        var index = $(this).attr('name').split('_')[1];
+        dataTable.column(index).search(this.value).draw();
     });
 });
 
