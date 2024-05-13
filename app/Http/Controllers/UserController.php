@@ -8,6 +8,8 @@ use Validator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use App\Jobs\ProcessEmail;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UsersExport;
 use Carbon\Carbon;
 use App\Models\Farms;
 class UserController extends Controller
@@ -67,6 +69,37 @@ class UserController extends Controller
         }
 
         return view('user.index');
+    }
+
+    public function export(Request $request, User $user)
+    {
+            $users = $user->getAllUsersAll($request, false, 1);
+            $totalUsers = User::where('role', '!=', User::ROLE_ADMIN)
+                ->where('role', 2)
+                ->count();
+            $search = '';
+            $setFilteredRecords = $totalUsers;
+
+            if (!empty($search)) {
+                $setFilteredRecords = $user->getAllUsers($request, true, 1);
+                if (empty($setFilteredRecords))
+                    $totalUsers = 0;
+            }
+
+            $usersCollection = collect($users)->map(function ($item) {
+                return [
+                    '#',
+                    $item->full_name,
+                    $item->phone_number ? $item->phone_number : 'N/A',
+                    $item->role_title ? $item->role_title : 'N/A',
+                    $item->getStatus(),
+                    $item->via_app == 1 ? "YES" : 'NO',
+                    $item->created_at,
+                ];
+            });
+
+            return Excel::download(new UsersExport($usersCollection), 'users.xlsx');
+
     }
     public function leadsUser(Request $request, User $user)
     {

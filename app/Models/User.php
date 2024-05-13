@@ -192,7 +192,34 @@ class User extends Authenticatable
         $query = $query->get();
         return $query;
     }
+    public function getAllUsersAll($request = null,$flag = false, $farmer = 1)
+    {
+        
+            $columnNumber = 4;
+            $order = "desc";
+        $column = self::getColumnForSorting($columnNumber);
+        if($columnNumber == 0){
+            $order = "desc";
+        }
 
+        if(empty($column)){
+            $column = 'id';
+        }
+        $query = self::orderBy($column, $order)
+            ->where('role', '!=', self::ROLE_ADMIN)
+            ->leftJoin('roles', 'users.role', '=', 'roles.id')
+            ->select('users.*', 'roles.title AS role_title');
+
+            if($farmer==1){
+                $query->where('role', '=', 2);
+            }
+            else{
+                $query->where('role', '!=', 2);
+            }
+       
+        $query = $query->get();
+        return $query;
+    }
     public static function generateEmailVerificationOtp(){
         // $otp = 1234;
         // return $otp;
