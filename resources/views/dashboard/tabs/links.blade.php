@@ -3,18 +3,23 @@
         <div class="col-md-12 col-lg-6">
             <div class="card rounded-3 shadow-sm">
                 <div class="card-body">
-                    <iframe class="w-100" style="height:800px;" src="https://ee-brybaltazar.projects.earthengine.app/view/climate-visual-2" title="earthengine app"></iframe>
+                    <a href="https://ee-brybaltazar.projects.earthengine.app/view/climate-visual-2" target="_blank">
+                        <img class="w-100" style="height:800px;" src="{{ asset('images/Rice-Yield.png') }}" alt="Rice Yield">
+                    </a>
                 </div>
             </div>
         </div>
-
+        
         <div class="col-md-12 col-lg-6">
             <div class="card rounded-3 shadow-sm">
                 <div class="card-body">
-                    <iframe class="w-100" style="height:800px;" src="https://ee-brybaltazar.projects.earthengine.app/view/philippine-sugarcane-area" title="philippine sugarcane area app"></iframe>
+                    <a href="https://ee-brybaltazar.projects.earthengine.app/view/philippine-sugarcane-area" target="_blank">
+                        <img class="w-100" style="height:800px;" src="{{ asset('images/SugarCane.png') }}" alt="Sugar Cane">
+                    </a>
                 </div>
             </div>
         </div>
+        
         <div class="col-md-12 col-lg-6">
             <div class="card rounded-3 shadow-sm">
                 <div class="card-body">
