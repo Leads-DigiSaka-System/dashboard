@@ -25,7 +25,8 @@
 	</div>
    
     <div class="row">
-    	<form method="POST" action="{{ route('questionnaires.store') }}">
+    	<form method="POST" action="{{ route('questionnaires.update',$id) }}">
+			@method('PUT')
 			@csrf
 			<div class=" col-xl-8 col-lg-8 col-md-12">
 				
@@ -46,7 +47,7 @@
 											class="fs-5 fw-bold">
 												Title *
 											</label>
-											<input type="text" name="title" id="title" class="form-control {{ $errors->has('title') ? ' is-invalid' : '' }}">
+											<input type="text" name="title" id="title" class="form-control {{ $errors->has('title') ? ' is-invalid' : '' }}" value="{{ $questionnaire['title'] }}">
 											@if ($errors->has('title'))
 		                                        <span class="invalid-feedback" role="alert">
 		                                            <strong>{{ $errors->first('title') }}</strong>
@@ -65,7 +66,8 @@
 											class="fs-5 fw-bold ">
 												Description *
 											</label>
-											<textarea type="text" name="description" id="description" class="form-control {{ $errors->has('description') ? ' is-invalid' : '' }}"></textarea>
+											<textarea type="text" name="description" id="description" class="form-control {{ $errors->has('description') ? ' is-invalid' : '' }}"
+											>{{ $questionnaire['description'] }}</textarea>
 
 											@if ($errors->has('description'))
 		                                        <span class="invalid-feedback" role="alert">
@@ -77,34 +79,42 @@
 									</div>
 								</div>
 
-								<div class="row mb-1">
-									<div class="col-sm-12">
-										<div class="form-group">
-											<label 
-											for="questions" 
-											class="fs-5 fw-bold ">
-												Question *
-											</label>
-											<select 
-											class="form-select rounded-0 {{ $errors->has('questions') ? ' is-invalid' : '' }}" 
-											name="questions[]" 
-											id="questions" 
-											aria-label="Default select example">
-												<option selected disabled>Select Question</option>
-												@foreach($questions as $question)
-													<option value="{{ $question['id'] }}">{{ $question['field_name'] }}</option>
-												@endforeach
-											</select>
+								@foreach($questionnaire['question_data']->question_ids as  $question_id)
+									<div class="row mb-1 {{ !$loop->first ? 'additional_option' :'' }}">
+										<div class="col-sm-12">
+											<div class="form-group">
+												<label 
+												for="questions" 
+												class="fs-5 fw-bold ">
+													Question *
+												</label>
+												@if(!$loop->first)
+													<i class="float-end fas fa-times mr-2 remove_btn text-danger fs-3"></i>
+												@endif
+												<select 
+												class="form-select rounded-0 {{ $errors->has('questions') ? ' is-invalid' : '' }}" 
+												name="questions[]" 
+												id="questions" 
+												aria-label="Default select example">
+													<option selected disabled>Select Question</option>
+													@foreach($questions as $question)
+														<option value="{{ $question['id'] }}" {{ $question['id'] == $question_id ? 'selected' :'' }}>{{ $question['field_name'] }}</option>
+													@endforeach
+												</select>
 
-											@if ($errors->has('questions'))
-		                                        <span class="invalid-feedback" role="alert">
-		                                            <strong>{{ $errors->first('questions') }}</strong>
-		                                        </span>
-		                                    @endif
+												@if($loop->first)
+													@if ($errors->has('questions'))
+				                                        <span class="invalid-feedback" role="alert">
+				                                            <strong>{{ $errors->first('questions') }}</strong>
+				                                        </span>
+				                                    @endif
+				                                @endif
+											</div>
+										    
 										</div>
-									    
 									</div>
-								</div>
+								@endforeach
+								
 							
 						</div>
 						<!-- /.card-body -->

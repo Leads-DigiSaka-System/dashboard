@@ -15,8 +15,53 @@ class QuestionnaireController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, Questionnaire $questionnaire)
     {
+        if ($request->ajax()) {
+            $questionnaires = $questionnaire->getAllQuestionnaires($request);
+            $search = $request['search']['value'];
+
+            $totalQuestionnaires = Questionnaire::count();
+            $search = $request['search']['value'];
+            $setFilteredRecords = $totalQuestionnaires;
+
+            if (! empty($search)) {
+                $setFilteredRecords = $questionnaire->getAllQuestions($request,true);
+                if(empty($setFilteredRecords))
+                    $totalQuestionnaires = 0;
+            }
+
+            return datatables()
+                    ->of($questionnaires)
+                    ->addIndexColumn()
+                   
+                    ->addColumn('created_at', function ($questionnaire) {
+                        return $questionnaire->created_at;
+                    })
+                    ->addColumn('title', function ($questionnaire) {
+                        return $questionnaire->title;
+                    })
+                    ->addColumn('description', function ($questionnaire) {
+                        return $questionnaire->description;
+                    })
+                    ->addColumn('action', function ($questionnaire) {
+                            $btn = '';
+                            $btn = '<a href="' . route('questionnaires.edit', encrypt($questionnaire->id)) . '" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;';
+                            $btn .= '<a href="javascript:void(0);" delete_form="delete_customer_form"  data-id="' . encrypt($questionnaire->id) . '" class="delete-datatable-record text-danger delete-users-record" title="Delete"><i class="fas fa-trash"></i></a>';
+                        return $btn;
+                    })
+                    ->addColumn('status', function ($questionnaire) {
+                        return $questionnaire->status == 1 ? 'Active' : 'Not Active';
+                    })
+                    ->rawColumns([
+                        'action'        
+                    ])
+                    ->setTotalRecords($totalQuestionnaires)
+                    ->setFilteredRecords($setFilteredRecords)
+                    ->skipPaging()
+                    ->make(true);
+        }
+
         return view('questionnaires.index');
     }
 
@@ -33,7 +78,7 @@ class QuestionnaireController extends Controller
 
         foreach($questions as $question) {
             $data[] = array(
-                'id' => encrypt($question->id),
+                'id' => $question->id,
                 'field_name' => $question->field_name,
                 'required_field' => $question->required_field,
                 'field_type' => $question->field_type,
@@ -61,7 +106,7 @@ class QuestionnaireController extends Controller
         $questions = [];
 
         foreach($request->questions as $question) {
-            array_push($questions, decrypt($question));
+            array_push($questions,$question);
         }
 
         DB::beginTransaction();
@@ -101,7 +146,32 @@ class QuestionnaireController extends Controller
      */
     public function edit($id)
     {
-        //
+        $decrypt_id = decrypt($id);
+
+        $questionnaire = Questionnaire::find($decrypt_id);
+
+        $data = [
+            'title' => $questionnaire->title,
+            'description' => $questionnaire->description,
+            'question_data' => json_decode($questionnaire->question_data),
+            'status' => $questionnaire->status
+        ];
+
+        $query_questions = Question::where('status',1)->get();
+
+        $questions = array();
+
+        foreach($query_questions as $question) {
+            $questions[] = array(
+                'id' => $question->id,
+                'field_name' => $question->field_name,
+                'required_field' => $question->required_field,
+                'field_type' => $question->field_type,
+                'options' => json_decode($question->sub_field_type),
+            );
+        }
+
+        return view('questionnaires.edit', ['questionnaire' => $data,'questions' => $questions,'id' => $id]);
     }
 
     /**
@@ -113,7 +183,36 @@ class QuestionnaireController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'questions' => 'required|array'
+        ]);
+
+        $questions = [];
+        $decrypt_id = decrypt($id);
+        $questionnaire = Questionnaire::find($decrypt_id);
+
+        foreach($request->questions as $question) {
+            array_push($questions,$question);
+        }
+
+        DB::beginTransaction();
+        try{
+
+            $questionnaire->title = $request->title;
+            $questionnaire->slug = Str::slug($request->title,'-');
+            $questionnaire->description = $request->description;
+            $questionnaire->question_data = json_encode(['question_ids' => $questions]);
+            $questionnaire->status = 1;
+            $questionnaire->save();
+
+            DB::commit();
+            return redirect()->route("questionnaires.index")->with('success', 'Questionnaire updated successfully.');
+        } catch (Exception $e) {
+            DB::rollback();
+            return redirect()->route("questionnaires.index")->with('error', 'Unable to update questionnaire. Please try again later.');
+        }
     }
 
     /**
@@ -124,6 +223,18 @@ class QuestionnaireController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
+        $decrypt_id = decrypt($id);
+        $questionnaire = Questionnaire::find($decrypt_id);
+
+
+        if (empty($questionnaire)) {
+            return returnNotFoundResponse('This question does not exist');
+        }
+
+        $hasDeleted = $questionnaire->delete();
+        if ($hasDeleted) {
+            return returnSuccessResponse('Questionnaire deleted successfully');
+        }
+
+        return returnErrorResponse('Something went wrong. Please try again later');    }
 }
