@@ -56,6 +56,7 @@
                     <th>Farm Id</th>
                     <th>Role</th>
                      <th>Address</th>
+                     <th>Registered date</th>
                   
                     <th data-orderable="false">Action</th>
                   </tr>

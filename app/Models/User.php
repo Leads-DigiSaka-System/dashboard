@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
-
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -118,79 +118,114 @@ class User extends Authenticatable
         return isset($list[$value])?$list[$value]:"";
     }
 
-    public function getAllUsers($request = null,$flag = false, $farmer = 1)
+    public function getAllUsers($request = null, $flag = false, $farmer = 1)
     {
-        if(isset($request['order'])){
+        if (isset($request['order'])) {
             $columnNumber = $request['order'][0]['column'];
             $order = $request['order'][0]['dir'];
-        }
-        else {
+        } else {
             $columnNumber = 4;
             $order = "desc";
         }
 
         $column = self::getColumnForSorting($columnNumber);
-        if($columnNumber == 0){
+        if ($columnNumber == 0) {
             $order = "desc";
         }
 
-        if(empty($column)){
+        if (empty($column)) {
             $column = 'id';
         }
+
         $query = self::orderBy($column, $order)
-            ->where('role', '!=', self::ROLE_ADMIN)
+            ->where('users.role', '!=', self::ROLE_ADMIN)
             ->leftJoin('roles', 'users.role', '=', 'roles.id')
-            ->select('users.*', 'roles.title AS role_title');
+            ->leftJoin('users AS ref', 'users.referer', '=', 'ref.id')
+            ->select('users.*', 'roles.title AS role_title', 'ref.full_name AS referer_name');
 
-            if($farmer==1){
-                $query->where('role', '=', 2);
-            }
-            else{
-                $query->where('role', '!=', 2);
-            }
-        if(!empty($request)){
+        if ($farmer == 1) {
+            $query->where('users.role', '=', 2);
+        } else {
+            $query->where('users.role', '!=', 2);
+        }
 
+        if (!empty($request)) {
             $search = $request['search']['value'];
 
-            if(!empty($search)){
-                 $query->where(function ($query) use($request,$search){
-                        $query->orWhere( 'full_name', 'LIKE', '%'. $search .'%')
-                            ->orWhere( 'email', 'LIKE', '%'. $search .'%')
-                            ->orWhere('created_at', 'LIKE', '%' . $search . '%');
-                    });
-
-                 if(empty(strcasecmp("Inactive",$search))){
-                    $query->orWhere( 'status',  0);
-
-                 }
-                if(empty(strcasecmp("Active",$search))){
-                    $query->orWhere( 'status',  1);
-
-                 }
-
-                  // if(is_int(stripos("Inactive", $search))){
-                  //           $query->orWhere( 'status',  0);
-
-                  //       }
-                 // if(is_int(stripos("Active", $search))){
-                 //            $query->orWhere( 'status',  1);
-
-                 //        }
-                       
-
-                 if($flag)
-                    return $query->count();
+            if (!empty($search)) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('users.full_name', 'like', '%' . $search . '%')
+                        ->orWhere('users.email', 'like', '%' . $search . '%')
+                        ->orWhere('users.created_at', 'like', '%' . $search . '%')
+                        ->orWhere('users.status', $search === 'Active' ? 1 : 0);
+                });
             }
 
             $start =  $request['start'];
             $length = $request['length'];
             $query->offset($start)->limit($length);
-
-
+        }
+        if (!empty($request['filter_column1'])) {
+            $query->where('users.full_name', 'like', '%' . $request['filter_column1'] . '%');
         }
 
-        $query = $query->get();
-        return $query;
+        if (!empty($request['filter_column2'])) {
+            $query->where('users.phone_number', 'like', '%' . $request['filter_column2'] . '%');
+        }
+
+        if (!empty($request['filter_column3'])) {
+            $query->where('users.role', 'like', '%' . $request['filter_column3'] . '%');
+        }
+
+        if (!empty($request['filter_column4'])) {
+            $query->where('users.status', $request['filter_column4'] === 'Active' ? 1 : 0);
+        }
+        if (!empty($request['filter_column5'])) {
+            $query->where('ref.full_name', 'like', '%' . $request['filter_column5'] . '%');
+        }
+        $results = $query->get();
+
+        // Convert referer_id to referer_name
+        foreach ($results as $result) {
+            $result->referer = $result->referer_name ?? '';
+            $result->registered_date = $result->created_at ? Carbon::parse($result->created_at)->format('M d, Y g:iA') : 'N/A';
+        }
+
+        return $results;
+    }
+
+    public function getAllUsersAll($request = null, $flag = false, $farmer = 1)
+    {
+        $columnNumber = 4;
+        $order = "desc";
+        $column = self::getColumnForSorting($columnNumber);
+        if ($columnNumber == 0) {
+            $order = "desc";
+        }
+
+        if (empty($column)) {
+            $column = 'id';
+        }
+
+        $query = self::orderBy($column, $order)
+            ->where('users.role', '!=', self::ROLE_ADMIN)
+            ->leftJoin('roles', 'users.role', '=', 'roles.id')
+            ->leftJoin('users AS ref', 'users.referer', '=', 'ref.id')
+            ->select('users.*', 'roles.title AS role_title', 'ref.full_name AS referer_name');
+
+        if ($farmer == 1) {
+            $query->where('users.role', '=', 2);
+        } else {
+            $query->where('users.role', '!=', 2);
+        }
+
+        $results = $query->get();
+
+        foreach ($results as $result) {
+            $result->referer = $result->referer_name ?? '';
+            $result->registered_date = $result->created_at ? Carbon::parse($result->created_at)->format('M d, Y g:iA') : 'N/A';
+        }
+        return $results;
     }
 
     public static function generateEmailVerificationOtp(){

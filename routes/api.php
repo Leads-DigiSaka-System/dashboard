@@ -86,6 +86,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::post('/updateProfileAdmin', 'AccountController@updateProfileAdmin')->name('updateProfileAdmin');
 			Route::post('/update_profile_pic','AccountController@updateProfilePic')->name('updateProfilePic');
 			Route::get('/notification', 'AccountController@notification')->name('notification');
+			Route::get('/home', 'HomeController@index')->name('home');
 			Route::post('/contactUs', 'HomeController@contactUs')->name('contactUs');
 			Route::get('/farm-list', 'FarmController@index')->name('farm_list');
 			Route::post('/farm-store', 'FarmController@store')->name('farm_store');
@@ -93,7 +94,6 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::get('/farm-detail', 'FarmController@detail')->name('farm_detail');
 			Route::post('/farm-update', 'FarmController@update')->name('farm_update');
 			Route::delete('/farm-delete', 'FarmController@delete')->name('farm_delete');
-			Route::get('/home', 'HomeController@index')->name('home');
 			Route::get('/get-weather', 'HomeController@getWeather')->name('getWeather');
 			Route::post('/survey-store', 'SurveyController@store')->name('survey_store');
 			Route::get('/get-farmer-info/{farmerInfo}', 'AccountController@getFarmerInfo')->name('getFarmerInfo');

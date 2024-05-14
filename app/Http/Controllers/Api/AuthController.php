@@ -234,15 +234,14 @@ class AuthController extends Controller
         if($userObj->status == User::STATUS_INACTIVE)
             return returnErrorResponse("Your account is inactive please contact with admin.");
 
-        if ( ! Hash::check($inputArr['password'], $userObj->password, [])) {
-            // return if password
-            $response = [
-               'statusCode' => 403,
-               'message' => "We are sorry but your login credentials do not match!"
-            ];
-            return $response;  
-            // return $this->notFoundResponse('Invalid credentials');
-        }
+            if (!Hash::check($inputArr['password'], $userObj->password, [])) {
+                // return if password
+                return response()->json([
+                    'statusCode' => 401,
+                    'message' => "We are sorry but your login credentials do not match!"
+                ], 401);
+            }
+            
         
         //$userObj->device_type = $inputArr['device_type'];
         $userObj->fcm_token = $inputArr['fcm_token'];
