@@ -20,24 +20,35 @@
     <div class="row">
         <!-- Button trigger modal -->
         <ul class="nav nav-tabs" id="myTabs" style="background: #fff; margin-top: -1rem;">
-            <li class="nav-item">
-                <a class="nav-link active" id="tab5" data-toggle="tab" href="#content5">Home</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Home</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content5">Summary</a></li>
+                  <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content1">Data and Maps</a></li>
+                </ul>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="tab5" data-toggle="tab" href="#content6">Links</a>
+                <a class="nav-link navs" id="tab5" data-toggle="tab" href="#content6">Links</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" id="tab1" data-toggle="tab" href="#content1">Summary</a>
+            {{-- <li class="nav-item">
+                <a class="nav-link navs" id="tab1" data-toggle="tab" href="#content1">Summary</a>
+            </li> --}}
+            <li class="nav-item dropdown">
+                <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Maps</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content4">Demo</a></li>
+                  <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content7">Products</a></li>
+                </ul>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" id="tab4" data-toggle="tab" href="#content4">Maps</a>
-            </li>
+            {{-- <li class="nav-item">
+                <a class="nav-link navs" id="tab4" data-toggle="tab" href="#content4">Maps</a>
+            </li> --}}
 
             <li class="nav-item">
-                <a class="nav-link" id="tab2" data-toggle="tab" href="#content2">Survey Results</a>
+                <a class="nav-link navs" id="tab2" data-toggle="tab" href="#content2">Survey Results</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="tab3" data-toggle="tab" href="#content3">Rice Derby</a>
+                <a class="nav-link navs" id="tab3" data-toggle="tab" href="#content3">Rice Derby</a>
             </li>
         </ul>
     </div>
@@ -64,7 +75,7 @@
                             </a>
                             <hr>
                             <div class="text-center">
-                                <p>1pan class="font-weight-bold" style="color: #28c76f;">{{ $farmerPercent . '%' }}</span>
+                                <span class="font-weight-bold" style="color: #28c76f;">{{ $farmerPercent . '%' }}</span>
                                     than
                                     last
                                     week</p>
@@ -469,21 +480,8 @@
         </div>
 
         <div class="tab-pane fade" id="content4" style="padding-right: 10px;">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="card mb-1 shadow-sm rounded-3">
-                        <div class="card-body">
-                            <select class="form-select" id="map_selection">
-                                <option id="demo_map" value="demo_map">Demo</option>
-                                <option id="product_map" value="product_map">Product</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
 
-            <div class="row" id="demo_map_div">
+            <div class="row">
                 <div class="col-md-8">
                     <div class="card rounded-3 shadow-sm">
                         <div class="card-body">
@@ -578,7 +576,21 @@
                         </div>
                     </div>
                 </div>
-                
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="content7" style="padding-right: 10px;">
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card rounded-3 shadow-sm">
+                        <div class="card-body">
+                            <h4 class="mb-1">Product Locations</h4>
+                            @include('dashboard.product-map-viewer')
+                            <div id="legend"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -603,6 +615,14 @@
         fetchProvinceFilters();
         setDropdownEventListeners();
     };
+
+$(document).on('click','.navs', function() {
+    const elems = document.querySelectorAll('.navs');
+
+    elems.forEach((item) => item.classList.remove("active"));
+
+    $(this).addClass('active')
+})
 
 function setDropdownEventListeners() {
     document.getElementById('region').addEventListener('change', function () {
@@ -785,17 +805,6 @@ function setDropdownEventListeners() {
             });
         });
 
-        $('#map_selection').on('change', function() {
-            const value = $(this).val();
-            console.log(value)
-            if(value == 'demo_map') {
-                $('#demo_map_div').removeClass('d-none').addClass('d-flex')
-                $('#product_map_div').removeClass('d-flex').addClass('d-none')
-            } else {
-                $('#product_map_div').removeClass('d-none').addClass('d-flex')
-                $('#demo_map_div').removeClass('d-flex').addClass('d-none')
-            }
-        })
 
         function loadDemoMap(product, region, province) {
             // Initialize Google Map
