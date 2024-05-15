@@ -44,6 +44,9 @@ class QuestionnaireController extends Controller
                     ->addColumn('description', function ($questionnaire) {
                         return $questionnaire->description;
                     })
+                    ->addColumn('link', function ($questionnaire) {
+                        return route('getQuestionnaireById', encrypt($questionnaire->id));
+                    })
                     ->addColumn('action', function ($questionnaire) {
                             $btn = '';
                             $btn = '<a href="' . route('questionnaires.edit', encrypt($questionnaire->id)) . '" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;';
@@ -236,5 +239,6 @@ class QuestionnaireController extends Controller
             return returnSuccessResponse('Questionnaire deleted successfully');
         }
 
-        return returnErrorResponse('Something went wrong. Please try again later');    }
+        return returnErrorResponse('Something went wrong. Please try again later');    
+    }
 }

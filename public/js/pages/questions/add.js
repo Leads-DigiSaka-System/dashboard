@@ -75,7 +75,10 @@ field_type.addEventListener('change', function () {
 		      id="sub_field_type">
 		    </div>
 			`
-	} else {
+
+		$('#append_sub').parent().removeClass('d-none')
+		$('#append_sub').html(html)
+	} else if(value == 'Textbox') {
 		sub_field_type_label.textContent = 'Sub-Field Type *'
 
 		add_option_btn.classList.add('d-none')
@@ -93,10 +96,15 @@ field_type.addEventListener('change', function () {
 			`
 
 		removeElementsByClass('additional_option')
+
+		$('#append_sub').parent().removeClass('d-none')
+		$('#append_sub').html(html)
+	} else {
+		$('#append_sub').parent().addClass('d-none')
+		$('#append_sub').html("")
 	}
 	
-	$('#append_sub').parent().removeClass('d-none')
-	$('#append_sub').html(html)
+	
 })
 
 add_option_btn.addEventListener('click',addOptions)

@@ -6,6 +6,7 @@ $(document).ready(function() {
             { data: 'title', name: 'title' },
             { data: 'description', name: 'description' },
             { data: 'created_at', name: 'created_at'},
+            { data: 'link', name: 'link', className:'text-break copy-link'},
             { data: 'status', name: 'status'},
             { data: 'action', name: 'action', orderable: false, searchable: false},
         ],
@@ -23,6 +24,16 @@ $(document).ready(function() {
         ...defaultDatatableSettings
     });
 });
+
+$(document).on("click",'.copy-link', function () {
+    let text = document.createElement('input');
+    text.setAttribute('type', 'text');
+    text.value = this.textContent;
+    document.body.appendChild(text);
+    text.select()
+    document.execCommand('copy')
+    document.body.removeChild(text);
+})
 
 $(document).on('click', '.delete-datatable-record', function(e){
     let url  = site_url + "/questionnaires/" + $(this).attr('data-id');

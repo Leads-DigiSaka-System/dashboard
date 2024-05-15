@@ -103,7 +103,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 		});
     });
 
-
+	Route::get('/questionnaire/{id}','SurveyController@getQuestionnaire')->name('getQuestionnaireById');
 });
 /*
 Route::prefix('v2')->namespace('Api2')->group(function () {

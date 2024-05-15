@@ -46,7 +46,8 @@ class QuestionController extends Controller
                         $sub_field_type = json_decode($question->sub_field_type);
                         $choices = $sub_field_type->choices;
 
-                        $arr = implode(", ", $choices);
+                        
+                        $arr = !empty($choices) ? implode(", ", $choices) : $question->field_type;
                         return $arr;
                     })
                     ->addColumn('action', function ($question) {
@@ -88,19 +89,27 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'field_name' => 'required|string',
-            'field_type' => 'required|string',
-            'sub_field_type' => 'required|array'
-        ]);
+        if($request->field_type == 'Date Picker' || $request->field_type == 'Image') {
+            $validated = $request->validate([
+                'field_name' => 'required|string',
+                'field_type' => 'required|string'
+            ]);
 
+        } else {
+            $validated = $request->validate([
+                'field_name' => 'required|string',
+                'field_type' => 'required|string',
+                'sub_field_type' => 'required|array'
+            ]);
+
+        }
         DB::beginTransaction();
         try{
             Question::create([
                 'field_name' => $request->field_name,
                 'field_type' => $request->field_type,
                 'required_field' => $request->required_field == 'on' ? 1 : 0,
-                'sub_field_type' => json_encode(['choices' => $request->sub_field_type]),
+                'sub_field_type' => json_encode(['choices' => empty($request->sub_field_type) ?"" : $request->sub_field_type]),
                 'status' => 1
             ]);
 

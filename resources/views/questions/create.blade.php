@@ -103,6 +103,7 @@
 										<option value="Radio Button">Radio Button</option>
 										<option value="Date Picker">Date Picker</option>
 										<option value="Ratings">Ratings</option>
+										<option value="Image">Image</option>
 									</select>
 								</div>
 								@if ($errors->has('field_type'))
