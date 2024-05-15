@@ -565,18 +565,6 @@
                     </div> --}}
                 </div>
             </div>
-
-            <div class="row d-none" id="product_map_div">
-                <div class="col-md-8">
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="card-body">
-                            <h4 class="mb-1">Product Locations</h4>
-                            @include('dashboard.product-map-viewer')
-                            <div id="legend"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="tab-pane fade" id="content7" style="padding-right: 10px;">

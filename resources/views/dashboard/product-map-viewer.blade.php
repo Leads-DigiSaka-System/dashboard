@@ -7,10 +7,10 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            initMap2();
+            initMapProduct();
         });
 
-        function initMap2() {
+        function initMapProduct() {
             const map = new google.maps.Map(document.getElementById('map_with_product'), {
                 center: {
                     lat: 12.8797,
