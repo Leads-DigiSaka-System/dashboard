@@ -102,6 +102,7 @@
                             '<tr><td>Farm ID:</td><td>{{ $value->farm_id }}</td></tr>' +
                             '<tr><td>Area:</td><td>' + formatNumber(polygonAreaHa) + ' ha</td></tr>' +
                             '<tr><td>Farmer:</td><td>{{ $farmerDetails->full_name }}</td></tr>' +
+                            '<tr><td>Date created:</td><td>{{ date('M d, Y', strtotime($farmerDetails->created_at)) }}</td></tr>' +
                             '</table>' +
                             '<hr />' +
                             '<div class="map_image">' + myVar{{ $key }} + '</div>',
