@@ -36,7 +36,7 @@
             <li class="nav-item dropdown">
                 <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Maps</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content4">Demo</a></li>
+                  <li><a class="dropdown-item navs" id="tab4" data-bs-toggle="tab" href="#content4">Demo</a></li>
                   <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content7">Products</a></li>
                 </ul>
             </li>
