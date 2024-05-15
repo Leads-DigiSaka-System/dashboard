@@ -1,4 +1,4 @@
-<div class="tab-pane fade show active" id="content5" style="padding-right: 10px;">
+<div class="tab-pane fade " id="content5" style="padding-right: 10px;">
             <div class="row">
                 <div class="col-md-8">
                     

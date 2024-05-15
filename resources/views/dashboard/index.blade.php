@@ -6,7 +6,7 @@
 @section('header_css')
     <style>
         .gm-style .gm-style-iw-c {
-            max-height:500px !important;
+            max-height: 500px !important;
         }
     </style>
 @endsection
@@ -21,12 +21,16 @@
         <!-- Button trigger modal -->
         <ul class="nav nav-tabs" id="myTabs" style="background: #fff; margin-top: -1rem;">
             <li class="nav-item dropdown">
-                <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Home</a>
+                <a class="nav-link navs dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                    aria-expanded="false">
+                    Home
+                </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content5">Summary</a></li>
-                  <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content1">Data and Maps</a></li>
+                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content1">Data and Maps</a></li>
+                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content5">Summary</a></li>
                 </ul>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link navs" id="tab5" data-toggle="tab" href="#content6">Links</a>
             </li>
@@ -34,12 +38,16 @@
                 <a class="nav-link navs" id="tab1" data-toggle="tab" href="#content1">Summary</a>
             </li> --}}
             <li class="nav-item dropdown">
-                <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Maps</a>
+                <a class="nav-link navs dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                    aria-expanded="false">
+                    Maps
+                </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item navs" id="tab4" data-bs-toggle="tab" href="#content4">Demo</a></li>
-                  <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content7">Products</a></li>
+                    <li><a class="dropdown-item navs" id="tab4" data-bs-toggle="tab" href="#content4">Demo</a></li>
+                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content7">Products</a></li>
                 </ul>
             </li>
+
             {{-- <li class="nav-item">
                 <a class="nav-link navs" id="tab4" data-toggle="tab" href="#content4">Maps</a>
             </li> --}}
@@ -55,7 +63,7 @@
     <div class="tab-content">
         @include('dashboard.tabs.home')
         @include('dashboard.tabs.links')
-        <div class="tab-pane fade" id="content1">
+        <div class="tab-pane fade active show" id="content1">
             <div class="container-fluid px-6 pt-6">
                 <div class="row row-cols-1 row-cols-md-3">
                     <div class="col h-auto">
@@ -76,9 +84,9 @@
                             <hr>
                             <div class="text-center">
                                 <span class="font-weight-bold" style="color: #28c76f;">{{ $farmerPercent . '%' }}</span>
-                                    than
-                                    last
-                                    week</p>
+                                than
+                                last
+                                week</p>
                             </div>
                         </div>
                     </div>
@@ -122,7 +130,8 @@
                             </a>
                             <hr>
                             <div class="text-center">
-                                <p><span class="font-weight-bold" style="color: #28c76f;">{{ $surveyPercent . '%' }}</span>
+                                <p><span class="font-weight-bold"
+                                        style="color: #28c76f;">{{ $surveyPercent . '%' }}</span>
                                     than
                                     last
                                     week</p>
@@ -135,61 +144,6 @@
                         @if (!empty($allFarms))
                             @include('dashboard.map-viewer')
                         @endif
-                        
-                        @if(!empty($randomFarms))
-                            <div class="card mb-1">
-                                <div class="card-body">
-                                    <h3 class="text-center">Featured Farms</h3>
-                                </div>
-                            </div>
-                            @foreach($randomFarms as $rand)
-                                <div class="card mb-1">
-                                    <div class="card-body py-0">
-                                        <div class="row">
-                                            <div class="col-md-5 d-flex justify-content-center align-items-center">
-                                                <div class="row row-cols-1 ">
-                                                    <div class="col text-center h2">
-                                                        Farm Unique ID
-                                                    </div>
-                                                    <div class="col text-center h1 text-danger">
-                                                        {{ $rand->farm_id }}
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-                                            <div class="col-md-5 d-flex justify-content-center align-items-center">
-                                                @foreach(explode(',', $rand->farm_image) as $image)
-                                                    <a href="{{ asset('') }}{{ $image }}" target="_blank"><img src="{{ asset('') }}{{ $image }}" alt="Farm Image" width="150px" height="150px" style="padding: 5px;"></a>
-                                                @endforeach
-                                            </div>
-                                            
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                            @endforeach
-                            
-                        @endif
-                        
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card rounded-3 shadow-sm">
-                            <div class="p-2">
-                                <h4 class="">Top Performing Technician</h4>
-                                <div class="d-flex flex-row w-100 pt-2 justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <div class="h-3 w-3 bg-success rounded-circle" style="padding:5px;"></div>
-                                        <div style="width: 5px;"></div>
-                                        <span>{{ $top_performer->first_name.' '.$top_performer->last_name; }}</span>
-                                    </div>
-                                    <div class="align-items-left">
-                                        <span class="font-weight-bold">{{ $top_performer->user_count }}</span>
-                                        <span class="font-weight-light">farmers</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="card rounded-3 shadow-sm">
                             <div class="p-2">
                                 <h4 class="">Latest Farmers</h4>
@@ -223,29 +177,100 @@
                             </div>
                         </div>
 
+
+                        @if (!empty($randomFarms))
+                            <div class="card mb-1">
+                                <div class="card-body">
+                                    <h3 class="text-center">Featured Farms</h3>
+                                </div>
+                            </div>
+                            @foreach ($randomFarms as $rand)
+                                <div class="card mb-1">
+                                    <div class="card-body py-0">
+                                        <div class="row">
+                                            <div class="col-md-5 d-flex justify-content-center align-items-center">
+                                                <div class="row row-cols-1 ">
+                                                    <div class="col text-center h2">
+                                                        Farm Unique ID
+                                                    </div>
+                                                    <div class="col text-center h1 text-danger">
+                                                        {{ $rand->farm_id }}
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-5 d-flex justify-content-center align-items-center">
+                                                @foreach (explode(',', $rand->farm_image) as $image)
+                                                    <a href="{{ asset('') }}{{ $image }}"
+                                                        target="_blank"><img
+                                                            src="{{ asset('') }}{{ $image }}"
+                                                            alt="Farm Image" width="150px" height="150px"
+                                                            style="padding: 5px;"></a>
+                                                @endforeach
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+
+                    </div>
+                    <div class="col-md-6 col-lg-4">
                         <div class="card rounded-3 shadow-sm">
                             <div class="p-2">
-                                <h4 class="">Latest Farms</h4>
-                                <div class="table-wrap table-responsive">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <th>{{ __('ID') }}</th>
-                                            <th>{{ __('Farmer Name') }}</th>
-                                            <th>{{ __('Farm ID') }}</th>
-                                        </thead>
+                                <h4 class="">Top Performing Technician</h4>
+                                <div class="d-flex flex-row w-100 pt-2 justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <div class="h-3 w-3 bg-success rounded-circle" style="padding:5px;"></div>
+                                        <div style="width: 5px;"></div>
+                                        <span>{{ $top_performer->first_name . ' ' . $top_performer->last_name }}</span>
+                                    </div>
+                                    <div class="align-items-left">
+                                        <span class="font-weight-bold">{{ $top_performer->user_count }}</span>
+                                        <span class="font-weight-light">farmers</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="card rounded-3 shadow-sm">
+                                    <div class="card-body">
+                                        <a class="twitter-timeline" data-lang="en" data-height="800"
+                                            href="https://twitter.com/dost_pagasa?ref_src=twsrc%5Etfw">Tweets by
+                                            dost_pagasa</a>
+                                        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12">
+                            <div class="card rounded-3 shadow-sm">
+                                <div class="p-2">
+                                    <h4 class="">Latest Farms</h4>
+                                    <div class="table-wrap table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <th>{{ __('ID') }}</th>
+                                                <th>{{ __('Farmer Name') }}</th>
+                                                <th>{{ __('Farm ID') }}</th>
+                                            </thead>
 
-                                        <tbody>
-                                            @if ($latest_farms)
-                                                @foreach ($latest_farms as $farm)
-                                                    <tr>
-                                                        <td>{{ $loop->index + 1 }}</td>
-                                                        <td>{{ $farm->farmerDetails->full_name ?? 'N/A' }}</a></td>
-                                                        <td>{{ $farm->farm_id }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            @endif
-                                        </tbody>
-                                    </table>
+                                            <tbody>
+                                                @if ($latest_farms)
+                                                    @foreach ($latest_farms as $farm)
+                                                        <tr>
+                                                            <td>{{ $loop->index + 1 }}</td>
+                                                            <td>{{ $farm->farmerDetails->full_name ?? 'N/A' }}</a></td>
+                                                            <td>{{ $farm->farm_id }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -582,7 +607,7 @@
             </div>
         </div>
     </div>
-    
+
 @endsection
 
 @section('footer_scripts')
@@ -598,179 +623,193 @@
 @push('scripts')
     @include('dashboard.chartScript')
     <script>
-  window.onload = function () {
-        // fetchDistinctFilters();
-        fetchProvinceFilters();
-        setDropdownEventListeners();
-    };
+        window.onload = function() {
+            // fetchDistinctFilters();
+            fetchProvinceFilters();
+            setDropdownEventListeners();
+        };
 
-$(document).on('click','.navs', function() {
-    const elems = document.querySelectorAll('.navs');
+        $(document).on('click', '.navs', function() {
+            const elems = document.querySelectorAll('.navs');
 
-    elems.forEach((item) => item.classList.remove("active"));
+            elems.forEach((item) => item.classList.remove("active"));
 
-    $(this).addClass('active')
-})
-
-function setDropdownEventListeners() {
-    document.getElementById('region').addEventListener('change', function () {
-        fetchProvinceFilters('region');
-    });
-}
-
-    function fetchProvinceFilters(selectedFilter) {
-        var region = document.getElementById('region').value;
-        var province = document.getElementById('province').value;
-
-        $.get('/dashboard/getDistinctFilters', { region: region, province: province })
-        .done(function (data) {
-            updateFilterOptions(data, selectedFilter);
-            applyFilters();
+            $(this).addClass('active')
         })
-        .fail(function (error) {
-            console.error('Error fetching distinct filters:', error);
-        });
-    }
 
-    function updateFilterOptions(filters, selectedFilter) {
-        var provinceDropdown = document.getElementById('province');
-        updateDropdownOptions(provinceDropdown, filters.provinces);
-    }
-
-    function updateDropdownOptions(dropdown, options) {
-        var selectedValue = dropdown.value;
-
-        dropdown.innerHTML = '<option value="">Select ' + dropdown.id.charAt(0).toUpperCase() + dropdown.id.slice(1) + '</option>';
-
-        options.forEach(function (option) {
-            var optionElement = document.createElement('option');
-            optionElement.value = option;
-            optionElement.text = option;
-            dropdown.add(optionElement);
-        });
-
-        dropdown.value = selectedValue;
-    }
-
-    function applyFilters() {
-        var region = document.getElementById('region').value;
-        var province = document.getElementById('province').value;
-
-        axios.get('/dashboard/getAreaPlantedPerVariety', { params: { region, province } })
-            .then(function (response) {
-                updateAreaPlantedChart(response.data);
-            })
-            .catch(function (error) {
-                console.error('Error fetching Area Planted data:', error);
+        function setDropdownEventListeners() {
+            document.getElementById('region').addEventListener('change', function() {
+                fetchProvinceFilters('region');
             });
-            var flag = '';
-        if (region && province) {
-            flag = ' Province';
-        } else if (region){
-            flag = ' Region';
-        } else {
-            flag = ' Region';
         }
-        axios.get('/dashboard/getVarietyPlantedPerRegion', { params: { region, province } })
-            .then(function (response) {
-                updateVarietyPlantedChart(response.data, flag);
-            })
-            .catch(function (error) {
-                console.error('Error fetching Variety Planted data:', error);
+
+        function fetchProvinceFilters(selectedFilter) {
+            var region = document.getElementById('region').value;
+            var province = document.getElementById('province').value;
+
+            $.get('/dashboard/getDistinctFilters', {
+                    region: region,
+                    province: province
+                })
+                .done(function(data) {
+                    updateFilterOptions(data, selectedFilter);
+                    applyFilters();
+                })
+                .fail(function(error) {
+                    console.error('Error fetching distinct filters:', error);
+                });
+        }
+
+        function updateFilterOptions(filters, selectedFilter) {
+            var provinceDropdown = document.getElementById('province');
+            updateDropdownOptions(provinceDropdown, filters.provinces);
+        }
+
+        function updateDropdownOptions(dropdown, options) {
+            var selectedValue = dropdown.value;
+
+            dropdown.innerHTML = '<option value="">Select ' + dropdown.id.charAt(0).toUpperCase() + dropdown.id.slice(1) +
+                '</option>';
+
+            options.forEach(function(option) {
+                var optionElement = document.createElement('option');
+                optionElement.value = option;
+                optionElement.text = option;
+                dropdown.add(optionElement);
             });
-    }
 
-    function updateAreaPlantedChart(data) {
-    // const data = response.data; // Assuming the data is present in the 'data' property of the response
+            dropdown.value = selectedValue;
+        }
 
-        // Create the Highcharts pie chart with dynamic data
-        Highcharts.chart('area_planted', {
-            chart: {
-                type: 'pie'
-            },
-            title: {
-                text: 'Area Planted Per Variety'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            credits: {
-                enabled: false
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                        distance: -70, // Adjust the distance of the data labels from the pie slices
-                        filter: {
-                            property: 'percentage',
-                            operator: '>',
-                            value: 4 // Display data labels only if the percentage is greater than 4
-                        },
-                        style: {
-                            textOutline: 'none',
+        function applyFilters() {
+            var region = document.getElementById('region').value;
+            var province = document.getElementById('province').value;
+
+            axios.get('/dashboard/getAreaPlantedPerVariety', {
+                    params: {
+                        region,
+                        province
+                    }
+                })
+                .then(function(response) {
+                    updateAreaPlantedChart(response.data);
+                })
+                .catch(function(error) {
+                    console.error('Error fetching Area Planted data:', error);
+                });
+            var flag = '';
+            if (region && province) {
+                flag = ' Province';
+            } else if (region) {
+                flag = ' Region';
+            } else {
+                flag = ' Region';
+            }
+            axios.get('/dashboard/getVarietyPlantedPerRegion', {
+                    params: {
+                        region,
+                        province
+                    }
+                })
+                .then(function(response) {
+                    updateVarietyPlantedChart(response.data, flag);
+                })
+                .catch(function(error) {
+                    console.error('Error fetching Variety Planted data:', error);
+                });
+        }
+
+        function updateAreaPlantedChart(data) {
+            // const data = response.data; // Assuming the data is present in the 'data' property of the response
+
+            // Create the Highcharts pie chart with dynamic data
+            Highcharts.chart('area_planted', {
+                chart: {
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Area Planted Per Variety'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                credits: {
+                    enabled: false
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            distance: -70, // Adjust the distance of the data labels from the pie slices
+                            filter: {
+                                property: 'percentage',
+                                operator: '>',
+                                value: 4 // Display data labels only if the percentage is greater than 4
+                            },
+                            style: {
+                                textOutline: 'none',
+                            }
                         }
                     }
-                }
-            },
-            series: [{
-                name: 'Variety',
-                data: data.categories.map(function(category, index) {
-                    return {
-                        name: category,
-                        y: data.data[index]
-                    };
-                })
-            }]
-        });
-    }
-
-    function updateVarietyPlantedChart(data, flag) {
-        // const data = response.data;
-        var categories = data.categories;
-        var inputData = data.series;
-
-        // Transform the data
-        const seriesData = inputData.reduce((result, dataPoint) => {
-            Object.entries(dataPoint).forEach(([name, value], index) => {
-                if (!result[index]) {
-                    result[index] = {
-                        name: name,
-                        data: []
-                    };
-                }
-                result[index].data.push(value);
+                },
+                series: [{
+                    name: 'Variety',
+                    data: data.categories.map(function(category, index) {
+                        return {
+                            name: category,
+                            y: data.data[index]
+                        };
+                    })
+                }]
             });
-            return result;
-        }, []);
+        }
 
-        const stringCategories = data.categories.map(category => category.toString());
+        function updateVarietyPlantedChart(data, flag) {
+            // const data = response.data;
+            var categories = data.categories;
+            var inputData = data.series;
 
-        // Use Highcharts to create a column chart
-        Highcharts.chart('variety_planted', { // Use 'variety_planted' as the ID
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Variety Planted per' + flag
-            },
-            xAxis: {
-                "categories": categories
-            },
-            credits: {
-                enabled: false
-            },
-            yAxis: {
+            // Transform the data
+            const seriesData = inputData.reduce((result, dataPoint) => {
+                Object.entries(dataPoint).forEach(([name, value], index) => {
+                    if (!result[index]) {
+                        result[index] = {
+                            name: name,
+                            data: []
+                        };
+                    }
+                    result[index].data.push(value);
+                });
+                return result;
+            }, []);
+
+            const stringCategories = data.categories.map(category => category.toString());
+
+            // Use Highcharts to create a column chart
+            Highcharts.chart('variety_planted', { // Use 'variety_planted' as the ID
+                chart: {
+                    type: 'column'
+                },
                 title: {
-                    text: 'Total Area (ha)'
-                }
-            },
-            "series": seriesData,
-        });
-    }
+                    text: 'Variety Planted per' + flag
+                },
+                xAxis: {
+                    "categories": categories
+                },
+                credits: {
+                    enabled: false
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total Area (ha)'
+                    }
+                },
+                "series": seriesData,
+            });
+        }
         $(document).ready(function() {
             // When #tab4 is clicked, trigger a click on #filter
             $('#tab4').on('click', function() {
@@ -811,54 +850,59 @@ function setDropdownEventListeners() {
                 var legends = response.data;
                 legends.forEach(legend => {
                     legendContent += '<div class="legend-entry">' +
-                    '<img src="http://maps.google.com/mapfiles/ms/icons/' + legend.colorcode + '-dot.png" alt="Marker" />' +
-                    '<span>' + legend.productname + '</span>' +
-                    '</div>';
+                        '<img src="http://maps.google.com/mapfiles/ms/icons/' + legend.colorcode +
+                        '-dot.png" alt="Marker" />' +
+                        '<span>' + legend.productname + '</span>' +
+                        '</div>';
                 })
-            // Make AJAX request to get points data
-            axios.get('/dashboard/getPoints/' + product + '/' + region + '/' + province).then(response => {
-                var points = response.data;
+                // Make AJAX request to get points data
+                axios.get('/dashboard/getPoints/' + product + '/' + region + '/' + province).then(response => {
+                    var points = response.data;
 
-                // Add markers to the map
-                points.forEach(point => {
-                    // Ensure that latitude and longitude are valid numbers
-                    var latitude = parseFloat(point.location_latitude);
-                    var longitude = parseFloat(point.location_longitude);
+                    // Add markers to the map
+                    points.forEach(point => {
+                        // Ensure that latitude and longitude are valid numbers
+                        var latitude = parseFloat(point.location_latitude);
+                        var longitude = parseFloat(point.location_longitude);
 
-                    if (!isNaN(latitude) && !isNaN(longitude)) {
-                        var markerColor;
+                        if (!isNaN(latitude) && !isNaN(longitude)) {
+                            var markerColor;
 
-                        var marker = new google.maps.Marker({
-                            position: {
-                                lat: latitude,
-                                lng: longitude
-                            },
-                            map: map,
-                            title: point.farm_id,
-                            icon: {
-                                url: 'http://maps.google.com/mapfiles/ms/icons/'+point.colorcode+'-dot.png', // URL to the purple marker icon
-                                scaledSize: new google.maps.Size(40, 40) // Adjust the size if needed
-                            },
-                        });
+                            var marker = new google.maps.Marker({
+                                position: {
+                                    lat: latitude,
+                                    lng: longitude
+                                },
+                                map: map,
+                                title: point.farm_id,
+                                icon: {
+                                    url: 'http://maps.google.com/mapfiles/ms/icons/' + point
+                                        .colorcode +
+                                        '-dot.png', // URL to the purple marker icon
+                                    scaledSize: new google.maps.Size(40,
+                                        40) // Adjust the size if needed
+                                },
+                            });
 
-                        // Create farm images HTML
-                        var farmImagesHTML = '';
-                        point.farm_image.split(',').forEach(function(image) {
-                            console.log(image)
-                            farmImagesHTML += '<a href="' + image + '" target="_blank"><img src="https://digisaka.info/' +
-                                image +
-                                '" alt="Farm Image" width="150px" style="padding: 5px;"></a>';
-                        });
-                        var demoDate = new Date(point.created_at);
-                        var formattedDate = demoDate.toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        });
-                        // Optional: Add an info window for each marker to display additional information
-                        var infoWindow = new google.maps.InfoWindow({
+                            // Create farm images HTML
+                            var farmImagesHTML = '';
+                            point.farm_image.split(',').forEach(function(image) {
+                                console.log(image)
+                                farmImagesHTML += '<a href="' + image +
+                                    '" target="_blank"><img src="https://digisaka.info/' +
+                                    image +
+                                    '" alt="Farm Image" width="150px" style="padding: 5px;"></a>';
+                            });
+                            var demoDate = new Date(point.created_at);
+                            var formattedDate = demoDate.toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            });
+                            // Optional: Add an info window for each marker to display additional information
+                            var infoWindow = new google.maps.InfoWindow({
 
-                            content: `
+                                content: `
                                 <table width="100%">
                                     <tr>
                                         <td class="fw-bold fs-5" style="width:20%;"> Farm ID:</td>
@@ -924,34 +968,34 @@ function setDropdownEventListeners() {
                                 </table>
                                 
                             `,
-                            // <div class="map_image" style="text-align: center;">
-                                
-                            //     </div>
-                            maxWidth: 800, // Set the maximum width
-                            minHeight: 300, // Set the minimum height
-                        });
+                                // <div class="map_image" style="text-align: center;">
 
-                        // Attach click event to marker to open info window
-                        marker.addListener('click', function() {
-                            // Close the current infoWindow if exists
-                            if (currentInfoWindow) {
-                                currentInfoWindow.close();
-                            }
+                                //     </div>
+                                maxWidth: 800, // Set the maximum width
+                                minHeight: 300, // Set the minimum height
+                            });
 
-                            // Open the new infoWindow
-                            infoWindow.open(map, marker);
+                            // Attach click event to marker to open info window
+                            marker.addListener('click', function() {
+                                // Close the current infoWindow if exists
+                                if (currentInfoWindow) {
+                                    currentInfoWindow.close();
+                                }
 
-                            // Update the currently open infoWindow
-                            currentInfoWindow = infoWindow;
-                        });
+                                // Open the new infoWindow
+                                infoWindow.open(map, marker);
 
-                    } else {
-                        console.error('Invalid latitude or longitude:', point);
-                    }
+                                // Update the currently open infoWindow
+                                currentInfoWindow = infoWindow;
+                            });
+
+                        } else {
+                            console.error('Invalid latitude or longitude:', point);
+                        }
+                    });
+                    document.getElementById('legend').innerHTML = legendContent;
                 });
-                document.getElementById('legend').innerHTML = legendContent;
-            });
-        })
+            })
         }
 
         //load the province option when region is changed
@@ -965,7 +1009,7 @@ function setDropdownEventListeners() {
                         .name + '</option>');
                 });
             });
-        });      
+        });
         Highcharts.chart('sample-pie', {
             chart: {
                 type: 'pie'
@@ -1031,7 +1075,5 @@ function setDropdownEventListeners() {
                 ]
             }]
         });
-
-
     </script>
 @endpush
