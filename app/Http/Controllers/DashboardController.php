@@ -20,14 +20,37 @@ use App\Models\File;
 class DashboardController extends Controller
 {
     //
+    protected $years_data;
     public function __construct()
     {
         $this->middleware('auth');
+        $data = array();
+        $years = ['2019','2020','2021','2022','2023','2024'];
+
+        foreach($years as $year) {
+            $months = [
+                'Jan' => rand(10,100),
+                'Feb' => rand(10,100),
+                'Mar' => rand(10,100),
+                'Apr' => rand(10,100),
+                'May' => rand(10,100),
+                'Jun' => rand(10,100),
+                'Jul' => rand(10,100),
+                'Aug' => rand(10,100),
+                'Sep' => rand(10,100),
+                'Oct' => rand(10,100),
+                'Nov' => rand(10,100),
+                'Dec' => rand(10,100)
+            ];
+
+            $data[$year] = $months;
+        }
+
+        $this->years_data = $data;
     }
     
     public function index()
-    {
-
+    {  
         $farmerPercent = $this->getPercentageCount("User");
         $farmPercent = $this->getPercentageCount("Farms");
         $surveyPercent = $this->getPercentageCount("Survey");
@@ -1428,17 +1451,10 @@ class DashboardController extends Controller
         return response()->json($legend);
     }
 
-    public function getRecommendations() {
-        $data = [
-            '2014' => 15000,
-            '2015' => 18000,
-            '2016' => 17500,
-            '2017' => 21000,
-            '2018' => 32000,
-            '2019' => 24000,
-            '2020' => 12500 
-        ];
+    public function getRecommendations(Request $request) {
+        $year = $request->year;
 
+        $data = $this->years_data[$year];
         return response()->json($data);
     }
 }

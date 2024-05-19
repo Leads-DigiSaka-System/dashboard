@@ -20,8 +20,8 @@
     <div class="row">
         <!-- Button trigger modal -->
         <ul class="nav nav-tabs" id="myTabs" style="background: #fff; margin-top: -1rem;">
-            <li class="nav-item dropdown">
-                <a class="nav-link navs dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+            {{-- <li class="nav-item dropdown">
+                <a class="nav-link navs active" data-bs-toggle="dropdown" href="#" role="button"
                     aria-expanded="false">
                     Home
                 </a>
@@ -29,8 +29,14 @@
                     <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content1">Data and Maps</a></li>
                     <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content5">Summary</a></li>
                 </ul>
+            </li> --}}
+            <li class="nav-item">
+                <a class="nav-link navs active" id="tab5" data-toggle="tab" href="#content1">Home</a>
             </li>
-
+            
+            <li class="nav-item">
+                <a class="nav-link navs" id="tab5" data-toggle="tab" href="#content5">Data Summary</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link navs" id="tab5" data-toggle="tab" href="#content6">Links</a>
             </li>
@@ -38,7 +44,7 @@
                 <a class="nav-link navs" id="tab1" data-toggle="tab" href="#content1">Summary</a>
             </li> --}}
             <li class="nav-item dropdown">
-                <a class="nav-link navs dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
                     aria-expanded="false">
                     Maps
                 </a>
@@ -65,79 +71,166 @@
         @include('dashboard.tabs.links')
         <div class="tab-pane fade active show" id="content1">
             <div class="container-fluid px-6 pt-6">
-                <div class="row row-cols-1 row-cols-md-3">
-                    <div class="col h-auto">
-                        <div class="card rounded-3 shadow-sm">
-                            <a style="text-decoration: none;" href="{{ route('farmers.index') }}">
-                                <div class="d-flex py-2 px-5">
-                                    <div class="me-2">
-                                        <div class="p-2 rounded-circle" style="background-color: #28c76f;">
-                                            <i data-feather="user" style="width: 30px; height: 30px; color:white;"></i>
+                <div class="row">
+                    <div class="col-lg-8 col-md-12">
+                        <div class="row row-cols-1 row-cols-md-3">
+                            <div class="col h-auto">
+                                <div class="card rounded-3 shadow-sm">
+                                    <div class="card-body p-1">
+                                        <div class="card m-0">
+                                            <a style="text-decoration: none;" href="{{ route('farmers.index') }}">
+                                                <div class="d-flex py-2 px-2">
+                                                    <div class="me-2">
+                                                        <div class="p-2 rounded-circle" style="background-color: #28c76f;">
+                                                            <i data-feather="user" style="width: 30px; height: 30px; color:white;"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="my-auto text-left">
+                                                        <p class="mb-0" style="font-size: 17px;">Farmers Registered</p>
+                                                        <h1 class="fw-bolder mb-0">{{ number_format($users) }}</h1>
+                                                    </div>
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
-                                    <div class="my-auto text-left">
-                                        <p class="mb-0" style="font-size: 17px;">Farmers</p>
-                                        <h1 class="fw-bolder mb-0">{{ $users }}</h1>
+                                    <div class="card-footer p-1 text-center">
+                                        <p class="m-0"><span class="font-weight-bold" style="color: #28c76f;">{{ $farmerPercent . '%' }}</span>
+                                            than
+                                            last
+                                            week</p>
                                     </div>
                                 </div>
-                            </a>
-                            <hr>
-                            <div class="text-center">
-                                <span class="font-weight-bold" style="color: #28c76f;">{{ $farmerPercent . '%' }}</span>
-                                than
-                                last
-                                week</p>
+                            </div>
+
+                            <div class="col h-auto">
+                                <div class="card rounded-3 shadow-sm">
+                                    <div class="card-body p-1">
+                                        <div class="card m-0">
+                                            <a style="text-decoration: none;" href="{{ route('farms.index') }}">
+                                        <div class="d-flex py-2 px-2">
+                                            <div class="me-2">
+                                                <div class="p-2 rounded-circle" style="background-color: #ffc107;">
+                                                    <i data-feather="grid" style="width: 30px; height: 30px; color:white;"></i>
+                                                </div>
+                                            </div>
+                                            <div class="my-auto text-left">
+                                                <p class="mb-0" style="font-size: 17px;">Farms Digitized</p>
+                                                <h1 class="fw-bolder mb-0">{{ $farms }}</h1>
+                                            </div>
+                                        </div>
+                                    </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer p-1 text-center">
+                                        <p class="m-0"><span class="font-weight-bold" style="color: #28c76f;">{{ $farmPercent . '%' }}</span>
+                                            than
+                                            last
+                                            week</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col h-auto">
+                                <div class="card rounded-3 shadow-sm">
+                                    <div class="card-body p-1">
+                                        <div class="card m-0">
+                                            <a style="text-decoration: none;" href="{{ route('survey.index') }}">
+                                                <div class="d-flex py-2 px-2">
+                                                    <div class="me-2">
+                                                        <div class="p-2 rounded-circle" style="background-color: #4bc79d;">
+                                                            <i data-feather="pie-chart" style="width: 30px; height: 30px; color:white;"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="my-auto text-left">
+                                                        <p class="mb-0" style="font-size: 17px;">Surveyed for farm practices</p>
+                                                        <h1 class="fw-bolder mb-0">{{ $survey }}</h1>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer p-1 text-center">
+                                        <p class="m-0"><span class="font-weight-bold"
+                                                style="color: #28c76f;">{{ $surveyPercent . '%' }}</span>
+                                            than
+                                            last
+                                            week</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col h-auto">
+                                <div class="card rounded-3 shadow-sm">
+                                    <div class="card-body p-1">
+                                        <div class="card bg-black m-0">
+                                            <div class="text-center pt-1 text-white fw-bold">Total Area Measured</div>
+                                            <div class="d-flex justify-content-center pt-1">
+
+                                                <div class="me-2">
+                                                    <div class="">
+                                                        <i data-feather="map-pin" style="width: 30px; height: 30px; color:white;"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="my-auto text-left">
+                                                    <p class="mb-0 fw-bolder fs-2 text-white" style="font-size: 20px;">266,504.53</p>
+                                                    <h1 class="fw-bolder mb-0" style="font-size: 3rem;"></h1>
+                                                </div>
+                                            </div>
+                                            <div class="text-center pt-0 pb-1 text-white fw-bold">(hectares)</div>
+
+                                        </div>
+                                    </div>
+                                    <div class="card-footer p-1 text-center">
+                                        <p class="m-0"><span class="font-weight-bold"
+                                                style="color: #28c76f;">{{ $surveyPercent . '%' }}</span>
+                                            than
+                                            last
+                                            week</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col h-auto">
+                                <div class="card rounded-3 shadow-sm">
+                                    <div class="card-body p-1">
+                                        <div class="card bg-success m-0">
+                                            <div class="text-center pt-1 text-white fw-bold">Sampel</div>
+                                            <div class="d-flex justify-content-center pt-1">
+
+                                                <div class="me-2">
+                                                    <div class="">
+                                                        <i data-feather="map-pin" style="width: 30px; height: 30px; color:white;"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="my-auto text-left">
+                                                    <p class="mb-0 fw-bolder fs-2 text-white" style="font-size: 20px;">266,504.53</p>
+                                                    <h1 class="fw-bolder mb-0" style="font-size: 3rem;"></h1>
+                                                </div>
+                                            </div>
+                                            <div class="text-center pt-0 pb-1 text-white fw-bold">(hectares)</div>
+
+                                        </div>
+                                    </div>
+                                    <div class="card-footer p-1 text-center">
+                                        <p class="m-0"><a>More details >></a></p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col h-auto">
+                    
+                    <div class="col-lg-4">
                         <div class="card rounded-3 shadow-sm">
-                            <a style="text-decoration: none;" href="{{ route('farms.index') }}">
-                                <div class="d-flex py-2 px-5">
-                                    <div class="me-2">
-                                        <div class="p-2 rounded-circle" style="background-color: #ffc107;">
-                                            <i data-feather="grid" style="width: 30px; height: 30px; color:white;"></i>
-                                        </div>
-                                    </div>
-                                    <div class="my-auto text-left">
-                                        <p class="mb-0" style="font-size: 17px;">Farms</p>
-                                        <h1 class="fw-bolder mb-0">{{ $farms }}</h1>
-                                    </div>
+                            <div class="card-body">
+                                <div class="row pb-1">
                                 </div>
-                            </a>
-                            <hr>
-                            <div class="text-center">
-                                <p><span class="font-weight-bold" style="color: #28c76f;">{{ $farmPercent . '%' }}</span>
-                                    than last
-                                    week</p>
+                                <figure class="highcharts-figure">
+                                    <div id="reco_sum"></div>
+                                </figure>
                             </div>
                         </div>
                     </div>
-                    <div class="col h-auto">
-                        <div class="card rounded-3 shadow-sm">
-                            <a style="text-decoration: none;" href="{{ route('survey.index') }}">
-                                <div class="d-flex py-2 px-5">
-                                    <div class="me-2">
-                                        <div class="p-2 rounded-circle" style="background-color: #4bc79d;">
-                                            <i data-feather="pie-chart" style="width: 30px; height: 30px; color:white;"></i>
-                                        </div>
-                                    </div>
-                                    <div class="my-auto text-left">
-                                        <p class="mb-0" style="font-size: 17px;">Survey</p>
-                                        <h1 class="fw-bolder mb-0">{{ $survey }}</h1>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr>
-                            <div class="text-center">
-                                <p><span class="font-weight-bold"
-                                        style="color: #28c76f;">{{ $surveyPercent . '%' }}</span>
-                                    than
-                                    last
-                                    week</p>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-lg-8">

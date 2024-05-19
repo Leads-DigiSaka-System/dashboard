@@ -5,11 +5,17 @@
                     <div class="card rounded-3 shadow-sm">
                         <div class="card-body">
                             <div class="row pb-3">
-                                <div class="col-md-6">
-                                    <h4>Number of Recommendations Recommended</h4>
-                                </div>
-                                <div class="col-md-6 text-end">
-                                    <h2>{{ number_format('140000') }}</h2>
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <div class="col-md-2">
+                                        <select class="form-control" id="recom_year">
+                                            <option value="2024">2024</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2022">2022</option>
+                                            <option value="2021">2021</option>
+                                            <option value="2020">2020</option>
+                                        </select>  
+                                    </div>
+                                    
                                 </div>
                             </div>
                             <figure class="highcharts-figure">
@@ -58,7 +64,7 @@
 
                 </div>
 
-                <div class="col-md-4">
+                {{-- <div class="col-md-4">
                     <div class="col h-auto">
                         <div class="card rounded-3 shadow-sm">
                             <div class="card-body p-1">
@@ -135,7 +141,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div> --}}
             </div>
         </div>
 
