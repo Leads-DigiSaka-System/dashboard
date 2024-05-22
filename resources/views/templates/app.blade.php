@@ -77,7 +77,7 @@
             }
         }
 
-        #legend {
+        .legend {
             position: absolute;
             bottom: 30px;
             left: 30px;

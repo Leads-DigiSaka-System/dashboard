@@ -1,8 +1,6 @@
-<div class="card rounded-3 shadow-sm">
-    <div class="card-body">
+
         <div id="map_with_product" style="height: 700px; width: 100%;"></div>
-    </div>
-</div>
+
 
 @push('scripts')
     <script>
@@ -21,7 +19,16 @@
 
             // Variable to keep track of the currently open infoWindow
             let currentInfoWindow = null;
-
+            var legendContent = `<div class="legend-title">Legend</div>
+                <div class="legend-entry">
+                <img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png" alt="marker" />
+                <span>LAV 777</span>
+                </div>
+                <div class="legend-entry">
+                <img src="http://maps.google.com/mapfiles/ms/icons/purple-dot.png" alt="marker" />
+                <span>Jackpot 102</span>
+                </div>
+            `;
             @foreach ($allFarms as $key => $value)
 
                 @if($key <=30)
@@ -79,14 +86,57 @@
                         @endforeach
 
                         // Optional: Add an info window for each marker to display additional information
+                        const fullname = "{{ $farmerDetails->full_name }}"
+                        const farm_id = "{{ $value->farm_id }}"
                         var infoWindow{{ $key }} = new google.maps.InfoWindow({
-                            content: '<table>' +
-                                '<tr><td>Farm ID:</td><td>{{ $value->farm_id }}</td></tr>' +
-                                '<tr><td>Area:</td><td>' + formatNumber(polygonAreaHa) + ' ha</td></tr>' +
-                                '<tr><td>Farmer:</td><td>{{ $farmerDetails->full_name }}</td></tr>' +
-                                '</table>' +
-                                '<hr />' +
-                                '<div class="map_image">' + myVar{{ $key }} + '</div>',
+                            content: `
+                                <table>
+                                    <tr>
+                                        <td>Operator:</td>
+                                        <td>${fullname}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Area:</td>
+                                        <td>${formatNumber(polygonAreaHa)} ha</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date Sown:</td>
+                                        <td> December 5, 2023</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date Transplanted:</td>
+                                        <td>December 27, 2023</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date Harvested:</td>
+                                        <td>April 8, 2024</td>
+                                    </tr>
+                                </table>
+                                <hr>
+                                <table width="100%">
+                                    <tr>
+                                        <td class="text-center">
+                                            <a href="https://dummyimage.com/350x200/000/fff&text=No+image+available" target="_blank">
+                                                <img src="https://dummyimage.com/350x200/000/fff&text=No+image+available" alt="Farm Image" width="230px" style="padding:5px;"></a>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">
+                                            <a href="https://dummyimage.com/350x200/000/fff&text=No+image+available" target="_blank">
+                                                <img src="https://dummyimage.com/350x200/000/fff&text=No+image+available" alt="Farm Image" width="230px" style="padding:5px;"></a>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            `,
+                            // content: '<table>' +
+                            //     '<tr><td>Farm ID:</td><td>{{ $value->farm_id }}</td></tr>' +
+                            //     '<tr><td>Area:</td><td>' + formatNumber(polygonAreaHa) + ' ha</td></tr>' +
+                            //     '<tr><td>Farmer:</td><td>{{ $farmerDetails->full_name }}</td></tr>' +
+                            //     '</table>' +
+                            //     '<hr />' +
+                            //     '<div class="map_image">' + myVar{{ $key }} + '</div>',
                             maxWidth: 1200, // Set the maximum width
                             minHeight: 150, // Set the minimum height
                         });
@@ -95,7 +145,7 @@
                         marker{{ $key }}.addListener('click', function() {
                             // Close the currently open infoWindow, if any
                             if (currentInfoWindow) {
-                                //currentInfoWindow.close();
+                                currentInfoWindow.close();
                             }
 
                             // const params = {
@@ -106,7 +156,7 @@
 
                             // highlightedFarmer(params)
                             // Open the infoWindow for the clicked marker
-                            //infoWindow{{ $key }}.open(map, marker{{ $key }});
+                            infoWindow{{ $key }}.open(map, marker{{ $key }});
 
                             // Update the currentInfoWindow variable
                             currentInfoWindow = infoWindow{{ $key }};
@@ -116,6 +166,9 @@
 
                 
             @endforeach
+
+            document.getElementById('product_legend').innerHTML = legendContent;
         }
+
     </script>
 @endpush

@@ -49,26 +49,37 @@
                     Maps
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item navs" id="tab4" data-bs-toggle="tab" href="#content4">Demo</a></li>
-                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content7">Products</a></li>
+                    <li><a class="dropdown-item navs" id="tab4" data-bs-toggle="tab" href="#content4">Agri-Products</a></li>
+                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content7">Rice Derby</a></li>
                 </ul>
             </li>
 
-            {{-- <li class="nav-item">
-                <a class="nav-link navs" id="tab4" data-toggle="tab" href="#content4">Maps</a>
-            </li> --}}
+            <li class="nav-item dropdown">
+                <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
+                    aria-expanded="false">
+                    Other Field Activities
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item navs" id="tab4" data-bs-toggle="tab" href="#content8">Field Tour</a></li>
+                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Farmer's day</a></li>
+                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Harvest Festival</a></li>
+                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Sibuyas Festival</a></li>
+                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Lakbay Palay</a></li>
+                </ul>
+            </li>
 
             <li class="nav-item">
                 <a class="nav-link navs" id="tab2" data-toggle="tab" href="#content2">Survey Results</a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link navs" id="tab3" data-toggle="tab" href="#content3">Rice Derby</a>
-            </li>
+            </li> --}}
         </ul>
     </div>
     <div class="tab-content">
         @include('dashboard.tabs.home')
         @include('dashboard.tabs.links')
+        @include('dashboard.tabs.other_activities')
         <div class="tab-pane fade active show" id="content1">
             <div class="container-fluid px-6 pt-6">
                 <div class="row">
@@ -194,12 +205,12 @@
                                 <div class="card rounded-3 shadow-sm">
                                     <div class="card-body p-1">
                                         <div class="card bg-success m-0">
-                                            <div class="text-center pt-1 text-white fw-bold">Sampel</div>
+                                            <div class="text-center pt-1 text-white fw-bold">No. of SMS</div>
                                             <div class="d-flex justify-content-center pt-1">
 
                                                 <div class="me-2">
                                                     <div class="">
-                                                        <i data-feather="map-pin" style="width: 30px; height: 30px; color:white;"></i>
+                                                        <i data-feather="mail" style="width: 30px; height: 30px; color:white;"></i>
                                                     </div>
                                                 </div>
                                                 <div class="my-auto text-left">
@@ -207,7 +218,7 @@
                                                     <h1 class="fw-bolder mb-0" style="font-size: 3rem;"></h1>
                                                 </div>
                                             </div>
-                                            <div class="text-center pt-0 pb-1 text-white fw-bold">(hectares)</div>
+                                            <div class="text-center pt-0 pb-1 text-white fw-bold">&nbsp;</div>
 
                                         </div>
                                     </div>
@@ -570,7 +581,7 @@
                         <div class="card rounded-3 shadow-sm">
                             <div class="card-body">
                                 <figure class="highcharts-figure">
-                                    <div id="area_planted"></div>
+                                    <div id="area_planted_old"></div>
                                 </figure>
                             </div>
                         </div>
@@ -579,12 +590,12 @@
                         <div class="card rounded-3 shadow-sm">
                             <div class="card-body">
                                 <figure class="highcharts-figure">
-                                    <div id="variety_planted"></div>
+                                    <div id="variety_planted_old"></div>
                                 </figure>
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="col-md-6">
+                    <!-- <div class="col-md-6">
                         <div class="card rounded-3 shadow-sm">
                             <div class="card-body">
                                 <figure class="highcharts-figure">
@@ -592,7 +603,7 @@
                                 </figure>
                             </div>
                         </div>
-                    </div> --}}
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -600,7 +611,7 @@
         <div class="tab-pane fade" id="content4" style="padding-right: 10px;">
 
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-7">
                     <div class="card rounded-3 shadow-sm">
                         <div class="card-body">
                             <h4 class="mb-1">Filters</h4>
@@ -636,13 +647,13 @@
                     </div>
                     <div class="card rounded-3 shadow-sm">
                         <div class="card-body">
-                            <h4 class="mb-1">Demo Farms Locations</h4>
+                            <h4 class="mb-1">Agri-Products</h4>
                             @include('dashboard.demo-map-viewer')
-                            <div id="legend"></div>
+                            <div class="legend" id="legend"></div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-5">
                     <div class="col h-auto">
                         <div class="card rounded-3 shadow-sm">
                             <div class="d-flex py-2 px-5">
@@ -674,6 +685,22 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="card rounded-3 shadow-sm">
+                        <div class="card-body">
+                            <figure class="highcharts-figure">
+                                <div id="area_planted"></div>
+                            </figure>
+                        </div>
+                    </div>
+
+                    <div class="card rounded-3 shadow-sm">
+                        <div class="card-body">
+                            <figure class="highcharts-figure">
+                                <div id="variety_planted"></div>
+                            </figure>
+                        </div>
+                    </div>
                     {{-- <div class="card rounded-3 shadow-sm">
                         <div class="p-2">
                             <figure class="highcharts-figure">
@@ -688,12 +715,61 @@
         <div class="tab-pane fade" id="content7" style="padding-right: 10px;">
 
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-7">
                     <div class="card rounded-3 shadow-sm">
                         <div class="card-body">
-                            <h4 class="mb-1">Product Locations</h4>
+                            <h4 class="mb-1">Rice Derby</h4>
                             @include('dashboard.product-map-viewer')
-                            <div id="legend"></div>
+                            <div class="legend" id="product_legend"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="col h-auto">
+                        <div class="card rounded-3 shadow-sm">
+                            <div class="d-flex py-2 px-5">
+                                <div class="me-2">
+                                    <div class="p-2 rounded-circle" style="background-color: #28c76f;">
+                                        <i data-feather="calendar" style="width: 30px; height: 30px; color:white;"></i>
+                                    </div>
+                                </div>
+                                <div class="my-auto text-left">
+                                    <p class="mb-0" style="font-size: 20px;">Demo Performed</p>
+                                    <h1 class="fw-bolder mb-0" style="font-size: 3rem;">4</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col h-auto">
+                        <div class="card rounded-3 shadow-sm">
+                            <div class="d-flex py-2 px-5">
+                                <div class="me-2">
+                                    <div class="p-2 rounded-circle" style="background-color: #28c76f;">
+                                        <i data-feather="package" style="width: 30px; height: 30px; color:white;"></i>
+                                    </div>
+                                </div>
+                                <div class="my-auto text-left">
+                                    <p class="mb-0" style="font-size: 20px;">Sample Used</p>
+                                    <h1 class="fw-bolder mb-0"  style="font-size: 3rem;">14</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card rounded-3 shadow-sm">
+                        <div class="card-body">
+                            <figure class="highcharts-figure">
+                                <div id="area_planted1"></div>
+                            </figure>
+                        </div>
+                    </div>
+
+                    <div class="card rounded-3 shadow-sm">
+                        <div class="card-body">
+                            <figure class="highcharts-figure">
+                                <div id="variety_planted1"></div>
+                            </figure>
                         </div>
                     </div>
                 </div>
