@@ -8,6 +8,33 @@
         .gm-style .gm-style-iw-c {
             max-height: 500px !important;
         }
+
+        #content9 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-auto-rows: 10px; /* Base row height */
+    gap: 10px;
+}
+
+.grid-item {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.grid-item:nth-child(1) { grid-row: span 15; }
+.grid-item:nth-child(2) { grid-row: span 20; }
+.grid-item:nth-child(3) { grid-row: span 25; }
+.grid-item:nth-child(4) { grid-row: span 18; }
+.grid-item:nth-child(5) { grid-row: span 12; }
+.grid-item:nth-child(6) { grid-row: span 15; }
+.grid-item:nth-child(7) { grid-row: span 13; }
+.grid-item:nth-child(8) { grid-row: span 14; }
+.grid-item:nth-child(9) { grid-row: span 10; }
+
     </style>
 @endsection
 @section('header_scripts')
@@ -39,6 +66,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link navs" id="tab5" data-toggle="tab" href="#content6">Links</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link navs" id="tab9" data-toggle="tab" href="#content9">Solutions</a>
             </li>
             {{-- <li class="nav-item">
                 <a class="nav-link navs" id="tab1" data-toggle="tab" href="#content1">Summary</a>
@@ -773,6 +803,77 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="content9" style="padding-right: 10px;">
+            <div class="grid-item">
+                <strong>1. Extent maps and production area</strong>
+                <ul>
+                    <li>Rice, Maize, Sugarcane, Coconut, Oil Palm</li>
+                    <li>Cash crops and Root crops</li>
+                    <li>Any other crop of interest</li>
+                </ul>
+            </div>
+            <div class="grid-item">
+                <strong>2. Tree counts, area and yield</strong>
+                <ul>
+                    <li>Banana</li>
+                    <li>Mango</li>
+                    <li>Pineapple</li>
+                    <li>Coffee</li>
+                </ul>
+            </div>
+            <div class="grid-item">
+                <strong>3. Climate and hydrological variables</strong>
+                <ul>
+                    <li>Meteorological drought risk</li>
+                    <li>Agricultural drought risk</li>
+                    <li>Combined drought index</li>
+                    <li>Impact-based forecasts</li>
+                </ul>
+            </div>
+            <div class="grid-item">
+                <strong>4. Yield maps and forecast</strong>
+                <ul>
+                    <li>Rice</li>
+                    <li>Vegetables</li>
+                </ul>
+            </div>
+            <div class="grid-item">
+                <strong>5. Cropping season advisories</strong>
+                <ul>
+                    <li>Irrigation demand and scheduler</li>
+                    <li>Rice age and harvest date</li>
+                </ul>
+            </div>
+            <div class="grid-item">
+                <strong>6. Crop suggestions based on production area dynamics and value chain</strong>
+                <ul>
+                    <li>Upcoming cropping season</li>
+                    <li>In-between cropping season</li>
+                </ul>
+            </div>
+            <div class="grid-item">
+                <strong>7. Crop resiliency indices</strong>
+                <ul>
+                    <li>Disaster agricultural damage assessment tool</li>
+                    <li>Risk Scores and crop insurance options</li>
+                </ul>
+            </div>
+            <div class="grid-item">
+                <strong>8. Market information</strong>
+                <ul>
+                    <li>Market price listings</li>
+                    <li>Commodity price forecasts</li>
+                    <li>POS system</li>
+                </ul>
+            </div>
+            <div class="grid-item">
+                <strong>9. Suitability mapping</strong>
+                <ul>
+                    <li>Any crop of interest</li>
+                    <li>High yield trial sites</li>
+                </ul>
             </div>
         </div>
     </div>
