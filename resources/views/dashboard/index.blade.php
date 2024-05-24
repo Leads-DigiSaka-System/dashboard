@@ -244,7 +244,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="my-auto text-left">
-                                                    <p class="mb-0 fw-bolder fs-2 text-white" style="font-size: 20px;">266,504.53</p>
+                                                    <p class="mb-0 fw-bolder fs-2 text-white" style="font-size: 20px;">266,504</p>
                                                     <h1 class="fw-bolder mb-0" style="font-size: 3rem;"></h1>
                                                 </div>
                                             </div>
