@@ -76,11 +76,16 @@
             <li class="nav-item dropdown">
                 <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
                     aria-expanded="false">
-                    Maps
+                    Demos
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item navs" id="tab4" data-bs-toggle="tab" href="#content4">Agri-Products</a></li>
-                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content7">Rice Derby</a></li>
+                    <li><a class="dropdown-item navs" id="tab4" data-bs-toggle="tab" href="#demo1">Agri-Products</a></li>
+                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo2">Rice Derby</a></li>
+                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo3">Financing Program</a></li>
+                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo4">Commercial Demo</a></li>
+                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo5">Corporate Farming</a></li>
+                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo6">Provincial Rice Techno Forum</a></li>
+                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo7">Recipient / Beneficiary</a></li>
                 </ul>
             </li>
 
@@ -638,173 +643,14 @@
             </div>
         </div>
 
-        <div class="tab-pane fade" id="content4" style="padding-right: 10px;">
+        @include('dashboard.demos.agri-products')
+        @include('dashboard.demos.rice-derby')
+        @include('dashboard.demos.financing')
+        @include('dashboard.demos.commercial')
+        @include('dashboard.demos.corporate')
+        @include('dashboard.demos.provincial')
+        @include('dashboard.demos.recipient')
 
-            <div class="row">
-                <div class="col-md-7">
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="card-body">
-                            <h4 class="mb-1">Filters</h4>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label class="form-label" for="product">Product</label>
-                                    <select class="form-select" id="product" name="product">
-                                        <option value="All">All</option>
-                                        <option value="1">Frontier</option>
-                                        <option value="2">Ceres</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label" for="region_demo">Region</label>
-                                    <select class="form-select" id="region_demo" name="region_demo">
-                                        <option value="All">All</option>
-                                        @foreach ($allRegion as $region)
-                                            <option value="{{ $region['regcode'] }}">{{ $region['name'] }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label" for="province_demo">Province</label>
-                                    <select class="form-select" id="province_demo" name="province_demo">
-                                        <option value="All">All</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <button class="btn btn-primary mt-2" type="button" id="filter">Filter</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="card-body">
-                            <h4 class="mb-1">Agri-Products</h4>
-                            @include('dashboard.demo-map-viewer')
-                            <div class="legend" id="legend"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="col h-auto">
-                        <div class="card rounded-3 shadow-sm">
-                            <div class="d-flex py-2 px-5">
-                                <div class="me-2">
-                                    <div class="p-2 rounded-circle" style="background-color: #28c76f;">
-                                        <i data-feather="calendar" style="width: 30px; height: 30px; color:white;"></i>
-                                    </div>
-                                </div>
-                                <div class="my-auto text-left">
-                                    <p class="mb-0" style="font-size: 20px;">Demo Performed</p>
-                                    <h1 class="fw-bolder mb-0" id="demoPerformed" style="font-size: 3rem;"></h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col h-auto">
-                        <div class="card rounded-3 shadow-sm">
-                            <div class="d-flex py-2 px-5">
-                                <div class="me-2">
-                                    <div class="p-2 rounded-circle" style="background-color: #28c76f;">
-                                        <i data-feather="package" style="width: 30px; height: 30px; color:white;"></i>
-                                    </div>
-                                </div>
-                                <div class="my-auto text-left">
-                                    <p class="mb-0" style="font-size: 20px;">Sample Used</p>
-                                    <h1 class="fw-bolder mb-0" id="sampleUsed" style="font-size: 3rem;"></h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="card-body">
-                            <figure class="highcharts-figure">
-                                <div id="area_planted"></div>
-                            </figure>
-                        </div>
-                    </div>
-
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="card-body">
-                            <figure class="highcharts-figure">
-                                <div id="variety_planted"></div>
-                            </figure>
-                        </div>
-                    </div>
-                    {{-- <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
-                            <figure class="highcharts-figure">
-                                <div id="sample-pie"></div>
-                            </figure>
-                        </div>
-                    </div> --}}
-                </div>
-            </div>
-        </div>
-
-        <div class="tab-pane fade" id="content7" style="padding-right: 10px;">
-
-            <div class="row">
-                <div class="col-md-7">
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="card-body">
-                            <h4 class="mb-1">Rice Derby</h4>
-                            @include('dashboard.product-map-viewer')
-                            <div class="legend" id="product_legend"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="col h-auto">
-                        <div class="card rounded-3 shadow-sm">
-                            <div class="d-flex py-2 px-5">
-                                <div class="me-2">
-                                    <div class="p-2 rounded-circle" style="background-color: #28c76f;">
-                                        <i data-feather="calendar" style="width: 30px; height: 30px; color:white;"></i>
-                                    </div>
-                                </div>
-                                <div class="my-auto text-left">
-                                    <p class="mb-0" style="font-size: 20px;">Demo Performed</p>
-                                    <h1 class="fw-bolder mb-0" style="font-size: 3rem;">4</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col h-auto">
-                        <div class="card rounded-3 shadow-sm">
-                            <div class="d-flex py-2 px-5">
-                                <div class="me-2">
-                                    <div class="p-2 rounded-circle" style="background-color: #28c76f;">
-                                        <i data-feather="package" style="width: 30px; height: 30px; color:white;"></i>
-                                    </div>
-                                </div>
-                                <div class="my-auto text-left">
-                                    <p class="mb-0" style="font-size: 20px;">Sample Used</p>
-                                    <h1 class="fw-bolder mb-0"  style="font-size: 3rem;">14</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="card-body">
-                            <figure class="highcharts-figure">
-                                <div id="area_planted1"></div>
-                            </figure>
-                        </div>
-                    </div>
-
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="card-body">
-                            <figure class="highcharts-figure">
-                                <div id="variety_planted1"></div>
-                            </figure>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="tab-pane fade" id="content9" style="padding-right: 10px;">
             <div class="grid-item">
                 <strong>1. Extent maps and production area</strong>
