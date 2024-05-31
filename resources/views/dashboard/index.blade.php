@@ -587,19 +587,6 @@
                     </div>
                 </div>
             </div>
-            <div>
-                <div class="col-md-3">
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="p-2 text-center">
-                            <a href="https://prism.philrice.gov.ph/dataproducts/" target="_blank">
-                            <h3>Philippine Rice Map</h3>
-                            <img src="{{ asset('images/prism-map.png') }}">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
         </div>
         <div class="tab-pane fade" id="content3">
             <div class="row mb-3 p-2 ml-0" style="background: #fff;">

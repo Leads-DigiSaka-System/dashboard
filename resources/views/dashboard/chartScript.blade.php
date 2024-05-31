@@ -405,50 +405,15 @@
         const data = response.data; // Assuming the data is present in the 'data' property of the response
 
         // Create the Highcharts pie chart with dynamic data
-        Highcharts.chart('area_planted', {
-            chart: {
-                type: 'pie'
-            },
-            title: {
-                text: 'Area Planted Per Variety'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            credits: {
-                enabled: false
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                        distance: -70, // Adjust the distance of the data labels from the pie slices
-                        filter: {
-                            property: 'percentage',
-                            operator: '>',
-                            value: 4 // Display data labels only if the percentage is greater than 4
-                        },
-                        style: {
-                            textOutline: 'none',
-                        }
-                    }
-                }
-            },
-            series: [{
-                name: 'Variety',
-                data: data.categories.map(function(category, index) {
-                    return {
-                        name: category,
-                        y: data.data[index]
-                    };
-                })
-            }]
-        });
+        demoAreaPlanted('area_planted',data);
+        demoAreaPlanted('area_planted1',data);
+        demoAreaPlanted('commercial_area_planted',data);
+        demoAreaPlanted('corporate_area_planted',data);
+        demoAreaPlanted('financing_area_planted',data);
+        demoAreaPlanted('provincial_area_planted',data);
+        demoAreaPlanted('recipient_area_planted',data);
 
-        Highcharts.chart('area_planted1', {
+        /*Highcharts.chart('area_planted', {
             chart: {
                 type: 'pie'
             },
@@ -489,8 +454,11 @@
                     };
                 })
             }]
-        });
+        });*/
+
+        
     });
+
 
 
     axios.get('/dashboard/getVarietyPlantedPerRegion').then(response => {
@@ -515,53 +483,105 @@
         const stringCategories = data.categories.map(category => category.toString());
 
         // Use Highcharts to create a column chart
-        Highcharts.chart('variety_planted', { // Use 'variety_planted' as the ID
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Variety Planted per Region'
-            },
-            xAxis: {
-                "categories": categories
-            },
-            credits: {
-                enabled: false
-            },
-            yAxis: {
-                title: {
-                    text: 'Total Area (ha)'
-                }
-            },
-            "series": seriesData,
-        });
-
-        Highcharts.chart('variety_planted1', { // Use 'variety_planted' as the ID
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Variety Planted per Region'
-            },
-            xAxis: {
-                "categories": categories
-            },
-            credits: {
-                enabled: false
-            },
-            yAxis: {
-                title: {
-                    text: 'Total Area (ha)'
-                }
-            },
-            "series": seriesData,
-        });
+        // Highcharts.chart('variety_planted', { // Use 'variety_planted' as the ID
+        //     chart: {
+        //         type: 'column'
+        //     },
+        //     title: {
+        //         text: 'Variety Planted per Region'
+        //     },
+        //     xAxis: {
+        //         "categories": categories
+        //     },
+        //     credits: {
+        //         enabled: false
+        //     },
+        //     yAxis: {
+        //         title: {
+        //             text: 'Total Area (ha)'
+        //         }
+        //     },
+        //     "series": seriesData,
+        // });
+        demoVarietyPlanted('variety_planted', categories, seriesData);
+        demoVarietyPlanted('variety_planted1', categories, seriesData);
+        demoVarietyPlanted('commercial_variety_planted', categories, seriesData);
+        demoVarietyPlanted('corporate_variety_planted', categories, seriesData);
+        demoVarietyPlanted('financing_variety_planted', categories, seriesData);
+        demoVarietyPlanted('provincial_variety_planted', categories, seriesData);
+        demoVarietyPlanted('recipient_variety_planted', categories, seriesData);
     })
     .catch(error => {
         console.error('Error fetching data:', error);
     });
 
+    function demoAreaPlanted (element, data) {
+        Highcharts.chart(element, {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: 'Area Planted Per Variety'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            credits: {
+                enabled: false
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        distance: -70, // Adjust the distance of the data labels from the pie slices
+                        filter: {
+                            property: 'percentage',
+                            operator: '>',
+                            value: 4 // Display data labels only if the percentage is greater than 4
+                        },
+                        style: {
+                            textOutline: 'none',
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: 'Variety',
+                data: data.categories.map(function(category, index) {
+                    return {
+                        name: category,
+                        y: data.data[index]
+                    };
+                })
+            }]
+        });
+    }
 
+    function demoVarietyPlanted (element, categories, seriesData) {
+        Highcharts.chart(element, { // Use 'variety_planted' as the ID
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Variety Planted per Region'
+            },
+            xAxis: {
+                "categories": categories
+            },
+            credits: {
+                enabled: false
+            },
+            yAxis: {
+                title: {
+                    text: 'Total Area (ha)'
+                }
+            },
+            "series": seriesData,
+        });
+    }
 $("#recom_year").on('change', function() {
     const value = $(this).val();
     getRecommendations(value);

@@ -46,7 +46,7 @@
                     <div class="card rounded-3 shadow-sm">
                         <div class="card-body">
                             <figure class="highcharts-figure">
-                                <div id="area_planted1"></div>
+                                <div id="commercial_area_planted"></div>
                             </figure>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                     <div class="card rounded-3 shadow-sm">
                         <div class="card-body">
                             <figure class="highcharts-figure">
-                                <div id="variety_planted1"></div>
+                                <div id="commercial_variety_planted"></div>
                             </figure>
                         </div>
                     </div>
