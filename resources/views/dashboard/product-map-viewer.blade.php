@@ -1,15 +1,19 @@
-
-        <div id="map_with_product" style="height: 700px; width: 100%;"></div>
+<div id="map_with_product" style="height: 700px; width: 100%;"></div>
 
 
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            initMapProduct();
+            initMapProduct(document.getElementById('map_with_product'));
+            initMapProduct(document.getElementById('financing_map'));
+            initMapProduct(document.getElementById('commercial_map'));
+            initMapProduct(document.getElementById('corporate_map'));
+            initMapProduct(document.getElementById('provincial_map'));
+            initMapProduct(document.getElementById('recipient_map'));
         });
 
-        function initMapProduct() {
-            const map = new google.maps.Map(document.getElementById('map_with_product'), {
+        function initMapProduct(element) {
+            const map = new google.maps.Map(element, {
                 center: {
                     lat: 12.8797,
                     lng: 121.7740
