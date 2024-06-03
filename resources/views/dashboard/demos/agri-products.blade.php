@@ -2,7 +2,7 @@
 
             <div class="row">
                 <div class="col-md-7">
-                    <div class="card rounded-3 shadow-sm">
+                    <div class="card rounded-3 shadow-sm d-none">
                         <div class="card-body">
                             <h4 class="mb-1">Filters</h4>
                             <div class="row">
@@ -91,13 +91,6 @@
                             </figure>
                         </div>
                     </div>
-                    {{-- <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
-                            <figure class="highcharts-figure">
-                                <div id="sample-pie"></div>
-                            </figure>
-                        </div>
-                    </div> --}}
                 </div>
             </div>
         </div>

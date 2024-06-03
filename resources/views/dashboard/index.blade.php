@@ -106,6 +106,9 @@
             <li class="nav-item">
                 <a class="nav-link navs" id="tab2" data-toggle="tab" href="#content2">Survey Results</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link navs" id="tab2" data-toggle="tab" href="#content10">Survey Results V2</a>
+            </li>
             {{-- <li class="nav-item">
                 <a class="nav-link navs" id="tab3" data-toggle="tab" href="#content3">Rice Derby</a>
             </li> --}}
@@ -650,7 +653,7 @@
         @include('dashboard.demos.corporate')
         @include('dashboard.demos.provincial')
         @include('dashboard.demos.recipient')
-
+        @include('dashboard.tabs.survey_v2')
         <div class="tab-pane fade" id="content9" style="padding-right: 10px;">
             <div class="grid-item">
                 <strong>1. Extent maps and production area</strong>
@@ -722,6 +725,8 @@
                 </ul>
             </div>
         </div>
+
+        
     </div>
 
 @endsection
@@ -844,7 +849,7 @@
                     type: 'pie'
                 },
                 title: {
-                    text: 'Area Planted Per Variety'
+                    text: 'No of Questions Answered'
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -962,28 +967,20 @@
             var currentInfoWindow = null;
             var farm_location = '';
             var legendContent = '<div class="legend-title">Legend</div>';
-            axios.get('/dashboard/getLegend/').then(response => {
-                var legends = response.data;
-                legends.forEach(legend => {
-                    legendContent += '<div class="legend-entry">' +
-                        '<img src="http://maps.google.com/mapfiles/ms/icons/' + legend.colorcode +
-                        '-dot.png" alt="Marker" />' +
-                        '<span>' + legend.productname + '</span>' +
-                        '</div>';
-                })
-                // Make AJAX request to get points data
-                axios.get('/dashboard/getPoints/' + product + '/' + region + '/' + province).then(response => {
-                    var points = response.data;
-
+            axios.get('/dashboard/getAgriProducts').then(response => {
+                    var points = response.data.points;
                     // Add markers to the map
+                    $('#demoPerformed').text(response.data.demo_performed);
+                    $('#sampleUsed').text(response.data.sample_used);
                     points.forEach(point => {
                         // Ensure that latitude and longitude are valid numbers
-                        var latitude = parseFloat(point.location_latitude);
-                        var longitude = parseFloat(point.location_longitude);
+                        var latitude = parseFloat(point.image_latitude);
+                        var longitude = parseFloat(point.image_longitude);
 
                         if (!isNaN(latitude) && !isNaN(longitude)) {
                             var markerColor;
 
+                            console.log(latitude,longitude);
                             var marker = new google.maps.Marker({
                                 position: {
                                     lat: latitude,
@@ -992,11 +989,10 @@
                                 map: map,
                                 title: point.farm_id,
                                 icon: {
-                                    url: 'http://maps.google.com/mapfiles/ms/icons/' + point
-                                        .colorcode +
-                                        '-dot.png', // URL to the purple marker icon
-                                    scaledSize: new google.maps.Size(40,
-                                        40) // Adjust the size if needed
+                                    url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx0y1Ensv9-dF8rpNkXhfAEfQnyWF4kXMoE_OyWbI8GQ&s',//'http://maps.google.com/mapfiles/ms/icons/purple-dot.png', // URL to the purple marker icon
+                                    scaledSize: new google.maps.Size(40,40), // Adjust the size if needed
+                                    origin: new google.maps.Point(0,0), // origin
+                                    anchor: new google.maps.Point(0, 0) // anchor
                                 },
                             });
 
@@ -1030,24 +1026,13 @@
                                     </tr>
                                     <tr>
                                         <td class="fw-bold fs-5"> Area:</td>
-                                        <td class="fw-bold fs-5"> ${point.area}</td>
+                                        <td class="fw-bold fs-5"> ${(point.area == null) ? '-': point.area}</td>
                                     </tr>
                                     <tr>
                                         <td class="fw-bold fs-5"> Leads Farmer:</td>
                                         <td class="fw-bold fs-5"> ${point.full_name}</td>
                                     </tr>
-                                    <tr>
-                                        <td class="fw-bold fs-5"> Product:</td>
-                                        <td class="fw-bold fs-5"> ${point.productname}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold fs-5"> Quantity:</td>
-                                        <td class="fw-bold fs-5"> ${point.quantity}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold fs-5"> Unit:</td>
-                                        <td class="fw-bold fs-5"> ${point.unit}</td>
-                                    </tr>
+                                    
                                     <tr>
                                         <td class="fw-bold fs-5">Demo Date:</td>
                                         <td class="fw-bold fs-5"> ${formattedDate}</td>
@@ -1111,7 +1096,146 @@
                     });
                     document.getElementById('legend').innerHTML = legendContent;
                 });
-            })
+
+            /*axios.get('/dashboard/getLegend/').then(response => {
+                var legends = response.data;
+                legends.forEach(legend => {
+                    legendContent += '<div class="legend-entry">' +
+                        '<img src="http://maps.google.com/mapfiles/ms/icons/' + legend.colorcode +
+                        '-dot.png" alt="Marker" />' +
+                        '<span>' + legend.productname + '</span>' +
+                        '</div>';
+                })
+                // Make AJAX request to get points data
+                //axios.get('/dashboard/getPoints/' + product + '/' + region + '/' + province).then(response => {
+                axios.get('/dashboard/getAgriProducts').then(response => {
+                    var points = response.data.points;
+                    // Add markers to the map
+
+                    points.forEach(point => {
+                        // Ensure that latitude and longitude are valid numbers
+                        var latitude = parseFloat(point.image_latitude);
+                        var longitude = parseFloat(point.image_longitude);
+
+                        if (!isNaN(latitude) && !isNaN(longitude)) {
+                            var markerColor;
+
+                            console.log(latitude,longitude);
+                            var marker = new google.maps.Marker({
+                                position: {
+                                    lat: latitude,
+                                    lng: longitude
+                                },
+                                map: map,
+                                title: point.farm_id,
+                                icon: {
+                                    url: 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png', // URL to the purple marker icon
+                                    scaledSize: new google.maps.Size(40,
+                                        40) // Adjust the size if needed
+                                },
+                            });
+
+                            // Create farm images HTML
+                            var farmImagesHTML = '';
+                            point.farm_image.split(',').forEach(function(image) {
+                                console.log(image)
+                                farmImagesHTML += '<a href="' + image +
+                                    '" target="_blank"><img src="https://digisaka.info/' +
+                                    image +
+                                    '" alt="Farm Image" width="150px" style="padding: 5px;"></a>';
+                            });
+                            var demoDate = new Date(point.created_at);
+                            var formattedDate = demoDate.toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            });
+                            // Optional: Add an info window for each marker to display additional information
+                            var infoWindow = new google.maps.InfoWindow({
+
+                                content: `
+                                <table width="100%">
+                                    <tr>
+                                        <td class="fw-bold fs-5" style="width:20%;"> Farm ID:</td>
+                                        <td class="fw-bold fs-5"> ${point.farm_id}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold fs-5"> Farm Address:</td>
+                                        <td class="fw-bold fs-5"> ${point.farm_location}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold fs-5"> Area:</td>
+                                        <td class="fw-bold fs-5"> ${(point.area == null) ? '-': point.area}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold fs-5"> Leads Farmer:</td>
+                                        <td class="fw-bold fs-5"> ${point.full_name}</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="fw-bold fs-5">Demo Date:</td>
+                                        <td class="fw-bold fs-5"> ${formattedDate}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold fs-5 d-flex">Feedback:</td>
+                                        <td class="fw-bold fs-5"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. .</td>
+                                    </tr>
+                                </table>
+                                <hr/>
+                                <table width="100%">
+                                    <tr>
+                                        <td class="text-center fw-bold fs-5">Before</td>
+                                        <td class="text-center fw-bold fs-5">During</td>
+                                        <td class="text-center fw-bold fs-5">After</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">
+                                            <a href="https://dummyimage.com/200x300/000/fff&text=No+image+available" target="_blank">
+                                                <img src="https://dummyimage.com/200x300/000/fff&text=No+image+available" alt="Farm Image" width="150px" style="padding:5px;"></a>
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="https://dummyimage.com/200x300/000/fff&text=No+image+available" target="_blank">
+                                                <img src="https://dummyimage.com/200x300/000/fff&text=No+image+available" alt="Farm Image" width="150px" style="padding:5px;"></a>
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="https://dummyimage.com/200x300/000/fff&text=No+image+available" target="_blank">
+                                                <img src="https://dummyimage.com/200x300/000/fff&text=No+image+available" alt="Farm Image" width="150px" style="padding:5px;"></a>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                            `,
+                                // <div class="map_image" style="text-align: center;">
+
+                                //     </div>
+                                maxWidth: 800, // Set the maximum width
+                                minHeight: 300, // Set the minimum height
+                            });
+
+                            // Attach click event to marker to open info window
+                            marker.addListener('click', function() {
+                                // Close the current infoWindow if exists
+                                if (currentInfoWindow) {
+                                    currentInfoWindow.close();
+                                }
+
+                                // Open the new infoWindow
+                                infoWindow.open(map, marker);
+
+                                // Update the currently open infoWindow
+                                currentInfoWindow = infoWindow;
+                            });
+
+                        } else {
+                            console.error('Invalid latitude or longitude:', point);
+                        }
+                    });
+                    document.getElementById('legend').innerHTML = legendContent;
+                });
+            })*/
         }
 
         //load the province option when region is changed

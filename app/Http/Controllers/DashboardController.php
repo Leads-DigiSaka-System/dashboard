@@ -11,6 +11,7 @@ use App\Models\Province;
 use App\Models\Survey;
 use App\Models\Region;
 use App\Models\User;
+use App\Models\QuestionSet;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
@@ -50,7 +51,55 @@ class DashboardController extends Controller
     }
     
     public function index()
-    {  
+    {
+        $question_sets = QuestionSet::where('survey_id',2)
+                    ->whereIN('question_id',[2,3,4])
+                    ->get();
+
+        $surveyList = Survey::where('version',2)->get();
+
+        
+        $farms = array();
+        $survey_array = array();
+        $sampled_used = 0;
+        foreach($surveyList as $survey){
+            $survey_data = json_decode($survey->survey_data);
+
+            if(count($survey_data) == 13) {
+                foreach($survey_data as $data) {
+                    foreach($question_sets as $set) {
+                        if($set->question_id == $data->question_id) {
+                            $survey_array[$set->question][] = $data->answer;
+                            $sampled_used++;
+                        }
+                        
+                    }
+                    
+                }
+
+                $farm = Farms::join('users', 'farms.farmer_id', '=', 'users.id')
+                    ->join('provinces', 'farms.province', '=', 'provinces.provcode')
+                    ->join('municipalities', 'farms.municipality', '=', 'municipalities.muncode')
+                    
+                    ->where('farms.id',$survey->farm_id)->first();
+                //dd($farm->area_location);
+
+                $location = $farm->barangay == ''
+                        ? $farm->municipality_name . ', ' . $farm->province_name
+                        : $farm->barangay . ', ' . $farm->municipality_name . ', ' . $farm->province_name;
+
+                $farm->farm_location = ucwords(strtolower($location));
+                $farms[] = $farm;
+            }
+        }
+
+        $categories = [];
+        $data = [];
+        foreach($survey_array as $key => $value) {
+            array_push($categories, $key);
+            array_push($data,count($value));
+
+        }
         $farmerPercent = $this->getPercentageCount("User");
         $farmPercent = $this->getPercentageCount("Farms");
         $surveyPercent = $this->getPercentageCount("Survey");
@@ -1388,11 +1437,47 @@ class DashboardController extends Controller
     }
     public function getAreaPlantedPerVariety()
     {
-        $data = Derby::getAreaPlantedPerVariety();
+        /*$data = Derby::getAreaPlantedPerVariety();
         $result = [
             'categories' => array_keys($data),
             'data' => array_values($data)
+        ];*/
+
+        $question_sets = QuestionSet::where('survey_id',2)
+                    ->whereIN('question_id',[2,3,4])
+                    ->get();
+
+        $surveyList = Survey::where('version',2)->get();
+
+        $survey_array = array();
+        foreach($surveyList as $survey){
+            $survey_data = json_decode($survey->survey_data);
+
+            if(count($survey_data) == 13) {
+                foreach($survey_data as $data) {
+                    foreach($question_sets as $set) {
+                        if($set->question_id == $data->question_id) {
+                            $survey_array[$set->question][] = $data->answer;
+                        }
+                        
+                    }
+                    
+                }
+            }
+        }
+
+        $categories = [];
+        $data = [];
+        foreach($survey_array as $key => $value) {
+            array_push($categories, $key);
+            array_push($data,count($value));
+
+        }
+        $result = [
+            'categories' => $categories,
+            'data' => $data
         ];
+
         return response()->json($result);
     }
 
@@ -1456,5 +1541,144 @@ class DashboardController extends Controller
 
         $data = $this->years_data[$year];
         return response()->json($data);
+    }
+
+
+    public function getSurveyAnswered() {
+        $question_sets = QuestionSet::where('survey_id',2)
+                    ->whereIN('question_id',[2,3,4])
+                    ->get();
+
+        $demo_performed = QuestionSet::where('survey_id',2)
+                    ->count();
+        $surveyList = Survey::where('version',2)->get();
+
+        
+        $farms = array();
+        $survey_array = array();
+        $sample_used = 0;
+        foreach($surveyList as $survey){
+            $survey_data = json_decode($survey->survey_data);
+
+            if(count($survey_data) == 13) {
+                foreach($survey_data as $data) {
+                    foreach($question_sets as $set) {
+                        if($set->question_id == $data->question_id) {
+                            $survey_array[$set->question][] = $data->answer;
+                            $sample_used++;
+                        }
+                        
+                    }
+                    
+                }
+            }
+        }
+
+
+    }
+    public function getAgriProducts(Request $request) {
+
+        $question_sets = QuestionSet::where('survey_id',2)
+                    ->whereIN('question_id',[2,3,4])
+                    ->get();
+
+        $demo_performed = QuestionSet::where('survey_id',2)
+                    ->count();
+        $surveyList = Survey::where('version',2)->get();
+
+        
+        $farms = array();
+        $survey_array = array();
+        $sample_used = 0;
+        foreach($surveyList as $survey){
+            $survey_data = json_decode($survey->survey_data);
+
+            if(count($survey_data) == 13) {
+                foreach($survey_data as $data) {
+                    foreach($question_sets as $set) {
+                        if($set->question_id == $data->question_id) {
+                            $survey_array[$set->question][] = $data->answer;
+                            $sample_used++;
+                        }
+                        
+                    }
+                    
+                }
+
+                $farm = Farms::join('users', 'farms.farmer_id', '=', 'users.id')
+                    ->join('provinces', 'farms.province', '=', 'provinces.provcode')
+                    ->join('municipalities', 'farms.municipality', '=', 'municipalities.muncode')
+                    //->join('products', 'farms.product', '=', 'products.id')
+                    ->where('farms.id',$survey->farm_id)->first();
+                //dd($farm->area_location);
+
+                $location = $farm->barangay == ''
+                        ? $farm->municipality_name . ', ' . $farm->province_name
+                        : $farm->barangay . ', ' . $farm->municipality_name . ', ' . $farm->province_name;
+
+                $farm->farm_location = ucwords(strtolower($location));
+                $farms[] = $farm;
+            }
+        }
+        
+        return response()->json(['points' => $farms,
+            'demo_performed' => count($survey_array),
+            'sample_used' => $sample_used]);
+    }
+
+    public function getSurveyV2() {
+        $query = Survey::getAllSurveyByVersion(2);
+        $responseCounts = [
+            'Male' => 0,
+            'Female' => 0
+        ];
+        $skippedCount = 0;
+        $answeredCount = 0;
+        $question = '';
+
+        foreach ($query as $data) {
+            $surveyData = json_decode($data['survey_data'], true);
+            $surveyResponseData = json_decode($surveyData['surveyResponse'], true);
+            //     echo '<pre>';
+            // print_r($surveyResponseData);
+            // echo '</pre>';
+            if (isset($surveyResponseData['responses']) && is_array($surveyResponseData['responses'])) {
+                foreach ($surveyResponseData['responses'] as $response) {
+                    if (isset($response['question_id']) && $response['question_id'] === '130208197') {
+                        $question = $response['question_value'];
+                        if (isset($response['answers']) && is_array($response['answers'])) {
+                            if (empty($response['answers'])) {
+                                $skippedCount++;
+                            } else {
+                                $answeredCount++;
+                                foreach ($response['answers'] as $answer) {
+                                    $answerValue = $answer['row_value'];
+
+                                    if (array_key_exists($answerValue, $responseCounts)) {
+                                        $responseCounts[$answerValue]++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $totalResponses = $skippedCount + $answeredCount;
+
+        if ($totalResponses > 0) {
+            foreach ($responseCounts as $key => $count) {
+                $responseCounts[$key] = ($count / $totalResponses) * 100;
+            }
+        }
+
+        $result = [
+            'categories' => array_keys($responseCounts),
+            'data' => array_values($responseCounts),
+            'skipped' => $skippedCount,
+            'answered' => $answeredCount,
+            'question' => $question
+        ];
     }
 }

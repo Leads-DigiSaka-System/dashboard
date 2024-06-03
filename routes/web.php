@@ -92,4 +92,5 @@ Route::middleware('prevent-back-history')->group(function (){
     Route::get('/dashboard/getDistinctFilters', 'DashboardController@getDistinctFilters');
     Route::get('/dashboard/getLegend', 'DashboardController@getLegend');
     Route::get('/dashboard/getRecommendations', 'DashboardController@getRecommendations');
+    Route::get('/dashboard/getAgriProducts','DashboardController@getAgriProducts');
 });
