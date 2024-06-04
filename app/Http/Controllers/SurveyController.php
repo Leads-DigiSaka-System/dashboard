@@ -52,6 +52,9 @@ class SurveyController extends Controller
                     ->addColumn('status', function ($survey) {
                         return '<span class="badge badge-light-' . $survey->getStatusBadge() . '">' . $survey->getStatus() . '</span>';
                     })
+                    ->addColumn('date', function ($survey) {
+                        return date('M d, Y', strtotime($survey->created_at));
+                    })
                     ->addColumn('action', function ($survey) {
                             $btn = '';
                             $btn = '<a href="' . route('survey.show', encrypt($survey->id)) . '" title="View"><i class="fas fa-eye"></i></a>&nbsp;&nbsp;';

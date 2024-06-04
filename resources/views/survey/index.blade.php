@@ -52,6 +52,7 @@
                     <th>S.No</th>
                     <th>Farmer Name</th>
                     <th>Farm Id</th>
+                    <th>Date</th>
                      <th>Status</th>
                   
                     <th data-orderable="false">Action</th>
