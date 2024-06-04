@@ -52,54 +52,89 @@ class DashboardController extends Controller
     
     public function index()
     {
-        $question_sets = QuestionSet::where('survey_id',2)
-                    ->whereIN('question_id',[2,3,4])
-                    ->get();
+        $question_sets = QuestionSet::get();
+                    //->whereIN('question_id',[2,3,4])
+                    //->get();
 
         $surveyList = Survey::where('version',2)->get();
 
-        
-        $farms = array();
         $survey_array = array();
-        $sampled_used = 0;
+        $skippedCount = 0;
+        $answeredCount = 0;
+        $questions = array();
         foreach($surveyList as $survey){
             $survey_data = json_decode($survey->survey_data);
 
-            if(count($survey_data) == 13) {
-                foreach($survey_data as $data) {
-                    foreach($question_sets as $set) {
-                        if($set->question_id == $data->question_id) {
-                            $survey_array[$set->question][] = $data->answer;
-                            $sampled_used++;
+            
+            foreach($survey_data as $data) {
+                foreach($question_sets as $set) {
+                    if(count($survey_data) == 13) {
+                        if($set->question_id == $data->question_id && $set->survey_id == 2) {
+                            if(array_key_exists($set->question,$questions)) {
+                                if(array_key_exists($data->answer, $questions[$set->question])) {
+                                    if($data->answer == "") {
+                                        $skippedCount++;
+                                    } else {
+                                        $answeredCount++;
+                                        $questions[2][$set->question][$data->answer] += 1;
+                                    }
+                                } else {
+                                    if($data->answer == "") {
+                                        $skippedCount++;
+                                    } else {
+                                        $answeredCount++;
+                                        $questions[2][$set->question][$data->answer] = 1;
+                                    }
+                                }
+                            } else {
+                                if($data->answer == "") {
+                                    $skippedCount++;
+                                } else {
+                                    $answeredCount++;
+                                    $questions[2][$set->question][$data->answer] = 1;
+                                }
+                                
+                            }
+                            
                         }
-                        
                     }
-                    
+                    else if(count($survey_data) == 41 && $set->survey_id == 1) {
+                        if($set->question_id == $data->question_id) {
+                            if(array_key_exists($set->question,$questions)) {
+                                if(array_key_exists($data->answer, $questions[$set->question])) {
+                                    if($data->answer == "") {
+                                        $skippedCount++;
+                                    } else {
+                                        $answeredCount++;
+                                        $questions[1][$set->question][$data->answer] += 1;
+                                    }
+                                } else {
+                                    if($data->answer == "") {
+                                        $skippedCount++;
+                                    } else {
+                                        $answeredCount++;
+                                        $questions[1][$set->question][$data->answer] = 1;
+                                    }
+                                }
+                            } else {
+                                if($data->answer == "") {
+                                    $skippedCount++;
+                                } else {
+                                    $answeredCount++;
+                                    $questions[1][$set->question][$data->answer] = 1;
+                                }
+                                
+                            }
+                            
+                        }
+                    }
                 }
-
-                $farm = Farms::join('users', 'farms.farmer_id', '=', 'users.id')
-                    ->join('provinces', 'farms.province', '=', 'provinces.provcode')
-                    ->join('municipalities', 'farms.municipality', '=', 'municipalities.muncode')
-                    
-                    ->where('farms.id',$survey->farm_id)->first();
-                //dd($farm->area_location);
-
-                $location = $farm->barangay == ''
-                        ? $farm->municipality_name . ', ' . $farm->province_name
-                        : $farm->barangay . ', ' . $farm->municipality_name . ', ' . $farm->province_name;
-
-                $farm->farm_location = ucwords(strtolower($location));
-                $farms[] = $farm;
             }
-        }
-
-        $categories = [];
-        $data = [];
-        foreach($survey_array as $key => $value) {
-            array_push($categories, $key);
-            array_push($data,count($value));
 
         }
+
+        //dd($questions);
+
         $farmerPercent = $this->getPercentageCount("User");
         $farmPercent = $this->getPercentageCount("Farms");
         $surveyPercent = $this->getPercentageCount("Survey");
@@ -1612,7 +1647,7 @@ class DashboardController extends Controller
                     ->where('farms.id',$survey->farm_id)->first();
                 //dd($farm->area_location);
 
-                $location = $farm->barangay == ''
+                $location = $farm->barangay == '' || empty($farm->barangay)
                         ? $farm->municipality_name . ', ' . $farm->province_name
                         : $farm->barangay . ', ' . $farm->municipality_name . ', ' . $farm->province_name;
 
