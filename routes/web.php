@@ -57,6 +57,14 @@ Route::middleware('prevent-back-history')->group(function (){
         Route::resource('questions','QuestionController');
 
         Route::resource('questionnaires','QuestionnaireController');
+
+        Route::get('survey_set','SurveySetController@index')->name('survey_set.index');
+        Route::get('survey_set/create','SurveySetController@create')->name('survey_set.create');
+        Route::get('survey_set/{survey_set}/edit','SurveySetController@edit')->name('survey_set.edit');
+        Route::post('survey_set','SurveySetController@store')->name('survey_set.store');
+        Route::put('survey_set/{survey_set}','SurveySetController@update')->name('survey_set.update');
+        Route::delete('survey_set/{survey_set}','SurveySetController@destroy')->name('surevy_set.destroy');
+
     });
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index');
     Route::get('/dashboard/getCountCountry', 'DashboardController@getCountCountry');

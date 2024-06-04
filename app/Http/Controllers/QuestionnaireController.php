@@ -26,7 +26,7 @@ class QuestionnaireController extends Controller
             $setFilteredRecords = $totalQuestionnaires;
 
             if (! empty($search)) {
-                $setFilteredRecords = $questionnaire->getAllQuestions($request,true);
+                $setFilteredRecords = $questionnaire->getAllQuestionnaires($request,true);
                 if(empty($setFilteredRecords))
                     $totalQuestionnaires = 0;
             }

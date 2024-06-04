@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Auth;
 
+use App\Models\SurveySet;
 use App\Models\Questionnaire;
 use App\Models\Question;
 class SurveyController extends Controller
@@ -138,6 +139,43 @@ class SurveyController extends Controller
         		'id' => encrypt($questionnaire->id),
         		'title' => $questionnaire->title,
         		'description' => $questionnaire->description,
+        		'questions' => $questions
+        	];
+        }
+
+        return json_encode($data);
+    }
+
+    public function getSurveySet($id) {
+        $decrypt_id = decrypt($id);
+
+        $survey_set = SurveySet::find($decrypt_id);
+
+        $data = array();
+
+        if(!empty($survey_set)) {
+        	$decoded_ids = json_decode($survey_set->question_data);
+
+        	$questions = array();
+        	foreach($decoded_ids->question_ids as $question_id) {
+        		$question = Question::find($question_id);
+        		$sub_field_type = json_decode($question->sub_field_type);
+
+        		$arr = !empty($sub_field_type->choices) ? implode(", ", $sub_field_type->choices) : "";
+
+        		$questions[] = [
+        			'field_name' => $question->field_name,
+        			'field_type' => $question->field_type,
+        			'choices' => $arr,
+        			'is_required' => $question->required_field == 1 ? 'required' : 'not required'
+        		];
+
+        	}
+
+        	$data = [
+        		'id' => encrypt($survey_set->id),
+        		'title' => $survey_set->title,
+        		'description' => $survey_set->description,
         		'questions' => $questions
         	];
         }

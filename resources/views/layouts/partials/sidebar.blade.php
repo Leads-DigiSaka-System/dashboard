@@ -36,7 +36,9 @@
                 <li class=" nav-item {{request()->is('questionnaires') || request()->is('questionnaires/*')?'active':''}}">
                     <a class="d-flex align-items-center" href="{{route('questionnaires.index')}}"><i data-feather="book"></i><span class="menu-title text-truncate" data-i18n="Kanban">Questionnaires</span></a>
                 </li> 
-        
+                <li class=" nav-item {{request()->is('survey_set') || request()->is('survey_set/*')?'active':''}}">
+                    <a class="d-flex align-items-center" href="{{route('survey_set.index')}}"><i data-feather="book"></i><span class="menu-title text-truncate" data-i18n="Kanban">Survey Set</span></a>
+                </li> 
             
         </ul>
     </div>

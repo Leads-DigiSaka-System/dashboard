@@ -1,0 +1,198 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Question;
+use App\Models\SurveySet;
+
+use Illuminate\Support\Str;
+use DB;
+class SurveySetController extends Controller
+{
+    public function index(Request $request, SurveySet $survey_set) {
+        if ($request->ajax()) {
+            $survey_sets = $survey_set->getAllSurveySet($request);
+
+            $search = $request['search']['value'];
+
+            $totalSurveySet = SurveySet::count();
+            $search = $request['search']['value'];
+            $setFilteredRecords = $totalSurveySet;
+
+            if (! empty($search)) {
+                $setFilteredRecords = $survey_set->getAllSurveySet($request,true);
+                if(empty($setFilteredRecords))
+                    $totalSurveySet = 0;
+            }
+
+            return datatables()
+                    ->of($survey_sets)
+                    ->addIndexColumn()
+                   
+                    ->addColumn('created_at', function ($survey_set) {
+                        return $survey_set->created_at;
+                    })
+                    ->addColumn('title', function ($survey_set) {
+                        return $survey_set->title;
+                    })
+                    ->addColumn('description', function ($survey_set) {
+                        return $survey_set->description;
+                    })
+                    ->addColumn('link', function ($survey_set) {
+                        return route('getSurveySetById', encrypt($survey_set->id));
+                    })
+                    ->addColumn('action', function ($survey_set) {
+                            $btn = '';
+                            $btn = '<a href="' . route('survey_set.edit', encrypt($survey_set->id)) . '" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;';
+                            $btn .= '<a href="javascript:void(0);" delete_form="delete_customer_form"  data-id="' . encrypt($survey_set->id) . '" class="delete-datatable-record text-danger delete-users-record" title="Delete"><i class="fas fa-trash"></i></a>';
+                        return $btn;
+                    })
+                    ->addColumn('status', function ($survey_set) {
+                        return $survey_set->status == 1 ? 'Active' : 'Not Active';
+                    })
+                    ->rawColumns([
+                        'action'        
+                    ])
+                    ->setTotalRecords($totalSurveySet)
+                    ->setFilteredRecords($setFilteredRecords)
+                    ->skipPaging()
+                    ->make(true);
+        }
+
+        return view('survey_set.index');
+    }
+
+    public function create() {
+        $questions = Question::where('status',1)->get();
+
+        $data = array();
+
+        foreach($questions as $question) {
+            $data[] = array(
+                'id' => $question->id,
+                'field_name' => $question->field_name,
+                'required_field' => $question->required_field,
+                'field_type' => $question->field_type,
+                'options' => json_decode($question->sub_field_type),
+            );
+        }
+
+        return view('survey_set.create', ['questions' => $data]);
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'questions' => 'required|array'
+        ]);
+
+        $questions = [];
+
+        foreach($request->questions as $question) {
+            array_push($questions,$question);
+        }
+
+        DB::beginTransaction();
+        try{
+            SurveySet::create([
+                'title' => $request->title,
+                'slug' => Str::slug($request->title,'-'),
+                'description' => $request->description,
+                'question_data' => json_encode(['question_ids' => $questions]),
+                'status' => 1
+            ]);
+
+            DB::commit();
+            return redirect()->route("survey_set.index")->with('success', 'Survey Set created successfully.');
+        } catch (Exception $e) {
+            DB::rollback();
+            return redirect()->route("survey_set.index")->with('error', 'Unable to create Survey Set. Please try again later.');
+        }
+    }
+
+    public function edit($id)
+    {
+        $decrypt_id = decrypt($id);
+
+        $survey_set = SurveySet::find($decrypt_id);
+
+        
+        $data = [
+            'title' => $survey_set->title,
+            'description' => $survey_set->description,
+            'question_data' => json_decode($survey_set->question_data),
+            'status' => $survey_set->status
+        ];
+
+        $query_questions = Question::where('status',1)->get();
+
+        $questions = array();
+
+        foreach($query_questions as $question) {
+            $questions[] = array(
+                'id' => $question->id,
+                'field_name' => $question->field_name,
+                'required_field' => $question->required_field,
+                'field_type' => $question->field_type,
+                'options' => json_decode($question->sub_field_type),
+            );
+        }
+
+        return view('survey_set.edit', ['survey_set' => $data,'questions' => $questions,'id' => $id]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'questions' => 'required|array'
+        ]);
+
+        $questions = [];
+        $decrypt_id = decrypt($id);
+        $survey_set = SurveySet::find($decrypt_id);
+
+        foreach($request->questions as $question) {
+            array_push($questions,$question);
+        }
+
+        DB::beginTransaction();
+        try{
+
+            $survey_set->title = $request->title;
+            $survey_set->slug = Str::slug($request->title,'-');
+            $survey_set->description = $request->description;
+            $survey_set->question_data = json_encode(['question_ids' => $questions]);
+            $survey_set->status = 1;
+            $survey_set->save();
+
+            DB::commit();
+            return redirect()->route("survey_set.index")->with('success', 'Survey Set updated successfully.');
+        } catch (Exception $e) {
+            DB::rollback();
+            return redirect()->route("survey_set.index")->with('error', 'Unable to update survey set. Please try again later.');
+        }
+    }
+
+    public function destroy($id)
+    {
+        $decrypt_id = decrypt($id);
+        $survey_set = SurveySet::find($decrypt_id);
+
+
+        if (empty($survey_set)) {
+            return returnNotFoundResponse('This Survey Set does not exist');
+        }
+
+        $hasDeleted = $survey_set->delete();
+        if ($hasDeleted) {
+            return returnSuccessResponse('Survey Set deleted successfully');
+        }
+
+        return returnErrorResponse('Something went wrong. Please try again later');    
+    }
+}
