@@ -942,15 +942,16 @@
             var product = $('#product').val();
             var region = $('#region_demo').val();
             var province = $('#province_demo').val();
-            axios.get('/dashboard/getDemoPerformed/' + product + '/' + region + '/' + province).then(response => {
-                $('#demoPerformed').text(response.data);
-            });
-            axios.get('/dashboard/getSampleUsed/' + product + '/' + region + '/' + province).then(response => {
-                $('#sampleUsed').text(response.data);
+            loadDemoMap(product, region, province);
+            // axios.get('/dashboard/getDemoPerformed/' + product + '/' + region + '/' + province).then(response => {
+            //     $('#demoPerformed').text(response.data);
+            // });
+            // axios.get('/dashboard/getSampleUsed/' + product + '/' + region + '/' + province).then(response => {
+            //     $('#sampleUsed').text(response.data);
 
-                // Load Google Map and add markers
-                loadDemoMap(product, region, province);
-            });
+            //     // Load Google Map and add markers
+            //     loadDemoMap(product, region, province);
+            // });
         });
 
 
@@ -980,7 +981,7 @@
                         if (!isNaN(latitude) && !isNaN(longitude)) {
                             var markerColor;
 
-                            console.log(latitude,longitude);
+                            
                             var marker = new google.maps.Marker({
                                 position: {
                                     lat: latitude,
@@ -999,7 +1000,7 @@
                             // Create farm images HTML
                             var farmImagesHTML = '';
                             point.farm_image.split(',').forEach(function(image) {
-                                console.log(image)
+                                
                                 farmImagesHTML += '<a href="' + image +
                                     '" target="_blank"><img src="https://digisaka.info/' +
                                     image +
@@ -1250,70 +1251,70 @@
                 });
             });
         });
-        Highcharts.chart('sample-pie', {
-            chart: {
-                type: 'pie'
-            },
-            title: {
-                text: 'Sample Chart'
-            },
-            tooltip: {
-                valueSuffix: '%'
-            },
-            subtitle: {
-                text: 'Source:<a href="https://www.mdpi.com/2072-6643/11/3/684/htm" target="_default">MDPI</a>'
-            },
-            plotOptions: {
-                series: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: [{
-                        enabled: true,
-                        distance: 20
-                    }, {
-                        enabled: true,
-                        distance: -40,
-                        format: '{point.percentage:.1f}%',
-                        style: {
-                            fontSize: '1.2em',
-                            textOutline: 'none',
-                            opacity: 0.7
-                        },
-                        filter: {
-                            operator: '>',
-                            property: 'percentage',
-                            value: 10
-                        }
-                    }]
-                }
-            },
-            series: [{
-                name: 'Percentage',
-                colorByPoint: true,
-                data: [{
-                        name: 'Water',
-                        y: 55.02
-                    },
-                    {
-                        name: 'Fat',
-                        sliced: true,
-                        selected: true,
-                        y: 26.71
-                    },
-                    {
-                        name: 'Carbohydrates',
-                        y: 1.09
-                    },
-                    {
-                        name: 'Protein',
-                        y: 15.5
-                    },
-                    {
-                        name: 'Ash',
-                        y: 1.68
-                    }
-                ]
-            }]
-        });
+        // Highcharts.chart('sample-pie', {
+        //     chart: {
+        //         type: 'pie'
+        //     },
+        //     title: {
+        //         text: 'Sample Chart'
+        //     },
+        //     tooltip: {
+        //         valueSuffix: '%'
+        //     },
+        //     subtitle: {
+        //         text: 'Source:<a href="https://www.mdpi.com/2072-6643/11/3/684/htm" target="_default">MDPI</a>'
+        //     },
+        //     plotOptions: {
+        //         series: {
+        //             allowPointSelect: true,
+        //             cursor: 'pointer',
+        //             dataLabels: [{
+        //                 enabled: true,
+        //                 distance: 20
+        //             }, {
+        //                 enabled: true,
+        //                 distance: -40,
+        //                 format: '{point.percentage:.1f}%',
+        //                 style: {
+        //                     fontSize: '1.2em',
+        //                     textOutline: 'none',
+        //                     opacity: 0.7
+        //                 },
+        //                 filter: {
+        //                     operator: '>',
+        //                     property: 'percentage',
+        //                     value: 10
+        //                 }
+        //             }]
+        //         }
+        //     },
+        //     series: [{
+        //         name: 'Percentage',
+        //         colorByPoint: true,
+        //         data: [{
+        //                 name: 'Water',
+        //                 y: 55.02
+        //             },
+        //             {
+        //                 name: 'Fat',
+        //                 sliced: true,
+        //                 selected: true,
+        //                 y: 26.71
+        //             },
+        //             {
+        //                 name: 'Carbohydrates',
+        //                 y: 1.09
+        //             },
+        //             {
+        //                 name: 'Protein',
+        //                 y: 15.5
+        //             },
+        //             {
+        //                 name: 'Ash',
+        //                 y: 1.68
+        //             }
+        //         ]
+        //     }]
+        // });
     </script>
 @endpush

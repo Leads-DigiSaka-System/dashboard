@@ -55,7 +55,7 @@
             let xaxis = [];
             let yaxis = [];
 
-            console.log(data);
+            
             for (const [x,y] of Object.entries(data)) {
                 xaxis.push(x)
                 yaxis.push(y)
