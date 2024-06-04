@@ -65,7 +65,7 @@
                 <a class="nav-link navs" id="tab5" data-toggle="tab" href="#content5">Data Summary</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link navs" id="tab5" data-toggle="tab" href="#content6">Links</a>
+                <a class="nav-link navs" id="tab5" data-toggle="tab" href="#content6">Map Explorers</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link navs" id="tab9" data-toggle="tab" href="#content9">Solutions</a>
@@ -102,12 +102,15 @@
                     <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Lakbay Palay</a></li>
                 </ul>
             </li>
-
-            <li class="nav-item">
-                <a class="nav-link navs" id="tab2" data-toggle="tab" href="#content2">Survey Results</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link navs" id="tab2" data-toggle="tab" href="#content10">Survey Results V2</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
+                    aria-expanded="false">
+                    Survey Results
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link navs" id="tab2" data-toggle="tab" href="#content2">Version 1</a></li>
+                    <li><a class="nav-link navs" id="tab2" data-toggle="tab" href="#content10">Version 2</a></li>
+                </ul>
             </li>
             {{-- <li class="nav-item">
                 <a class="nav-link navs" id="tab3" data-toggle="tab" href="#content3">Rice Derby</a>

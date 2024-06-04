@@ -6,8 +6,8 @@ $(document).ready(function() {
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             { data: 'full_name', name: 'full_name' },
             { data: 'farm_id', name: 'farm_id' },
+            { data: 'date', name: 'date' },
             { data: 'status', name: 'status' },
-            
             { data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         dom: 'Bfrtip',
