@@ -113,6 +113,20 @@ class Farms extends Model
     {
         return self::with('farmerDetails')->where('farmer_id',$farmer_id)->get();
     }
+    public function getFarmAll($demo = 'all', $category = 'all')
+    {
+        $query = self::with('farmerDetails');
+
+        if ($demo !== 'all') {
+            $query->where('isDemo', $demo);
+        }
+
+        if ($category !== 'all') {
+            $query->where('category', $category);
+        }
+
+        return $query->get();
+    }
       public function getFarmDetail($farm_id)
     {
         return self::with('farmerDetails')->where('id',$farm_id)->first();

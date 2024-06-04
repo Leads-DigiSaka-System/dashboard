@@ -1,10 +1,9 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddNewColumFarmsTable extends Migration
+class AddIsDemoAndCategoryToFarmsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +13,8 @@ class AddNewColumFarmsTable extends Migration
     public function up()
     {
         Schema::table('farms', function (Blueprint $table) {
-            $table->string('image_latitude')->nullable();
-            $table->dropColumn('image_latitude')->nullable();
+            $table->boolean('isDemo')->default(0);
+            $table->string('category')->nullable();
         });
     }
 
@@ -26,9 +25,10 @@ class AddNewColumFarmsTable extends Migration
      */
     public function down()
     {
-         Schema::table('farms', function (Blueprint $table) {
-            $table->dropColumn('image_latitude');
-            $table->dropColumn('image_longitude');
+        Schema::table('farms', function (Blueprint $table) {
+            $table->dropColumn('isDemo');
+            $table->dropColumn('category');
         });
     }
 }
+

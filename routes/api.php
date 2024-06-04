@@ -57,7 +57,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 		Route::get('/farmers/{referer}', 'AccountController@getFarmerByReferer')->name('getFarmerByReferer');
 		
 		Route::get('/farms/{id}', 'FarmController@getFarmsByID')->name('getFarmsByID');
-
+		Route::get('/farms/{demo}/{category}', 'FarmController@getFarms')->name('getFarms');
         // Get Weather data base on lat long
 		Route::get('/weather/{api_key}/{latitude}/{longitude}/{data?}/{days?}', 'HomeController@weatherFromLatLng')->name('weatherFromLatLng');
 				

@@ -191,8 +191,7 @@ class FarmController extends Controller
 
 
     }
-
-    public function getFarmsByID($id,Farms $farms){
+    public function getFarm($id,Farms $farms){
         $farmObj=$farms->getFarmList($id);
         $listArr=array();
 
@@ -215,4 +214,29 @@ class FarmController extends Controller
         }
         return returnSuccessResponse('Farm list get successfully.', $listArr);
     }
+    public function getFarms($demo, $category, Farms $farms)
+    {
+        $farmObj=$farms->getFarmAll($demo, $category);
+        $listArr=array();
+
+        if(!empty($farmObj))
+        {
+            foreach ($farmObj as $key => $value) {
+
+            $survey_detail=Survey::where('farmer_id',Auth::id())->where('farm_id',$value->id)->first();
+            if(!empty($survey_detail))
+            {
+                $value->isSurvey=true;
+            }
+            else{
+                $value->isSurvey=false;
+            }
+
+            $value['farm_image']=explode(',' ,$value->farm_image);
+            array_push($listArr,$value);
+         }
+        }
+        return returnSuccessResponse('Farm list get successfully.', $listArr);
+    }
+       
 }
