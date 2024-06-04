@@ -743,6 +743,7 @@
 @endsection
 @push('scripts')
     @include('dashboard.chartScript')
+    @include('dashboard.chart_v2_script')
     <script>
         window.onload = function() {
             // fetchDistinctFilters();

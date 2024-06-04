@@ -52,89 +52,7 @@ class DashboardController extends Controller
     
     public function index()
     {
-        $question_sets = QuestionSet::get();
-                    //->whereIN('question_id',[2,3,4])
-                    //->get();
-
-        $surveyList = Survey::where('version',2)->get();
-
-        $survey_array = array();
-        $skippedCount = 0;
-        $answeredCount = 0;
-        $questions = array();
-        // foreach($surveyList as $survey){
-        //     $survey_data = json_decode($survey->survey_data);
-
-            
-        //     foreach($survey_data as $data) {
-        //         foreach($question_sets as $set) {
-        //             if(count($survey_data) == 13) {
-        //                 if($set->question_id == $data->question_id && $set->survey_id = ) {
-        //                     if(array_key_exists($set->question,$questions)) {
-        //                         if(array_key_exists($data->answer, $questions[$set->question])) {
-        //                             if($data->answer == "") {
-        //                                 $skippedCount++;
-        //                             } else {
-        //                                 $answeredCount++;
-        //                                 $questions[2][$set->question][$data->answer] += 1;
-        //                             }
-        //                         } else {
-        //                             if($data->answer == "") {
-        //                                 $skippedCount++;
-        //                             } else {
-        //                                 $answeredCount++;
-        //                                 $questions[2][$set->question][$data->answer] = 1;
-        //                             }
-        //                         }
-        //                     } else {
-        //                         if($data->answer == "") {
-        //                             $skippedCount++;
-        //                         } else {
-        //                             $answeredCount++;
-        //                             $questions[2][$set->question][$data->answer] = 1;
-        //                         }
-                                
-        //                     }
-                            
-        //                 }
-        //             }
-        //             else if(count($survey_data) == 41) {
-        //                 if($set->question_id == $data->question_id) {
-        //                     if(array_key_exists($set->question,$questions)) {
-        //                         if(array_key_exists($data->answer, $questions[$set->question])) {
-        //                             if($data->answer == "") {
-        //                                 $skippedCount++;
-        //                             } else {
-        //                                 $answeredCount++;
-        //                                 $questions[1][$set->question][$data->answer] += 1;
-        //                             }
-        //                         } else {
-        //                             if($data->answer == "") {
-        //                                 $skippedCount++;
-        //                             } else {
-        //                                 $answeredCount++;
-        //                                 $questions[1][$set->question][$data->answer] = 1;
-        //                             }
-        //                         }
-        //                     } else {
-        //                         if($data->answer == "") {
-        //                             $skippedCount++;
-        //                         } else {
-        //                             $answeredCount++;
-        //                             $questions[1][$set->question][$data->answer] = 1;
-        //                         }
-                                
-        //                     }
-                            
-        //                 }
-        //             }
-        //         }
-        //     }
-
-        // }
-
-        //dd($questions);
-
+        
         $farmerPercent = $this->getPercentageCount("User");
         $farmPercent = $this->getPercentageCount("Farms");
         $surveyPercent = $this->getPercentageCount("Survey");
@@ -1665,58 +1583,163 @@ class DashboardController extends Controller
     }
 
     public function getSurveyV2() {
-        $query = Survey::getAllSurveyByVersion(2);
-        $responseCounts = [
-            'Male' => 0,
-            'Female' => 0
-        ];
-        $skippedCount = 0;
-        $answeredCount = 0;
-        $question = '';
+        $question_sets = QuestionSet::get();
+        $surveyList = Survey::where('version',2)->get();
 
-        foreach ($query as $data) {
-            $surveyData = json_decode($data['survey_data'], true);
-            $surveyResponseData = json_decode($surveyData['surveyResponse'], true);
-            //     echo '<pre>';
-            // print_r($surveyResponseData);
-            // echo '</pre>';
-            if (isset($surveyResponseData['responses']) && is_array($surveyResponseData['responses'])) {
-                foreach ($surveyResponseData['responses'] as $response) {
-                    if (isset($response['question_id']) && $response['question_id'] === '130208197') {
-                        $question = $response['question_value'];
-                        if (isset($response['answers']) && is_array($response['answers'])) {
-                            if (empty($response['answers'])) {
-                                $skippedCount++;
-                            } else {
-                                $answeredCount++;
-                                foreach ($response['answers'] as $answer) {
-                                    $answerValue = $answer['row_value'];
+        $survey_array = array();
+        
+        $questions = array( 2 => array());
+        foreach($surveyList as $survey){
+            $survey_data = json_decode($survey->survey_data);
 
-                                    if (array_key_exists($answerValue, $responseCounts)) {
-                                        $responseCounts[$answerValue]++;
-                                    }
-                                }
-                            }
-                        }
+            foreach($survey_data as $data) {
+                $skippedCount = 0;
+                $answeredCount = 0;
+                foreach($question_sets as $set) {
+                    if(count($survey_data) == 13 && $set->survey_id == 2 ) {
+                        $this->transformSurveyData($questions, 2, $data, $set);
+
+                        // if($set->question_id == $data->question_id) {
+                        //     if(array_key_exists($set->question,$questions[2])) {
+                        //         if(array_key_exists($data->answer, $questions[2][$set->question])) {
+                        //             if($data->answer == "") {
+                        //                 $skippedCount++;
+                        //             } else {
+                        //                 $answeredCount++;
+                        //                 $questions[2][$set->question][$data->answer] += 1;
+                        //             }
+                        //         } else {
+                        //             if($data->answer == "") {
+                        //                 $skippedCount++;
+                        //             } else {
+                        //                 $answeredCount++;
+                        //                 $questions[2][$set->question][$data->answer] = 1;
+                        //             }
+                        //         }
+
+                        //         if(array_key_exists('skippedCount', $questions[2][$set->question])) {
+                        //             $questions[2][$set->question]['skippedCount'] += $skippedCount;
+                        //         } else {
+                        //             $questions[2][$set->question]['skippedCount'] = 1;
+                        //         }
+
+                        //         if(array_key_exists('answeredCount', $questions[2][$set->question])) {
+                        //             $questions[2][$set->question]['answeredCount'] += $answeredCount;
+                        //         } else {
+                        //             $questions[2][$set->question]['answeredCount'] = 1;
+                        //         }
+
+                        //     } else {
+                        //         if($data->answer == "") {
+                        //             $skippedCount++;
+                        //             $questions[2][$set->question]['answeredCount'] = 1;
+                        //         } else {
+                        //             $answeredCount++;
+                        //             $questions[2][$set->question][$data->answer] = 1;
+                        //             $questions[2][$set->question]['answeredCount'] = 1;
+                        //         }
+                                
+                        //     }
+                        // }
                     }
+                    /*else if(count($survey_data) == 41 && $set->survey_id == 1) {
+                        if($set->question_id == $data->question_id) {
+                            $this->transformSurveyData($questions, 1, $data, $set);
+                            // if(array_key_exists($set->question,$questions[1])) {
+                            //     if(array_key_exists($data->answer, $questions[1][$set->question])) {
+                            //         if($data->answer == "") {
+                            //             $skippedCount++;
+                            //         } else {
+                            //             $answeredCount++;
+                            //             $questions[1][$set->question][$data->answer] += 1;
+                            //         }
+                            //     } else {
+                            //         if($data->answer == "") {
+                            //             $skippedCount++;
+                            //         } else {
+                            //             $answeredCount++;
+                            //             $questions[1][$set->question][$data->answer] = 1;
+                            //         }
+                            //     }
+                            // } else {
+                            //     if($data->answer == "") {
+                            //         $skippedCount++;
+                            //     } else {
+                            //         $answeredCount++;
+                            //         $questions[1][$set->question][$data->answer] = 1;
+                            //     }
+                            // }
+                        }
+                    }*/
                 }
             }
+
         }
 
-        $totalResponses = $skippedCount + $answeredCount;
+        $chartData = array();
+        $chart_no = 1;
+        foreach($questions[2] as $key => $value) {
 
-        if ($totalResponses > 0) {
-            foreach ($responseCounts as $key => $count) {
-                $responseCounts[$key] = ($count / $totalResponses) * 100;
+            $chartData[] = array(
+                'title' => $key,
+                'categories' => array_keys($value['answers']),
+                'data' => array_values($value['answers']),
+                'answeredCount' => $value['answeredCount'],
+                'skippedCount' => $value['skippedCount'],
+                'element_id' => "element{$chart_no}"
+            );
+
+            $chart_no++;
+        }
+
+        return response()->json($chartData);
+    }
+
+    private function transformSurveyData(&$questions, $survey_id, $data, $set) {
+        $skippedCount = 0;
+        $answeredCount = 0;
+        if($set->question_id == $data->question_id) {
+            if(array_key_exists($set->question,$questions[$survey_id])) {
+                if(array_key_exists($data->answer, $questions[$survey_id][$set->question]['answers'])) {
+                    if($data->answer == "") {
+                        $skippedCount++;
+                    } else {
+                        $answeredCount++;
+                        $questions[$survey_id][$set->question]['answers'][$data->answer] += 1;
+                        $questions[$survey_id][$set->question]['answers'][$data->answer] += 1;
+                    }
+                } else {
+                    if($data->answer == "") {
+                        $skippedCount++;
+                    } else {
+                        $answeredCount++;
+                        $questions[$survey_id][$set->question]['answers'][$data->answer] = 1;
+                    }
+                }
+
+                if(array_key_exists('skippedCount', $questions[$survey_id][$set->question])) {
+                    $questions[$survey_id][$set->question]['skippedCount'] += $skippedCount;
+                } else {
+                    $questions[$survey_id][$set->question]['skippedCount'] = 1;
+                }
+
+                if(array_key_exists('answeredCount', $questions[$survey_id][$set->question])) {
+                    $questions[$survey_id][$set->question]['answeredCount'] += $answeredCount;
+                } else {
+                    $questions[$survey_id][$set->question]['answeredCount'] = 1;
+                }
+
+            } else {
+                if($data->answer == "") {
+                    $skippedCount++;
+                    $questions[$survey_id][$set->question]['answeredCount'] = 1;
+                } else {
+                    $answeredCount++;
+                    $questions[$survey_id][$set->question]['answers'][$data->answer] = 1;
+                    $questions[$survey_id][$set->question]['answeredCount'] = 1;
+                }
+                
             }
         }
-
-        $result = [
-            'categories' => array_keys($responseCounts),
-            'data' => array_values($responseCounts),
-            'skipped' => $skippedCount,
-            'answered' => $answeredCount,
-            'question' => $question
-        ];
     }
 }

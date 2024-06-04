@@ -4,7 +4,7 @@
                     <div class="card rounded-3 shadow-sm">
                         <div class="card-body">
                             <figure class="highcharts-figure">
-                                <div id="age"></div>
+                                <div id="element1"></div>
                             </figure>
                         </div>
                     </div>
@@ -13,155 +13,118 @@
                     <div class="card rounded-3 shadow-sm">
                         <div class="card-body">
                             <figure class="highcharts-figure">
-                                <div id="gender"></div>
+                                <div id="element2"></div>
                             </figure>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 col-lg-6">
+                <div class="col-md-6">
                     <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
+                        <div class="card-body">
                             <figure class="highcharts-figure">
-                                <div id="farmCount"></div>
-                            </figure>
-                        </div>
-                    </div>
-
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
-                            <figure class="highcharts-figure">
-                                <div id="farmOwnership"></div>
-                            </figure>
-                        </div>
-                    </div>
-
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
-                            <figure class="highcharts-figure">
-                                <div id="farmEquip"></div>
-                            </figure>
-                        </div>
-                    </div>
-
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
-                            <figure class="highcharts-figure">
-                                <div id="farmIrrigated"></div>
-                            </figure>
-                        </div>
-                    </div>
-
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
-                            <figure class="highcharts-figure">
-                                <div id="harvest"></div>
-                            </figure>
-                        </div>
-                    </div>
-
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
-                            <figure class="highcharts-figure">
-                                <div id="seedType"></div>
-                            </figure>
-                        </div>
-                    </div>
-
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
-                            <figure class="highcharts-figure">
-                                <div id="cropPractice"></div>
-                            </figure>
-                        </div>
-                    </div>
-
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
-                            <figure class="highcharts-figure">
-                                <div id="fertilizer"></div>
-                            </figure>
-                        </div>
-                    </div>
-
-                    <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
-                            <figure class="highcharts-figure">
-                                <div id="farmProblem"></div>
+                                <div id="element3"></div>
                             </figure>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-6">
+                <div class="col-md-6">
                     <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
+                        <div class="card-body">
                             <figure class="highcharts-figure">
-                                <div id="farmNotice"></div>
+                                <div id="element4"></div>
                             </figure>
                         </div>
                     </div>
-
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
                     <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
+                        <div class="card-body">
                             <figure class="highcharts-figure">
-                                <div id="commonPest"></div>
+                                <div id="element5"></div>
                             </figure>
                         </div>
                     </div>
-
+                </div>
+                <div class="col-md-6">
                     <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
+                        <div class="card-body">
                             <figure class="highcharts-figure">
-                                <div id="sell"></div>
+                                <div id="element6"></div>
                             </figure>
                         </div>
                     </div>
-
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
                     <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
+                        <div class="card-body">
                             <figure class="highcharts-figure">
-                                <div id="priceFactor"></div>
+                                <div id="element7"></div>
                             </figure>
                         </div>
                     </div>
-
+                </div>
+                <div class="col-md-6">
                     <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
+                        <div class="card-body">
                             <figure class="highcharts-figure">
-                                <div id="appBased"></div>
+                                <div id="element8"></div>
                             </figure>
                         </div>
                     </div>
-
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
                     <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
+                        <div class="card-body">
                             <figure class="highcharts-figure">
-                                <div id="initiatives"></div>
+                                <div id="element9"></div>
                             </figure>
                         </div>
                     </div>
-
+                </div>
+                <div class="col-md-6">
                     <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
+                        <div class="card-body">
                             <figure class="highcharts-figure">
-                                <div id="phoneClass"></div>
+                                <div id="element10"></div>
                             </figure>
                         </div>
                     </div>
-
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
                     <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
+                        <div class="card-body">
                             <figure class="highcharts-figure">
-                                <div id="smartphoneApp"></div>
+                                <div id="element11"></div>
                             </figure>
                         </div>
                     </div>
-
+                </div>
+                <div class="col-md-6">
                     <div class="card rounded-3 shadow-sm">
-                        <div class="p-2">
+                        <div class="card-body">
                             <figure class="highcharts-figure">
-                                <div id="farmGroupApp"></div>
+                                <div id="element12"></div>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card rounded-3 shadow-sm">
+                        <div class="card-body">
+                            <figure class="highcharts-figure">
+                                <div id="element13"></div>
                             </figure>
                         </div>
                     </div>
