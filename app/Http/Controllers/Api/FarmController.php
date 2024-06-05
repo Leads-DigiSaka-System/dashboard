@@ -191,7 +191,7 @@ class FarmController extends Controller
 
 
     }
-    public function getFarm($id,Farms $farms){
+    public function getFarmsByID($id,Farms $farms){
         $farmObj=$farms->getFarmList($id);
         $listArr=array();
 
