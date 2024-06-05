@@ -79,12 +79,12 @@
 									</div>
 								</div>
 
-								@foreach($survey_set['question_data']->question_ids as  $question_id)
+								@foreach($survey_set['questionnaire_data']->questionnaire_ids as  $questionnaire_id)
 									<div class="row mb-1 {{ !$loop->first ? 'additional_option' :'' }}">
 										<div class="col-sm-12">
 											<div class="form-group">
 												<label 
-												for="questions" 
+												for="questionnaires" 
 												class="fs-5 fw-bold ">
 													Question *
 												</label>
@@ -92,13 +92,13 @@
 													<i class="float-end fas fa-times mr-2 remove_btn text-danger fs-3"></i>
 												@endif
 												<select 
-												class="form-select rounded-0 {{ $errors->has('questions') ? ' is-invalid' : '' }}" 
-												name="questions[]" 
-												id="questions" 
+												class="form-select rounded-0 {{ $errors->has('questionnaires') ? ' is-invalid' : '' }}" 
+												name="questionnaires[]" 
+												id="questionnaires" 
 												aria-label="Default select example">
-													<option selected disabled>Select Question</option>
-													@foreach($questions as $question)
-														<option value="{{ $question['id'] }}" {{ $question['id'] == $question_id ? 'selected' :'' }}>{{ $question['field_name'] }}</option>
+													<option selected disabled>Select Questionnaire</option>
+													@foreach($questionnaires as $questionnaire)
+														<option value="{{ $questionnaire['id'] }}" {{ $questionnaire['id'] == $questionnaire_id ? 'selected' :'' }}>{{ $questionnaire['title'] }}</option>
 													@endforeach
 												</select>
 
@@ -120,7 +120,7 @@
 						<!-- /.card-body -->
 						<div class="card-footer d-flex justify-content-center">
 							<a href="{{ route('survey_set.index') }}" class="btn btn-secondary me-1">Cancel</a>
-							<button type="button" id="add_question_btn" class="btn btn-info me-1">Add Question</button>
+							<button type="button" id="add_questionnaire_btn" class="btn btn-info me-1">Add Questionnaire</button>
 							<button type="submit" class="btn btn-success">Submit</button>
 						</div>
 					</div>
@@ -137,7 +137,7 @@
 
 @push('page_script')
 	<script>
-		const questions = {!! json_encode($questions) !!}
+		const questionnaires = {!! json_encode($questionnaires) !!}
 	</script>
-	<script src="{{ asset('js/pages/questionnaires/add.js') }}"></script>
+	<script src="{{ asset('js/pages/survey_set/add.js') }}"></script>
 @endpush

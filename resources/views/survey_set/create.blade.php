@@ -81,22 +81,22 @@
 											<label 
 											for="questions" 
 											class="fs-5 fw-bold ">
-												Question *
+												Questionnaire *
 											</label>
 											<select 
-											class="form-select rounded-0 {{ $errors->has('questions') ? ' is-invalid' : '' }}" 
-											name="questions[]" 
-											id="questions" 
+											class="form-select rounded-0 {{ $errors->has('questionnaires') ? ' is-invalid' : '' }}" 
+											name="questionnaires[]" 
+											id="questionnaires" 
 											aria-label="Default select example">
-												<option selected disabled>Select Question</option>
-												@foreach($questions as $question)
-													<option value="{{ $question['id'] }}">{{ $question['field_name'] }}</option>
+												<option selected disabled>Select Questionnaires</option>
+												@foreach($questionnaires as $questionnaire)
+													<option value="{{ $questionnaire['id'] }}">{{ $questionnaire['title'] }}</option>
 												@endforeach
 											</select>
 
 											@if ($errors->has('questions'))
 		                                        <span class="invalid-feedback" role="alert">
-		                                            <strong>{{ $errors->first('questions') }}</strong>
+		                                            <strong>{{ $errors->first('questionnaires') }}</strong>
 		                                        </span>
 		                                    @endif
 										</div>
@@ -108,7 +108,7 @@
 						<!-- /.card-body -->
 						<div class="card-footer d-flex justify-content-center">
 							<a href="{{ route('survey_set.index') }}" class="btn btn-secondary me-1">Cancel</a>
-							<button type="button" id="add_question_btn" class="btn btn-info me-1">Add Question</button>
+							<button type="button" id="add_questionnaire_btn" class="btn btn-info me-1">Add Questionnaire</button>
 							<button type="submit" class="btn btn-success">Submit</button>
 						</div>
 					</div>
@@ -125,7 +125,7 @@
 
 @push('page_script')
 	<script>
-		const questions = {!! json_encode($questions) !!}
+		const questionnaires = {!! json_encode($questionnaires) !!}
 	</script>
-	<script src="{{ asset('js/pages/questionnaires/add.js') }}"></script>
+	<script src="{{ asset('js/pages/survey_set/add.js') }}"></script>
 @endpush

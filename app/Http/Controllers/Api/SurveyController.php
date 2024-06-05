@@ -151,35 +151,53 @@ class SurveyController extends Controller
 
         $survey_set = SurveySet::find($decrypt_id);
 
-        $data = array();
+        
+        $survey = array();
 
         if(!empty($survey_set)) {
-        	$decoded_ids = json_decode($survey_set->question_data);
+        	$decoded_questionnare_ids = json_decode($survey_set->questionnaire_data);
+        	$questionnaires = array();
+        	foreach($decoded_questionnare_ids->questionnaire_ids as $questionnaire_id) {
+        		$questionnaire = Questionnaire::find($questionnaire_id);
 
-        	$questions = array();
-        	foreach($decoded_ids->question_ids as $question_id) {
-        		$question = Question::find($question_id);
-        		$sub_field_type = json_decode($question->sub_field_type);
+        		if(!empty($questionnaire)) {
+		        	$decoded_ids = json_decode($questionnaire->question_data);
 
-        		$arr = !empty($sub_field_type->choices) ? implode(", ", $sub_field_type->choices) : "";
+		        	$questions = array();
+		        	foreach($decoded_ids->question_ids as $question_id) {
+		        		$question = Question::find($question_id);
+		        		$sub_field_type = json_decode($question->sub_field_type);
 
-        		$questions[] = [
-        			'field_name' => $question->field_name,
-        			'field_type' => $question->field_type,
-        			'choices' => $arr,
-        			'is_required' => $question->required_field == 1 ? 'required' : 'not required'
-        		];
+		        		$arr = !empty($sub_field_type->choices) ? implode(", ", $sub_field_type->choices) : "";
+
+		        		$questions[] = [
+		        			'question_id' => $question->id,
+		        			'field_name' => $question->field_name,
+		        			'field_type' => $question->field_type,
+		        			'choices' => $arr,
+		        			'is_required' => $question->required_field == 1 ? 'required' : 'not required'
+		        		];
+
+		        	}
+
+		        	$questionnaires[] = [
+		        		'questionnaire_id' => $questionnaire->id,
+		        		'questionnaire_title' => $questionnaire->title,
+		        		'description' => $questionnaire->description,
+		        		'questions' => $questions
+		        	];
+		        }
 
         	}
 
-        	$data = [
-        		'id' => encrypt($survey_set->id),
+        	$survey = [
+        		'survey_id' => encrypt($survey_set->id),
         		'title' => $survey_set->title,
         		'description' => $survey_set->description,
-        		'questions' => $questions
+        		'questionnaires' => $questionnaires
         	];
         }
 
-        return json_encode($data);
+        return json_encode($survey);
     }
 }

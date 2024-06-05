@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Question;
+use App\Models\Questionnaire;
 use App\Models\SurveySet;
 
 use Illuminate\Support\Str;
@@ -64,21 +65,18 @@ class SurveySetController extends Controller
     }
 
     public function create() {
-        $questions = Question::where('status',1)->get();
+        $questionnaires = Questionnaire::where('status',1)->get();
 
         $data = array();
 
-        foreach($questions as $question) {
+        foreach($questionnaires as $questionnaire) {
             $data[] = array(
-                'id' => $question->id,
-                'field_name' => $question->field_name,
-                'required_field' => $question->required_field,
-                'field_type' => $question->field_type,
-                'options' => json_decode($question->sub_field_type),
+                'id' => $questionnaire->id,
+                'title' => $questionnaire->title
             );
         }
 
-        return view('survey_set.create', ['questions' => $data]);
+        return view('survey_set.create', ['questionnaires' => $data]);
     }
 
     public function store(Request $request)
@@ -86,13 +84,13 @@ class SurveySetController extends Controller
         $validated = $request->validate([
             'title' => 'required|string',
             'description' => 'required|string',
-            'questions' => 'required|array'
+            'questionnaires' => 'required|array'
         ]);
 
-        $questions = [];
+        $questionnaires = [];
 
-        foreach($request->questions as $question) {
-            array_push($questions,$question);
+        foreach($request->questionnaires as $questionnaire) {
+            array_push($questionnaires,$questionnaire);
         }
 
         DB::beginTransaction();
@@ -101,7 +99,7 @@ class SurveySetController extends Controller
                 'title' => $request->title,
                 'slug' => Str::slug($request->title,'-'),
                 'description' => $request->description,
-                'question_data' => json_encode(['question_ids' => $questions]),
+                'questionnaire_data' => json_encode(['questionnaire_ids' => $questionnaires]),
                 'status' => 1
             ]);
 
@@ -123,25 +121,22 @@ class SurveySetController extends Controller
         $data = [
             'title' => $survey_set->title,
             'description' => $survey_set->description,
-            'question_data' => json_decode($survey_set->question_data),
+            'questionnaire_data' => json_decode($survey_set->questionnaire_data),
             'status' => $survey_set->status
         ];
 
-        $query_questions = Question::where('status',1)->get();
+        $query_questionnaires = Questionnaire::get();
 
-        $questions = array();
+        $questionnaires = array();
 
-        foreach($query_questions as $question) {
-            $questions[] = array(
-                'id' => $question->id,
-                'field_name' => $question->field_name,
-                'required_field' => $question->required_field,
-                'field_type' => $question->field_type,
-                'options' => json_decode($question->sub_field_type),
+        foreach($query_questionnaires as $questionnaire) {
+            $questionnaires[] = array(
+                'id' => $questionnaire->id,
+                'title' => $questionnaire->title
             );
         }
 
-        return view('survey_set.edit', ['survey_set' => $data,'questions' => $questions,'id' => $id]);
+        return view('survey_set.edit', ['survey_set' => $data,'questionnaires' => $questionnaires,'id' => $id]);
     }
 
     public function update(Request $request, $id)
@@ -149,15 +144,15 @@ class SurveySetController extends Controller
         $validated = $request->validate([
             'title' => 'required|string',
             'description' => 'required|string',
-            'questions' => 'required|array'
+            'questionnaires' => 'required|array'
         ]);
 
-        $questions = [];
+        $questionnaires = [];
         $decrypt_id = decrypt($id);
         $survey_set = SurveySet::find($decrypt_id);
 
-        foreach($request->questions as $question) {
-            array_push($questions,$question);
+        foreach($request->questionnaires as $questionnaire) {
+            array_push($questionnaires,$questionnaire);
         }
 
         DB::beginTransaction();
@@ -166,7 +161,7 @@ class SurveySetController extends Controller
             $survey_set->title = $request->title;
             $survey_set->slug = Str::slug($request->title,'-');
             $survey_set->description = $request->description;
-            $survey_set->question_data = json_encode(['question_ids' => $questions]);
+            $survey_set->questionnaire_data = json_encode(['questionnaire_ids' => $questionnaires]);
             $survey_set->status = 1;
             $survey_set->save();
 

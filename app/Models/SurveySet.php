@@ -15,7 +15,7 @@ class SurveySet extends Model
         'title',
         'slug',
         'description',
-        'question_data',
+        'questionnaire_data',
         'status'
     ];
 
@@ -26,7 +26,7 @@ class SurveySet extends Model
             1=>'title',
             2=>'slug',
             3=>'description',
-            4=>'question_data',
+            4=>'questionnaire_data',
             5=>'status'
         ];
 
