@@ -193,6 +193,7 @@ class SurveyController extends Controller
         	$survey = [
         		'survey_id' => encrypt($survey_set->id),
         		'title' => $survey_set->title,
+        		'slug' => $survey_set->slug,
         		'description' => $survey_set->description,
         		'questionnaires' => $questionnaires
         	];
