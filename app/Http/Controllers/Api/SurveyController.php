@@ -130,6 +130,7 @@ class SurveyController extends Controller
         			'field_name' => $question->field_name,
         			'field_type' => $question->field_type,
         			'choices' => $arr,
+        			'conditional' => $question->conditional == 1 ? true : false,
         			'is_required' => $question->required_field == 1 ? 'required' : 'not required'
         		];
 
@@ -175,6 +176,7 @@ class SurveyController extends Controller
 		        			'field_name' => $question->field_name,
 		        			'field_type' => $question->field_type,
 		        			'choices' => $arr,
+		        			'conditional' => $question->conditional == 1 ? true : false,
 		        			'is_required' => $question->required_field == 1 ? 'required' : 'not required'
 		        		];
 

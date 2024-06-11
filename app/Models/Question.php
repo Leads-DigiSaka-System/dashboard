@@ -13,6 +13,7 @@ class Question extends Model
         'field_name',
         'field_type',
         'required_field',
+        'conditional',
         'sub_field_type',
         'status'
     ];
