@@ -73,3 +73,39 @@
     </div>
     
 </div>
+
+<div class="tab-pane fade show" id="content12" style="padding-right: 10px;">
+    <div class="row">
+        <div class="col-md-12 col-lg-3">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-body">
+                    <img class="w-100 zoom"  src="{{ asset('images/info-4.jpg') }}" alt="Infographics 4">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-3">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-body">
+                    <img class="w-100 zoom"  src="{{ asset('images/info-3.jpg') }}" alt="Infographics 4">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-3">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-body">
+                    <img class="w-100 zoom"  src="{{ asset('images/info-2.jpg') }}" alt="Infographics 4">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-3">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-body">
+                    <img class="w-100 zoom"  src="{{ asset('images/info-1.jpg') }}" alt="Infographics 4">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
