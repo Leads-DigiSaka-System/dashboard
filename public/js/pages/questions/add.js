@@ -100,6 +100,8 @@ field_type.addEventListener('change', function () {
 		$('#append_sub').parent().removeClass('d-none')
 		$('#append_sub').html(html)
 	} else {
+		add_option_btn.classList.add('d-none')
+		removeElementsByClass('additional_option')
 		$('#append_sub').parent().addClass('d-none')
 		$('#append_sub').html("")
 	}

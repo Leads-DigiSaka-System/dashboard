@@ -80,6 +80,21 @@
 
 								</div>
 							</div>
+							<div class="row mb-1">
+								<div class="col-sm-7 offset-sm-3">
+									<div class="form-check">
+										<input 
+										class="form-check-input" 
+										type="checkbox" 
+										id="conditional" 
+										name="conditional">
+										<label class="form-check-label" for="conditional">
+										Conditional Question?
+										</label>
+									</div>
+
+								</div>
+							</div>
 
 							<div class="row mb-1">
 								<div class="col-sm-3 text-right">
@@ -104,6 +119,7 @@
 										<option value="Date Picker">Date Picker</option>
 										<option value="Ratings">Ratings</option>
 										<option value="Image">Image</option>
+										<option value="Coordinates">Coordinates</option>
 									</select>
 								</div>
 								@if ($errors->has('field_type'))

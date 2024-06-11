@@ -89,7 +89,7 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->field_type == 'Date Picker' || $request->field_type == 'Image') {
+        if($request->field_type == 'Date Picker' || $request->field_type == 'Image' || $request->field_type == 'Coordinates') {
             $validated = $request->validate([
                 'field_name' => 'required|string',
                 'field_type' => 'required|string'
@@ -109,6 +109,7 @@ class QuestionController extends Controller
                 'field_name' => $request->field_name,
                 'field_type' => $request->field_type,
                 'required_field' => $request->required_field == 'on' ? 1 : 0,
+                'conditional' => $request->conditional == 'on' ? 1 : 0,
                 'sub_field_type' => json_encode(['choices' => empty($request->sub_field_type) ?"" : $request->sub_field_type]),
                 'status' => 1
             ]);
