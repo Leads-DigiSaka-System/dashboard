@@ -132,7 +132,7 @@ class SurveyController extends Controller
 
         			$arr2 = !empty($sub_field_type2->choices) ? implode(", ", $sub_field_type2->choices) : "";
 
-        			$sub_question['id'] = $query_question->id;
+        			$sub_question['question_id'] = $query_question->id;
         			$sub_question['field_name'] = $query_question->field_name;
         			$sub_question['field_type'] = $query_question->field_type;
         			$sub_question['choices'] = $arr2;
