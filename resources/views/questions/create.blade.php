@@ -55,7 +55,8 @@
 								      type="text" 
 								      name="field_name" 
 								      class="form-control rounded-0 {{ $errors->has('field_name') ? ' is-invalid' : '' }}" 
-								      id="field_name">
+								      id="field_name"
+								      value="{{ old('field_name') }}">
 								    </div>
 								    @if ($errors->has('field_name'))
                                         <span class="invalid-feedback" role="alert">
@@ -72,7 +73,8 @@
 										class="form-check-input" 
 										type="checkbox" 
 										id="required_field" 
-										name="required_field">
+										name="required_field"
+										{{ old('required_field') == "" ? "" : 'checked' }}>
 										<label class="form-check-label" for="required_field">
 										Required
 										</label>
@@ -87,7 +89,8 @@
 										class="form-check-input" 
 										type="checkbox" 
 										id="conditional" 
-										name="conditional">
+										name="conditional"
+										{{ old('conditional') == "" ? "" : 'checked' }}>
 										<label class="form-check-label" for="conditional">
 										Conditional Question?
 										</label>
@@ -96,7 +99,7 @@
 								</div>
 							</div>
 
-							<div class="row mb-1">
+							<div class="row mb-1" id="field_type_div">
 								<div class="col-sm-3 text-right">
 									<label 
 									for="staticEmail" 
@@ -129,6 +132,30 @@
                                 @endif
 							</div>
 
+							<div class="row mb-1 d-none" id="question_list_div">
+								<div class="col-sm-3 text-right">
+									<label 
+									for="staticEmail" 
+									class="col-form-label fw-bold" 
+									id="sub_question_label">
+										Question List *
+									</label>
+								</div>
+								
+								<div class="col-sm-7">
+									<select 
+									class="form-select rounded-0" 
+									name="sub_question" 
+									id="sub_question" 
+									aria-label="Default select example">
+										<option selected disabled>Select Question</option>
+										@foreach($questions as $question)
+											<option value="{{ $question->id }}">{{ $question->field_name }}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+
 							<div class="row mb-1 d-none">
 								<div class="col-sm-3 text-right">
 									<label 
@@ -148,7 +175,6 @@
                                     </span>
                                 @endif
 							</div>
-						
 					</div>
 					<!-- /.card-body -->
 					<div class="card-footer d-flex justify-content-center">

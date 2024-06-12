@@ -4,6 +4,7 @@ const form_body = document.getElementById('form-body')
 const field_type = document.getElementById('field_type')
 const sub_field_type = document.getElementById('sub_field_type')
 const sub_field_type_label = document.getElementById('sub_field_type_label')
+const conditional = document.getElementById('conditional')
 
 const add_option_btn = document.getElementById('add_option_btn')
 
@@ -110,6 +111,23 @@ field_type.addEventListener('change', function () {
 })
 
 add_option_btn.addEventListener('click',addOptions)
+
+conditional.addEventListener('change', function () {
+	add_option_btn.classList.add('d-none')
+	removeElementsByClass('additional_option')
+	$('#append_sub').parent().addClass('d-none')
+	$('#append_sub').html("")
+	field_type.selectedIndex = 0
+	if(this.checked) {
+		document.querySelector('#question_list_div').classList.remove('d-none')
+		document.querySelector('#field_type_div').classList.add('d-none')
+	} else {
+		document.querySelector('#question_list_div').classList.add('d-none')
+		document.querySelector('#field_type_div').classList.remove('d-none')
+
+		document.querySelector('#sub_question').selectedIndex = 0
+	}
+})
 
 $(document).on('click','.remove_btn', function () {
 	const element_row = $(this).parent().parent()

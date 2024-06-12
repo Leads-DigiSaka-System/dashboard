@@ -62,7 +62,7 @@
 					  <tr>
 					    <th>#</th>
 					    <th>Field Name</th>
-					    <th>Field Type</th>
+					    <th>Field Type / Sub Question</th>
 					    <th>Sub-Field Type / Choices Option</th>
 					  	<th>Date Created</th>
 					  	<th data-orderable="false">Status</th>

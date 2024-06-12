@@ -40,14 +40,27 @@ class QuestionController extends Controller
                         return $question->field_name;
                     })
                     ->addColumn('field_type', function ($question) {
-                        return $question->field_type;
+                        if($question->sub_question_id != 0) {
+                            $name = Question::find($question->sub_question_id);
+
+                            $name = $name->field_name;
+                        } else {
+                            $name = $question->field_type;
+                        }
+                        return $name;
                     })
                     ->addColumn('sub_field_type', function ($question) {
-                        $sub_field_type = json_decode($question->sub_field_type);
-                        $choices = $sub_field_type->choices;
 
+                        if($question->sub_question_id != 0) {
+                            $que = Question::find($question->sub_question_id);
+                            $arr = $que->field_type;
+                        } else {
+                            $sub_field_type = json_decode($question->sub_field_type);
+                            $choices = $sub_field_type->choices;
+
+                            $arr = !empty($choices) ? implode(", ", $choices) : $question->field_type;
+                        }
                         
-                        $arr = !empty($choices) ? implode(", ", $choices) : $question->field_type;
                         return $arr;
                     })
                     ->addColumn('action', function ($question) {
@@ -78,7 +91,8 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        return view('questions.create');
+        $questions = Question::where('status',1)->get(); 
+        return view('questions.create', compact('questions'));
     }
 
     /**
@@ -88,28 +102,39 @@ class QuestionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        if($request->field_type == 'Date Picker' || $request->field_type == 'Image' || $request->field_type == 'Coordinates') {
+    {   
+        if($request->conditional == 'on')
+        {
             $validated = $request->validate([
-                'field_name' => 'required|string',
-                'field_type' => 'required|string'
-            ]);
+                    'field_name' => 'required|string',
+                    'sub_question' => 'required'
+                ]);
 
         } else {
-            $validated = $request->validate([
-                'field_name' => 'required|string',
-                'field_type' => 'required|string',
-                'sub_field_type' => 'required|array'
-            ]);
+            if($request->field_type == 'Date Picker' || $request->field_type == 'Image' || $request->field_type == 'Coordinates') {
+                $validated = $request->validate([
+                    'field_name' => 'required|string',
+                    'field_type' => 'required|string'
+                ]);
 
+            } else {
+                $validated = $request->validate([
+                    'field_name' => 'required|string',
+                    'field_type' => 'required|string',
+                    'sub_field_type' => 'required|array'
+                ]);
+
+            }
         }
+        
         DB::beginTransaction();
         try{
             Question::create([
                 'field_name' => $request->field_name,
-                'field_type' => $request->field_type,
+                'field_type' => ($request->has('field_type')) ? $request->field_type : "",
                 'required_field' => $request->required_field == 'on' ? 1 : 0,
                 'conditional' => $request->conditional == 'on' ? 1 : 0,
+                'sub_question_id' => ($request->has('sub_question')) ? $request->sub_question : 0,
                 'sub_field_type' => json_encode(['choices' => empty($request->sub_field_type) ?"" : $request->sub_field_type]),
                 'status' => 1
             ]);
@@ -152,10 +177,12 @@ class QuestionController extends Controller
             'field_name' => $question->field_name,
             'required_field' => $question->required_field,
             'field_type' => $question->field_type,
+            'conditional' => $question->conditional,
+            'sub_question_id' => $question->sub_question_id,
             'sub_field_type' => json_decode($question->sub_field_type)
         ];
-
-        return view('questions.edit', ['question' => $data,'id' => $id]);
+        $questions = Question::where('status',1)->get(); 
+        return view('questions.edit', ['question' => $data,'id' => $id,'questions' => $questions]);
     }
 
     /**
@@ -168,12 +195,29 @@ class QuestionController extends Controller
     public function update(Request $request, $id)
     {
         
+        if($request->conditional == 'on')
+        {
+            $validated = $request->validate([
+                    'field_name' => 'required|string',
+                    'sub_question' => 'required'
+                ]);
 
-        $validated = $request->validate([
-            'field_name' => 'required|string',
-            'field_type' => 'required|string',
-            'sub_field_type' => 'required|array'
-        ]);
+        } else {
+            if($request->field_type == 'Date Picker' || $request->field_type == 'Image' || $request->field_type == 'Coordinates') {
+                $validated = $request->validate([
+                    'field_name' => 'required|string',
+                    'field_type' => 'required|string'
+                ]);
+
+            } else {
+                $validated = $request->validate([
+                    'field_name' => 'required|string',
+                    'field_type' => 'required|string',
+                    'sub_field_type' => 'required|array'
+                ]);
+
+            }
+        }
 
         $decrypt_id = decrypt($id);
         $question = Question::find($decrypt_id);
@@ -182,9 +226,11 @@ class QuestionController extends Controller
         try{
 
             $question->field_name = $request->field_name;
-            $question->field_type = $request->field_type;
+            $question->field_type = ($request->has('field_type')) ? $request->field_type : "";
             $question->required_field = $request->required_field == 'on' ? 1 : 0;
             $question->sub_field_type = json_encode(['choices' => $request->sub_field_type]);
+            $question->conditional = $request->conditional == 'on' ? 1 : 0;
+            $question->sub_question_id = ($request->has('sub_question')) ? $request->sub_question : 0;
             $question->status = 1;
             $question->save();
 
