@@ -102,7 +102,31 @@
 								</div>
 							</div>
 
-							<div class="row mb-1 {{ $question['conditional'] == 1 ? 'd-none' : '' }}" id="field_type_div">
+							<div class="row mb-1 {{ $question['conditional'] == 0 ? 'd-none' : '' }}" id="question_list_div">
+								<div class="col-sm-3 text-right">
+									<label 
+									for="staticEmail" 
+									class="col-form-label fw-bold" 
+									id="sub_question_label">
+										Question List *
+									</label>
+								</div>
+								
+								<div class="col-sm-7">
+									<select 
+									class="form-select rounded-0" 
+									name="sub_question" 
+									id="sub_question" 
+									aria-label="Default select example">
+										<option selected disabled>Select Question</option>
+										@foreach($questions as $que)
+											<option value="{{ $que->id }}" {{ $question['sub_question_id'] == $que->id ? 'selected' : '' }}>{{ $que->field_name }}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+
+							<div class="row mb-1 ">
 								<div class="col-sm-3 text-right">
 									<label 
 									for="staticEmail" 
@@ -133,30 +157,6 @@
                                         <strong>{{ $errors->first('field_type') }}</strong>
                                     </span>
                                 @endif
-							</div>
-
-							<div class="row mb-1 {{ $question['conditional'] == 0 ? 'd-none' : '' }}" id="question_list_div">
-								<div class="col-sm-3 text-right">
-									<label 
-									for="staticEmail" 
-									class="col-form-label fw-bold" 
-									id="sub_question_label">
-										Question List *
-									</label>
-								</div>
-								
-								<div class="col-sm-7">
-									<select 
-									class="form-select rounded-0" 
-									name="sub_question" 
-									id="sub_question" 
-									aria-label="Default select example">
-										<option selected disabled>Select Question</option>
-										@foreach($questions as $que)
-											<option value="{{ $que->id }}" {{ $question['sub_question_id'] == $que->id ? 'selected' : '' }}>{{ $que->field_name }}</option>
-										@endforeach
-									</select>
-								</div>
 							</div>
 
 							@if(!empty($question['sub_field_type']->choices))

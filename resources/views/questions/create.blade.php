@@ -99,7 +99,31 @@
 								</div>
 							</div>
 
-							<div class="row mb-1" id="field_type_div">
+							<div class="row mb-1 d-none" id="question_list_div">
+								<div class="col-sm-3 text-right">
+									<label 
+									for="staticEmail" 
+									class="col-form-label fw-bold" 
+									id="sub_question_label">
+										Question List *
+									</label>
+								</div>
+								
+								<div class="col-sm-7">
+									<select 
+									class="form-select rounded-0" 
+									name="sub_question" 
+									id="sub_question" 
+									aria-label="Default select example">
+										<option selected disabled>Select Question</option>
+										@foreach($questions as $question)
+											<option value="{{ $question->id }}">{{ $question->field_name }}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+							
+							<div class="row mb-1">
 								<div class="col-sm-3 text-right">
 									<label 
 									for="staticEmail" 
@@ -132,29 +156,7 @@
                                 @endif
 							</div>
 
-							<div class="row mb-1 d-none" id="question_list_div">
-								<div class="col-sm-3 text-right">
-									<label 
-									for="staticEmail" 
-									class="col-form-label fw-bold" 
-									id="sub_question_label">
-										Question List *
-									</label>
-								</div>
-								
-								<div class="col-sm-7">
-									<select 
-									class="form-select rounded-0" 
-									name="sub_question" 
-									id="sub_question" 
-									aria-label="Default select example">
-										<option selected disabled>Select Question</option>
-										@foreach($questions as $question)
-											<option value="{{ $question->id }}">{{ $question->field_name }}</option>
-										@endforeach
-									</select>
-								</div>
-							</div>
+							
 
 							<div class="row mb-1 d-none">
 								<div class="col-sm-3 text-right">

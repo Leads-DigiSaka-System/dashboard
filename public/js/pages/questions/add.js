@@ -120,10 +120,8 @@ conditional.addEventListener('change', function () {
 	field_type.selectedIndex = 0
 	if(this.checked) {
 		document.querySelector('#question_list_div').classList.remove('d-none')
-		document.querySelector('#field_type_div').classList.add('d-none')
 	} else {
 		document.querySelector('#question_list_div').classList.add('d-none')
-		document.querySelector('#field_type_div').classList.remove('d-none')
 
 		document.querySelector('#sub_question').selectedIndex = 0
 	}

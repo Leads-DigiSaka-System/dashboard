@@ -40,18 +40,24 @@ class QuestionController extends Controller
                         return $question->field_name;
                     })
                     ->addColumn('field_type', function ($question) {
-                        if($question->sub_question_id != 0) {
+
+                        return $question->field_type;
+                        /*if($question->sub_question_id != 0) {
                             $name = Question::find($question->sub_question_id);
 
                             $name = $name->field_name;
                         } else {
                             $name = $question->field_type;
                         }
-                        return $name;
+                        return $name;*/
                     })
                     ->addColumn('sub_field_type', function ($question) {
 
-                        if($question->sub_question_id != 0) {
+                        $sub_field_type = json_decode($question->sub_field_type);
+                            $choices = $sub_field_type->choices;
+
+                            $arr = !empty($choices) ? implode(", ", $choices) : $question->field_type;
+                        /*if($question->sub_question_id != 0) {
                             $que = Question::find($question->sub_question_id);
                             $arr = $que->field_type;
                         } else {
@@ -59,7 +65,7 @@ class QuestionController extends Controller
                             $choices = $sub_field_type->choices;
 
                             $arr = !empty($choices) ? implode(", ", $choices) : $question->field_type;
-                        }
+                        }*/
                         
                         return $arr;
                     })
