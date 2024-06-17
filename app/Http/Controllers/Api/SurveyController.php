@@ -127,18 +127,35 @@ class SurveyController extends Controller
         		$arr = !empty($sub_field_type->choices) ? implode(", ", $sub_field_type->choices) : "";
 
         		if($question->conditional == 1) {
-        			$query_question = Question::find($question->sub_question_id);
-        			$sub_field_type2 = json_decode($query_question->sub_field_type);
+        			$query_questionnaire = Questionnaire::find($question->questionnaire_id);
+        			$decoded_sub_ids = json_decode($query_questionnaire->question_data);
 
-        			$arr2 = !empty($sub_field_type2->choices) ? implode(", ", $sub_field_type2->choices) : "";
+        			$sub_questionnaire_questions = array();
+        			foreach($decoded_sub_ids->question_ids as $sub_question_id) {
+        				$sub_question = Question::find($sub_question_id);
+		        		$sub_question_sub_field_type = json_decode($sub_question->sub_field_type);
 
-        			$sub_question['question_id'] = $query_question->id;
-        			$sub_question['field_name'] = $query_question->field_name;
-        			$sub_question['field_type'] = $query_question->field_type;
-        			$sub_question['choices'] = $arr2;
-        			$sub_question['is_required'] = $question->required_field == 1 ? 'required' : 'not required';
+		        		$arr2 = !empty($sub_question_sub_field_type->choices) ? implode(", ", $sub_question_sub_field_type->choices) : "";
+
+		        		$sub_questionnaire_questions[] = array(
+		        			'question_id' => $sub_question->id,
+		        			'field_name' => $sub_question->field_name,
+		        			'field_type' => $sub_question->field_type,
+		        			'choices' => $arr,
+		        			'conditional' => $sub_question->conditional == 1 ? true : false,
+		        			'is_required' => $sub_question->required_field == 1 ? 'required' : 'not required'
+		        		);
+        			}
+
+        			$sub_questionnaire[] = array(
+        				'title' => $query_questionnaire->title,
+        				'description' => $query_questionnaire->description,
+        				'questionnaire_id' => $query_questionnaire->id,
+        				'questions' => $sub_questionnaire_questions
+        			);
+
         		} else {
-        			$sub_question = "N/A";
+        			$sub_questionnaire = "N/A";
         		}
         		
 
@@ -148,7 +165,7 @@ class SurveyController extends Controller
         			'field_type' => $question->field_type,
         			'choices' => $arr,
         			'conditional' => $question->conditional == 1 ? true : false,
-        			'sub_question' => $sub_question,
+        			'sub_questionnaire' => $sub_questionnaire,
         			'is_required' => $question->required_field == 1 ? 'required' : 'not required'
         		];
 

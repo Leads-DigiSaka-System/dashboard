@@ -107,20 +107,20 @@
 									<label 
 									for="staticEmail" 
 									class="col-form-label fw-bold" 
-									id="sub_question_label">
-										Question List *
+									id="questionnaire_label">
+										Questionnaire List *
 									</label>
 								</div>
 								
 								<div class="col-sm-7">
 									<select 
 									class="form-select rounded-0" 
-									name="sub_question" 
-									id="sub_question" 
+									name="questionnaire" 
+									id="questionnaire" 
 									aria-label="Default select example">
-										<option selected disabled>Select Question</option>
-										@foreach($questions as $que)
-											<option value="{{ $que->id }}" {{ $question['sub_question_id'] == $que->id ? 'selected' : '' }}>{{ $que->field_name }}</option>
+										<option selected disabled>Select Questionnaire</option>
+										@foreach($questionnaires as $questionnaire)
+											<option value="{{ $questionnaire->id }}" {{ $question['questionnaire_id'] == $questionnaire->id ? 'selected' : '' }}>{{ $questionnaire->title }}</option>
 										@endforeach
 									</select>
 								</div>
@@ -278,4 +278,10 @@
 
 @push('page_script')
 	<script src="{{ asset('js/pages/questions/add.js') }}"></script>
+	<script>
+		$(".form-select").select2();
+		 $(document).on('select2:open', () => {
+    	document.querySelector('.select2-search__field').focus();
+  		});
+	</script>
 @endpush

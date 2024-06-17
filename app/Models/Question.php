@@ -15,7 +15,7 @@ class Question extends Model
         'required_field',
         'conditional',
         'sub_field_type',
-        'sub_question_id',
+        'questionnaire_id',
         'status'
     ];
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Question;
+use App\Models\Questionnaire;
 use Validator, DB;
 class QuestionController extends Controller
 {
@@ -97,8 +98,8 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        $questions = Question::where('status',1)->get(); 
-        return view('questions.create', compact('questions'));
+        $questionnaires = Questionnaire::where('status',1)->get();
+        return view('questions.create', compact('questionnaires'));
     }
 
     /**
@@ -109,11 +110,12 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {   
+
         if($request->conditional == 'on')
         {
             $validated = $request->validate([
                     'field_name' => 'required|string',
-                    'sub_question' => 'required'
+                    'questionnaire' => 'required'
                 ]);
 
         } else {
@@ -140,7 +142,7 @@ class QuestionController extends Controller
                 'field_type' => ($request->has('field_type')) ? $request->field_type : "",
                 'required_field' => $request->required_field == 'on' ? 1 : 0,
                 'conditional' => $request->conditional == 'on' ? 1 : 0,
-                'sub_question_id' => ($request->has('sub_question')) ? $request->sub_question : 0,
+                'questionnaire_id' => ($request->has('questionnaire')) ? $request->questionnaire : 0,
                 'sub_field_type' => json_encode(['choices' => empty($request->sub_field_type) ?"" : $request->sub_field_type]),
                 'status' => 1
             ]);
@@ -184,11 +186,12 @@ class QuestionController extends Controller
             'required_field' => $question->required_field,
             'field_type' => $question->field_type,
             'conditional' => $question->conditional,
-            'sub_question_id' => $question->sub_question_id,
+            'questionnaire_id' => $question->questionnaire_id,
             'sub_field_type' => json_decode($question->sub_field_type)
         ];
-        $questions = Question::where('status',1)->get(); 
-        return view('questions.edit', ['question' => $data,'id' => $id,'questions' => $questions]);
+        $questions = Question::where('status',1)->get();
+        $questionnaires = Questionnaire::where('status',1)->get();
+        return view('questions.edit', ['question' => $data,'id' => $id,'questions' => $questions, 'questionnaires' => $questionnaires]);
     }
 
     /**
@@ -205,7 +208,7 @@ class QuestionController extends Controller
         {
             $validated = $request->validate([
                     'field_name' => 'required|string',
-                    'sub_question' => 'required'
+                    'questionnaire' => 'required'
                 ]);
 
         } else {
@@ -236,7 +239,7 @@ class QuestionController extends Controller
             $question->required_field = $request->required_field == 'on' ? 1 : 0;
             $question->sub_field_type = json_encode(['choices' => $request->sub_field_type]);
             $question->conditional = $request->conditional == 'on' ? 1 : 0;
-            $question->sub_question_id = ($request->has('sub_question')) ? $request->sub_question : 0;
+            $question->questionnaire_id = ($request->has('questionnaire')) ? $request->questionnaire : 0;
             $question->status = 1;
             $question->save();
 

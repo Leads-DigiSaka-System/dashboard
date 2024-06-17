@@ -104,20 +104,20 @@
 									<label 
 									for="staticEmail" 
 									class="col-form-label fw-bold" 
-									id="sub_question_label">
-										Question List *
+									id="questionnaire_label">
+										Questionnaire List *
 									</label>
 								</div>
 								
 								<div class="col-sm-7">
 									<select 
 									class="form-select rounded-0" 
-									name="sub_question" 
-									id="sub_question" 
+									name="questionnaire" 
+									id="questionnaire" 
 									aria-label="Default select example">
-										<option selected disabled>Select Question</option>
-										@foreach($questions as $question)
-											<option value="{{ $question->id }}">{{ $question->field_name }}</option>
+										<option selected disabled>Select Questionnaire</option>
+										@foreach($questionnaires as $questionnaire)
+											<option value="{{ $questionnaire->id }}">{{ $questionnaire->title }}</option>
 										@endforeach
 									</select>
 								</div>

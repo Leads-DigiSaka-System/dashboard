@@ -56,9 +56,10 @@ const removeElementsByClass = function(className) {
     }
 }
 
-field_type.addEventListener('change', function () {
+$('#field_type').on('change', function() {
 	const value = this.value
 	let html = ""
+
 	if(value == 'Checkbox' || value == 'Radio Button' || value == 'Dropdown' || value == 'Ratings') {
 		sub_field_type_label.textContent = 'Choices *'
 
@@ -100,30 +101,29 @@ field_type.addEventListener('change', function () {
 
 		$('#append_sub').parent().removeClass('d-none')
 		$('#append_sub').html(html)
+
+		$('#sub_field_type').select2()
 	} else {
 		add_option_btn.classList.add('d-none')
 		removeElementsByClass('additional_option')
 		$('#append_sub').parent().addClass('d-none')
 		$('#append_sub').html("")
 	}
-	
-	
 })
 
 add_option_btn.addEventListener('click',addOptions)
 
 conditional.addEventListener('change', function () {
-	add_option_btn.classList.add('d-none')
-	removeElementsByClass('additional_option')
-	$('#append_sub').parent().addClass('d-none')
-	$('#append_sub').html("")
-	field_type.selectedIndex = 0
+	//add_option_btn.classList.add('d-none')
+	//removeElementsByClass('additional_option')
+	//$('#append_sub').parent().addClass('d-none')
+	//$('#append_sub').html("")
 	if(this.checked) {
 		document.querySelector('#question_list_div').classList.remove('d-none')
 	} else {
 		document.querySelector('#question_list_div').classList.add('d-none')
 
-		document.querySelector('#sub_question').selectedIndex = 0
+		document.querySelector('#questionnaire').selectedIndex = 0
 	}
 })
 
@@ -132,3 +132,8 @@ $(document).on('click','.remove_btn', function () {
 
 	element_row.remove();
 })
+
+$(".form-select").select2();
+$(document).on('select2:open', () => {
+	document.querySelector('.select2-search__field').focus();
+});
