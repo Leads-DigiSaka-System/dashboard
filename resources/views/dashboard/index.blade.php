@@ -64,17 +64,22 @@
             <li class="nav-item">
                 <a class="nav-link navs" id="tab5" data-toggle="tab" href="#content5">Data Summary</a>
             </li>
+            
+            <li class="nav-item">
+                <a class="nav-link navs" id="tab5" data-toggle="tab" href="#content6">Map Explorers</a>
+            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
                     aria-expanded="false">
                     Geospatial Insights & Agriculture
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content6">Map Explorers</a></li>
+                    
                     <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content11">Agri Reports</a></li>
                     <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content12">Agri Infographics</a></li>
                 </ul>
             </li>
+            
             <li class="nav-item">
                 <a class="nav-link navs" id="tab9" data-toggle="tab" href="#content9">Solutions</a>
             </li>
