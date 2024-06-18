@@ -71,12 +71,12 @@
             <li class="nav-item dropdown">
                 <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
                     aria-expanded="false">
-                    Geospatial Insights & Agriculture
+                    Agri Data PH
                 </a>
                 <ul class="dropdown-menu">
                     
-                    <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content11">Agri Reports</a></li>
-                    <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content12">Agri Infographics</a></li>
+                    <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content11">Reports</a></li>
+                    <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content12">Infographics</a></li>
                 </ul>
             </li>
             
