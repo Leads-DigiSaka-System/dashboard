@@ -9,12 +9,12 @@
             max-height: 500px !important;
         }
 
-        #content9 {
+        /*#content9 {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-auto-rows: 10px; /* Base row height */
+    grid-auto-rows: 10px; 
     gap: 10px;
-}
+}*/
 
 .grid-item {
     background-color: #f0f0f0;
@@ -23,6 +23,7 @@
     padding: 20px;
     box-sizing: border-box;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin:5px;
 }
 
 .grid-item:nth-child(1) { grid-row: span 15; }
@@ -76,7 +77,7 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a class="nav-link navs" id="tab9" data-toggle="tab" href="#content9">Solutions</a>
+                <a class="nav-link navs" id="tab9" data-toggle="tab" href="#content9">Geospatial AI Solutions</a>
             </li>
             {{-- <li class="nav-item">
                 <a class="nav-link navs" id="tab1" data-toggle="tab" href="#content1">Summary</a>
@@ -97,17 +98,18 @@
                 </ul>
             </li>
 
-            <li class="nav-item dropdown">
-                <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
+            <li class="nav-item">
+                
+                <a class="nav-link navs" data-toggle="tab" id="tab10" href="#content8"
                     aria-expanded="false">
                     Other Field Activities
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item navs" id="tab4" data-bs-toggle="tab" href="#content8">Field Tour</a></li>
+                    {{-- <li><a class="dropdown-item navs" id="tab4" data-bs-toggle="tab" href="#content8">Field Tour</a></li>
                     <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Farmer's day</a></li>
                     <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Harvest Festival</a></li>
                     <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Sibuyas Festival</a></li>
-                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Lakbay Palay</a></li>
+                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Lakbay Palay</a></li> --}}
                 </ul>
             </li>
             <li class="nav-item dropdown">
@@ -222,7 +224,7 @@
                             <div class="col h-auto">
                                 <div class="card rounded-3 shadow-sm">
                                     <div class="card-body p-1">
-                                        <div class="card bg-black m-0">
+                                        <div class="card bg-secondary m-0">
                                             <div class="text-center pt-1 text-white fw-bold">Total Area Measured</div>
                                             <div class="d-flex justify-content-center pt-1">
 
@@ -656,17 +658,82 @@
                 </div>
             </div>
         </div>
-
-        @include('dashboard.demos.agri-products')
-        @include('dashboard.demos.rice-derby')
-        @include('dashboard.demos.financing')
-        @include('dashboard.demos.commercial')
-        @include('dashboard.demos.corporate')
-        @include('dashboard.demos.provincial')
-        @include('dashboard.demos.recipient')
-        @include('dashboard.tabs.survey_v2')
-        <div class="tab-pane fade" id="content9" style="padding-right: 10px;">
-            <div class="grid-item">
+        <div class="tab-pane fade" id="content9">
+            <div class="container-fluid">
+                <div class="row row-cols-md-3 row-cols-lg-6">
+                    <div class="col grid-item">
+                        <strong>1. Extent maps and production area</strong>
+                        <ul>
+                            <li>Rice, Maize, Sugarcane, Coconut, Oil Palm</li>
+                            <li>Cash crops and Root crops</li>
+                            <li>Any other crop of interest</li>
+                        </ul>
+                    </div>
+                    <div class="col grid-item">
+                        <strong>2. Tree counts, area and yield</strong>
+                        <ul>
+                            <li>Banana</li>
+                            <li>Mango</li>
+                            <li>Pineapple</li>
+                            <li>Coffee</li>
+                        </ul>
+                    </div>
+                    <div class="col grid-item">
+                        <strong>3. Climate and hydrological variables</strong>
+                        <ul>
+                            <li>Meteorological drought risk</li>
+                            <li>Agricultural drought risk</li>
+                            <li>Combined drought index</li>
+                            <li>Impact-based forecasts</li>
+                        </ul>
+                    </div>
+                    <div class="col grid-item">
+                        <strong>4. Yield maps and forecast</strong>
+                        <ul>
+                            <li>Rice</li>
+                            <li>Vegetables</li>
+                        </ul>
+                    </div>
+                    <div class="col grid-item">
+                        <strong>5. Cropping season advisories</strong>
+                        <ul>
+                            <li>Irrigation demand and scheduler</li>
+                            <li>Rice age and harvest date</li>
+                        </ul>
+                    </div>
+                    <div class="col grid-item">
+                        <strong>6. Crop suggestions based on production area dynamics and value chain</strong>
+                        <ul>
+                            <li>Upcoming cropping season</li>
+                            <li>In-between cropping season</li>
+                        </ul>
+                    </div>
+                    <div class="col grid-item">
+                        <strong>7. Crop resiliency indices</strong>
+                        <ul>
+                            <li>Disaster agricultural damage assessment tool</li>
+                            <li>Risk Scores and crop insurance options</li>
+                        </ul>
+                    </div>
+                    <div class="col grid-item">
+                        <strong>8. Market information</strong>
+                        <ul>
+                            <li>Market price listings</li>
+                            <li>Commodity price forecasts</li>
+                            <li>POS system</li>
+                        </ul>
+                    </div>
+                    <div class="col grid-item">
+                        <strong>9. Suitability mapping</strong>
+                        <ul>
+                            <li>Any crop of interest</li>
+                            <li>High yield trial sites</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+                
+            {{-- <div class="grid-item">
                 <strong>1. Extent maps and production area</strong>
                 <ul>
                     <li>Rice, Maize, Sugarcane, Coconut, Oil Palm</li>
@@ -734,8 +801,19 @@
                     <li>Any crop of interest</li>
                     <li>High yield trial sites</li>
                 </ul>
-            </div>
+            </div> --}}
         </div>
+
+        @include('dashboard.demos.agri-products')
+        @include('dashboard.demos.rice-derby')
+        @include('dashboard.demos.financing')
+        @include('dashboard.demos.commercial')
+        @include('dashboard.demos.corporate')
+        @include('dashboard.demos.provincial')
+        @include('dashboard.demos.recipient')
+        @include('dashboard.tabs.survey_v2')
+
+        
 
         
     </div>
@@ -761,6 +839,7 @@
             fetchProvinceFilters();
             setDropdownEventListeners();
         };
+
 
         $(document).on('click', '.navs', function() {
             const elems = document.querySelectorAll('.navs');
@@ -946,7 +1025,13 @@
         $(document).ready(function() {
             // When #tab4 is clicked, trigger a click on #filter
             $('#tab4').on('click', function() {
+                console.log('test');
+               
                 $('#filter').click();
+            });
+
+            $('#tab10').on('click', function() {
+                $('#other_content1').addClass('active show');
             });
         });
         //count demo performed when filter is clicked

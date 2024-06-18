@@ -104,13 +104,13 @@
                 height:300
             },
         title: {
-            text: 'Product Trend',
+            text: 'Recommendations / Alerts provided to farmers',
             align: 'left'
         },
 
         yAxis: {
             title: {
-                text: 'Number of Product Sold'
+                text: 'No. of Alerts Provided'
             }
         },
 
