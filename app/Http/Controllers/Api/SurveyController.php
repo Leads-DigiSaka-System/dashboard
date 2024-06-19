@@ -148,7 +148,7 @@ class SurveyController extends Controller
 						}
 
 						$sub_questionnaire = array(
-							'title' => $query_questionnaire->title,
+							'questionnaire_title' => $query_questionnaire->title,
 							'description' => $query_questionnaire->description,
 							'questionnaire_id' => $query_questionnaire->id,
 							'questions' => $sub_questionnaire_questions
@@ -234,7 +234,7 @@ class SurveyController extends Controller
 								}
 		
 								$sub_questionnaire = array(
-									'title' => $query_questionnaire->title,
+									'questionnaire_title' => $query_questionnaire->title,
 									'description' => $query_questionnaire->description,
 									'questionnaire_id' => $query_questionnaire->id,
 									'questions' => $sub_questionnaire_questions
