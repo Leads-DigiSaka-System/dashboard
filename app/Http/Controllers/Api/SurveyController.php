@@ -210,12 +210,51 @@ class SurveyController extends Controller
 
 		        		$arr = !empty($sub_field_type->choices) ? implode(", ", $sub_field_type->choices) : "";
 
+
+						if($question->conditional == 1) {
+							$query_questionnaire = Questionnaire::find($question->questionnaire_id);
+							if(!empty($query_questionnaire)) {
+								$decoded_sub_ids = json_decode($query_questionnaire->question_data);
+		
+								$sub_questionnaire_questions = array();
+								foreach($decoded_sub_ids->question_ids as $sub_question_id) {
+									$sub_question = Question::find($sub_question_id);
+									$sub_question_sub_field_type = json_decode($sub_question->sub_field_type);
+		
+									$arr2 = !empty($sub_question_sub_field_type->choices) ? implode(", ", $sub_question_sub_field_type->choices) : "";
+		
+									$sub_questionnaire_questions[] = array(
+										'question_id' => $sub_question->id,
+										'field_name' => $sub_question->field_name,
+										'field_type' => $sub_question->field_type,
+										'choices' => $arr,
+										'conditional' => $sub_question->conditional == 1 ? true : false,
+										'is_required' => $sub_question->required_field == 1 ? 'required' : 'not required'
+									);
+								}
+		
+								$sub_questionnaire = array(
+									'title' => $query_questionnaire->title,
+									'description' => $query_questionnaire->description,
+									'questionnaire_id' => $query_questionnaire->id,
+									'questions' => $sub_questionnaire_questions
+								);
+							}
+							else{
+								$sub_questionnaire = array();
+							}
+		
+						} else {
+							$sub_questionnaire = "N/A";
+						}
+
 		        		$questions[] = [
 		        			'question_id' => $question->id,
 		        			'field_name' => $question->field_name,
 		        			'field_type' => $question->field_type,
 		        			'choices' => $arr,
 		        			'conditional' => $question->conditional == 1 ? true : false,
+							'sub_questionnaire' => $sub_questionnaire,
 		        			'is_required' => $question->required_field == 1 ? 'required' : 'not required'
 		        		];
 
