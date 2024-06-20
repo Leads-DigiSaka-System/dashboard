@@ -11,6 +11,7 @@ use App\Models\Province;
 use App\Models\Survey;
 use App\Models\Region;
 use App\Models\User;
+use App\Models\Webinar;
 use App\Models\QuestionSet;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -56,7 +57,7 @@ class DashboardController extends Controller
         $farmerPercent = $this->getPercentageCount("User");
         $farmPercent = $this->getPercentageCount("Farms");
         $surveyPercent = $this->getPercentageCount("Survey");
-
+        $webinar = Webinar::first();
         $users = User::where('role', '!=', 0)->count();
         $latest_farmers = User::where('role', '!=', 0)->orderBy('id', 'desc')->limit(10)->get();
         $latest_farms = Farms::orderBy('id', 'desc')->limit(10)->get();
@@ -81,7 +82,7 @@ class DashboardController extends Controller
             'regions' => $distinctFilters->pluck('region')->unique()->values()
         ];
 
-        return view('dashboard.index', compact("filters", "users", "farms", "survey", "latest_farmers", "latest_farms", "allFarms", "farmerPercent", "farmPercent", "surveyPercent", "allRegion", "top_performer", "randomFarms"));
+        return view('dashboard.index', compact("webinar","filters", "users", "farms", "survey", "latest_farmers", "latest_farms", "allFarms", "farmerPercent", "farmPercent", "surveyPercent", "allRegion", "top_performer", "randomFarms"));
     }
 
     public function getDistinctFilters(Request $request)
