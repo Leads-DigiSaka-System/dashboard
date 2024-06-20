@@ -75,9 +75,9 @@
                     Agri Data PH
                 </a>
                 <ul class="dropdown-menu">
-                    
                     <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content11">Reports</a></li>
                     <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content12">Infographics</a></li>
+                    <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content13">Webinars</a></li>
                 </ul>
             </li>
             

@@ -109,3 +109,47 @@
 
 
 
+<div class="tab-pane fade show" id="content13" style="padding-right: 10px;">
+    <div class="row">
+        <div class="col-md-12 col-lg-6">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-body">
+                    @if($webinar)
+                        <div class="webinar-status">
+                            <span class="active-now">Active Now</span>
+                            <h3 class="webinar-title">{{ $webinar->title }}</h3>
+                        </div>
+                        <div id="fb-root"></div>
+                        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0"></script>
+                        <div class="fb-video" data-href="{{ $webinar->link }}" data-width="500" data-show-text="false"></div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .webinar-status {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .active-now {
+        background-color: #28a745;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    .webinar-title {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+    .card {
+        margin-top: 20px;
+    }
+</style>
+
+
