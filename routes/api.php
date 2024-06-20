@@ -102,6 +102,10 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			
 		});
     });
+	
+	Route::post('/farms/upsertJournal/{id?}','JournalController@upsert');
+	Route::get('/farms/getJournals','JournalController@get');
+	Route::get('/farms/getJournal/{id}','JournalController@find');
 
 	Route::get('/questionnaire/{id}','SurveyController@getQuestionnaire')->name('getQuestionnaireById');
 	Route::get('/survey_set/{id}','SurveyController@getSurveySet')->name('getSurveySetById');
