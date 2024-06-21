@@ -57,7 +57,7 @@ class DashboardController extends Controller
         $farmerPercent = $this->getPercentageCount("User");
         $farmPercent = $this->getPercentageCount("Farms");
         $surveyPercent = $this->getPercentageCount("Survey");
-        $webinar = Webinar::first();
+        $webinars = Webinar::orderBy('id', 'desc')->get();
         $users = User::where('role', '!=', 0)->count();
         $latest_farmers = User::where('role', '!=', 0)->orderBy('id', 'desc')->limit(10)->get();
         $latest_farms = Farms::orderBy('id', 'desc')->limit(10)->get();
@@ -82,7 +82,7 @@ class DashboardController extends Controller
             'regions' => $distinctFilters->pluck('region')->unique()->values()
         ];
 
-        return view('dashboard.index', compact("webinar","filters", "users", "farms", "survey", "latest_farmers", "latest_farms", "allFarms", "farmerPercent", "farmPercent", "surveyPercent", "allRegion", "top_performer", "randomFarms"));
+        return view('dashboard.index', compact("webinars","filters", "users", "farms", "survey", "latest_farmers", "latest_farms", "allFarms", "farmerPercent", "farmPercent", "surveyPercent", "allRegion", "top_performer", "randomFarms"));
     }
 
     public function getDistinctFilters(Request $request)
