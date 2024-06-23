@@ -4,17 +4,20 @@
             <div class="card rounded-3 shadow-sm">
                 <div class="card-body">
                     <a href="https://ee-brybaltazar.projects.earthengine.app/view/climate-visual-2" target="_blank">
-                        <img class="w-100" style="height:800px;" src="{{ asset('images/Rice-Yield.png') }}" alt="Rice Yield">
+                        <img class="w-100" style="height:800px;" src="{{ asset('images/Rice-Yield.png') }}"
+                            alt="Rice Yield">
                     </a>
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-12 col-lg-6">
             <div class="card rounded-3 shadow-sm">
                 <div class="card-body">
-                    <a href="https://ee-brybaltazar.projects.earthengine.app/view/philippine-sugarcane-area" target="_blank">
-                        <img class="w-100" style="height:800px;" src="{{ asset('images/SugarCane.png') }}" alt="Sugar Cane">
+                    <a href="https://ee-brybaltazar.projects.earthengine.app/view/philippine-sugarcane-area"
+                        target="_blank">
+                        <img class="w-100" style="height:800px;" src="{{ asset('images/SugarCane.png') }}"
+                            alt="Sugar Cane">
                     </a>
                 </div>
             </div>
@@ -23,7 +26,8 @@
             <div class="card rounded-3 shadow-sm">
                 <div class="card-body">
                     <a href="https://ee-brybaltazar.projects.earthengine.app/view/philippine-maize" target="_blank">
-                        <img class="w-100" style="height:800px;" src="{{ asset('images/Maize_Area.png') }}" alt="Sugar Cane">
+                        <img class="w-100" style="height:800px;" src="{{ asset('images/Maize_Area.png') }}"
+                            alt="Sugar Cane">
                     </a>
                 </div>
             </div>
@@ -31,8 +35,10 @@
         <div class="col-md-12 col-lg-6">
             <div class="card rounded-3 shadow-sm">
                 <div class="card-body">
-                    <a href="https://ee-brybaltazar.projects.earthengine.app/view/philippine-crop-viewer" target="_blank">
-                        <img class="w-100" style="height:800px;" src="{{ asset('images/Combined.png') }}" alt="Combined">
+                    <a href="https://ee-brybaltazar.projects.earthengine.app/view/philippine-crop-viewer"
+                        target="_blank">
+                        <img class="w-100" style="height:800px;" src="{{ asset('images/Combined.png') }}"
+                            alt="Combined">
                     </a>
                 </div>
             </div>
@@ -41,13 +47,14 @@
             <div class="card rounded-3 shadow-sm">
                 <div class="card-body">
                     <a href="https://prism.philrice.gov.ph/dataproducts/" target="_blank">
-                        <img class="w-100" style="height:800px;" src="{{ asset('images/Prism_area.png') }}" alt="Rice Area">
+                        <img class="w-100" style="height:800px;" src="{{ asset('images/Prism_area.png') }}"
+                            alt="Rice Area">
                     </a>
                 </div>
             </div>
         </div>
     </div>
-    
+
 </div>
 
 <div class="tab-pane fade show" id="content11" style="padding-right: 10px;">
@@ -55,8 +62,10 @@
         <div class="col-md-12 col-lg-6">
             <div class="card rounded-3 shadow-sm">
                 <div class="card-body">
-                    <a href="https://data.humdata.org/dataset/world-bank-agriculture-and-rural-development-indicators-for-philippines" target="_blank">
-                        <img class="w-100" style="height:800px;" src="{{ asset('images/WorldBank.png') }}" alt="World Bank">
+                    <a href="https://data.humdata.org/dataset/world-bank-agriculture-and-rural-development-indicators-for-philippines"
+                        target="_blank">
+                        <img class="w-100" style="height:800px;" src="{{ asset('images/WorldBank.png') }}"
+                            alt="World Bank">
                     </a>
                 </div>
             </div>
@@ -64,14 +73,15 @@
         <div class="col-md-12 col-lg-6">
             <div class="card rounded-3 shadow-sm">
                 <div class="card-body">
-                    <a href="https://www.psa.gov.ph/infographics?field_sector_value=Agriculture+and+Fisheries" target="_blank">
+                    <a href="https://www.psa.gov.ph/infographics?field_sector_value=Agriculture+and+Fisheries"
+                        target="_blank">
                         <img class="w-100" style="height:800px;" src="{{ asset('images/PSA.png') }}" alt="PSA">
                     </a>
                 </div>
             </div>
         </div>
     </div>
-    
+
 </div>
 
 <div class="tab-pane fade show" id="content12" style="padding-right: 10px;">
@@ -79,77 +89,79 @@
         <div class="col-md-12 col-lg-3">
             <div class="card rounded-3 shadow-sm">
                 <div class="card-body">
-                    <img class="w-100 zoom"  src="{{ asset('images/info-4.jpg') }}" alt="Infographics 4">
+                    <img class="w-100 zoom" src="{{ asset('images/info-4.jpg') }}" alt="Infographics 4">
                 </div>
             </div>
         </div>
         <div class="col-md-12 col-lg-3">
             <div class="card rounded-3 shadow-sm">
                 <div class="card-body">
-                    <img class="w-100 zoom"  src="{{ asset('images/info-3.jpg') }}" alt="Infographics 4">
+                    <img class="w-100 zoom" src="{{ asset('images/info-3.jpg') }}" alt="Infographics 4">
                 </div>
             </div>
         </div>
         <div class="col-md-12 col-lg-3">
             <div class="card rounded-3 shadow-sm">
                 <div class="card-body">
-                    <img class="w-100 zoom"  src="{{ asset('images/info-2.jpg') }}" alt="Infographics 4">
+                    <img class="w-100 zoom" src="{{ asset('images/info-2.jpg') }}" alt="Infographics 4">
                 </div>
             </div>
         </div>
         <div class="col-md-12 col-lg-3">
             <div class="card rounded-3 shadow-sm">
                 <div class="card-body">
-                    <img class="w-100 zoom"  src="{{ asset('images/info-1.jpg') }}" alt="Infographics 4">
+                    <img class="w-100 zoom" src="{{ asset('images/info-1.jpg') }}" alt="Infographics 4">
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 
 
 <div class="tab-pane fade show" id="content13" style="padding-right: 10px;">
     <div class="row">
-        <div class="col-md-12 col-lg-6">
-            <div class="card rounded-3 shadow-sm">
-                <div class="card-body">
-                    @if($webinar)
+        @foreach($webinars as $webinar)
+            <div class="col-md-12 col-lg-6">
+                <div class="card rounded-3 shadow-sm mb-4">
+                    <div class="card-body">
                         <div class="webinar-status">
-                            <span class="active-now">Active Now</span>
-                            <h3 class="webinar-title">{{ $webinar->title }}</h3>
+                            @if($webinar->status == 1)
+                                <span class="active-now">Active Now</span>
+                            @else
+                                <span class="finished">Finished</span>
+                            @endif
                         </div>
+                        <h3 class="webinar-title">{{ $webinar->title }}</h3>
                         <div id="fb-root"></div>
                         <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0"></script>
                         <div class="fb-video" data-href="{{ $webinar->link }}" data-width="500" data-show-text="false"></div>
-                    @endif
+                    </div>
                 </div>
             </div>
-        </div>
+        @endforeach
     </div>
 </div>
-
 <style>
-    .webinar-status {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-    }
     .active-now {
-        background-color: #28a745;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
+        color: green;
         font-weight: bold;
-        margin-right: 10px;
     }
+
+    .finished {
+        color: red;
+        font-weight: bold;
+    }
+
+    .webinar-status {
+        margin-bottom: 10px;
+    }
+
     .webinar-title {
         font-size: 1.5rem;
         margin: 0;
     }
+
     .card {
         margin-top: 20px;
     }
 </style>
-
-
