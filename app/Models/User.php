@@ -149,6 +149,8 @@ class User extends Authenticatable
             $query->where('users.role', '!=', 2);
         }
 
+        
+
         if (!empty($request)) {
             $search = $request['search']['value'];
 
@@ -182,6 +184,14 @@ class User extends Authenticatable
         }
         if (!empty($request['filter_column5'])) {
             $query->where('ref.full_name', 'like', '%' . $request['filter_column5'] . '%');
+        }
+
+        if($request['region'] != "All") {
+            $query->where('users.region',$request['region']);
+        }
+
+        if(!empty($request['province']) && $request['province'] != "All") {
+            $query->where('users.province',$request['province']);
         }
         $results = $query->get();
 

@@ -45,7 +45,30 @@
               </div>
             
               <!-- /.card-header -->
-              <div class="card-body">
+              <div class="card-body overflow-auto">
+                <div class="row my-2">
+                  <div class="col-md-2">
+                    <label for="region">Region</label>
+                    <select class="form-select" id="region">
+                      <option value="All">All</option>
+                      @foreach($regions as $region)
+                        <option value="{{ $region->regcode }}">{{ $region->name }}</option>
+                      @endforeach
+                    </select>
+
+                  </div>
+                  <div class="col-md-2">
+                    <label for="province">Province</label>
+                    <select class="form-select" id="province">
+                      <option disabled selected>Select region first</option>
+                    </select>
+
+                  </div>
+                  <div class="col-md-4 d-flex align-items-end">
+                    <button class="btn btn-primary" id="filter_btn">Filter</button>
+                  </div>
+                  
+                </div>
                 <table id="farmersTable" class="table table-bordered table-hover">
                   <thead>
                   <tr>
@@ -57,7 +80,8 @@
                     <th>Registered via App</th>
                     <th name="registered_by" class="filter">Registered by</th>
                     <th>Registered date</th>
-                  
+                    <th>Region</th>
+                    <th>Province</th>
                     <th data-orderable="false">Action</th>
                   </tr>
                   </thead>

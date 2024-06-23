@@ -1,10 +1,54 @@
+
+const filter_btn = document.querySelector('#filter_btn')
+let datatable 
 $(document).on('click', '.delete-datatable-record', function(e){
     let url  = site_url + "/farmers/" + $(this).attr('data-id');
     let tableId = 'farmersTable';
     deleteDataTableRecord(url, tableId);
 });
 $(document).ready(function() {
-    var dataTable = $('#farmersTable').DataTable({
+
+    loadDatatable()
+
+    $('#region').select2();
+});
+
+
+filter_btn.addEventListener('click', () => {
+    dataTable.destroy();
+    loadDatatable()
+})
+
+$("#upload_file").change(function(event){
+    $("#pageloader").addClass("pageloader");
+    $("#import_users").submit();
+});
+
+$('#region').on('change', async function() {
+    const value = $(this).val()
+
+    $('#province').html("")
+    if(value != "All") {
+        const request = await fetch(`${site_url}/getProvinceByRegion?region_id=${value}`)
+
+        const provinces = await request.json();
+
+        let options = "";
+
+        options+= `<option value="All">All</option>`
+        for(const province of provinces) {
+            options += `<option value="${province.provcode}">${province.name}</option>`
+        }
+
+        $('#province').html(options)
+    } else {
+        $('#province').html('<option disabled selected>Select region first</option>')
+    }
+    
+})
+
+const loadDatatable = function () {
+     dataTable = $('#farmersTable').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
@@ -15,6 +59,8 @@ $(document).ready(function() {
                 d.filter_column3 = $('input[name=filter_role]').val(); // Role
                 d.filter_column4 = $('input[name=filter_status]').val(); // Status
                 d.filter_column5 = $('input[name=filter_registered_by]').val(); // Registered via App
+                d.region = $('#region').val();
+                d.province = $('#province').val();
             }
         },
         columns: [
@@ -26,6 +72,8 @@ $(document).ready(function() {
             {data: 'via_app', name: 'via_app'},
             {data: 'registered_by', name: 'registered_by'},
             {data: 'registered_date', name: 'registered_date'},
+            {data: 'region', name:'region'},
+            {data: 'province', name: 'province'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         dom: 'Bfrtip',
@@ -62,15 +110,7 @@ $(document).ready(function() {
         var index = $(this).attr('name').split('_')[1];
         dataTable.column(index).search(this.value).draw();
     });
-});
-
-
-
-$("#upload_file").change(function(event){
-    $("#pageloader").addClass("pageloader");
-    $("#import_users").submit();
-});
- 
+}
 // $("#import_users").submit(function(e){
 
 //         e.preventDefault();

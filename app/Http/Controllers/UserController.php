@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Region;
+use App\Models\Province;
 use Validator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
@@ -57,6 +59,25 @@ class UserController extends Controller
                     ->addColumn('registered_date', function ($user) {
                         return $user->registered_date ? $user->registered_date : 'N/A';
                     })
+                    ->addColumn('region', function ($user) {
+                        if(!empty($user->region)) {
+                            $region = Region::where('regcode',$user->region)->first();
+                            $region = $region->name;
+                        } else {
+                            $region = "N/A";
+                        }
+                        
+                        return $region;
+                    })
+                    ->addColumn('province', function ($user) {
+                        if(!empty($user->province)) {
+                            $province = Province::where('provcode',$user->province)->first();
+                            $province = $province->name;
+                        } else {
+                            $province = "N/A";
+                        }
+                        return $province;
+                    })
                     ->addColumn('action', function ($user) {
                             $btn = '';
                             $btn = '<a href="' . route('farmers.show', encrypt($user->id)) . '" title="View"><i class="fas fa-eye"></i></a>&nbsp;&nbsp;';
@@ -74,7 +95,13 @@ class UserController extends Controller
                     ->make(true);
         }
 
-        return view('user.index');
+        $regions = Region::all();
+        return view('user.index', ['regions' => $regions]);
+    }
+
+    public function getProvinceByRegion(Request $request) {
+        $provinces = Province::select('provcode','name')->where('regcode',$request->region_id)->get();
+        return response()->json($provinces);
     }
 
     public function export(Request $request, User $user)
