@@ -121,7 +121,7 @@
 <div class="tab-pane fade show" id="content13" style="padding-right: 10px;">
     <div class="row">
         @foreach($webinars as $webinar)
-            <div class="col-md-12 col-lg-6">
+            <div class="col-md-12 col-lg-6" style="height:350px;">
                 <div class="card rounded-3 shadow-sm mb-4">
                     <div class="card-body">
                         <div class="webinar-status">
