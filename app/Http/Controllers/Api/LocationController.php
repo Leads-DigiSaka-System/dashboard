@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Municipality;
+use App\Models\Barangay;
 use App\Models\Province;
 use App\Models\Region;
 use Illuminate\Http\Request;
@@ -46,6 +47,13 @@ class LocationController extends Controller
     //Function to get location based on search and return as json
     public function searchLocation($search){
         $data = Municipality::searchLocation($search);
+        return response()->json([
+            'status' => 'success',
+            'data' => $data
+        ]);
+    }
+    public function searchBarangay($search){
+        $data = Barangay::searchBarangay($search);
         return response()->json([
             'status' => 'success',
             'data' => $data
