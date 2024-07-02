@@ -16,6 +16,7 @@ class SurveySet extends Model
         'slug',
         'description',
         'questionnaire_data',
+        'expiry_date',
         'status'
     ];
 

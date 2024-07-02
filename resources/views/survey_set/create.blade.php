@@ -79,6 +79,26 @@
 									<div class="col-sm-12">
 										<div class="form-group">
 											<label 
+											for="description" 
+											class="fs-5 fw-bold ">
+												Expiry Date *
+											</label>
+											<input type="date" name="expiry_date" class="form-control">
+
+											@if ($errors->has('expiry_date'))
+		                                        <span class="invalid-feedback" role="alert">
+		                                            <strong>{{ $errors->first('expiry_date') }}</strong>
+		                                        </span>
+		                                    @endif
+										</div>
+									    
+									</div>
+								</div>
+
+								<div class="row mb-1">
+									<div class="col-sm-12">
+										<div class="form-group">
+											<label 
 											for="questions" 
 											class="fs-5 fw-bold ">
 												Questionnaire *

@@ -102,6 +102,38 @@
 								</div>
 							</div>
 
+							<div class="row mb-1">
+								<div class="col-sm-7 offset-sm-3">
+									<div class="form-check form-check-inline">
+									  <input class="form-check-input" 
+									  type="radio" 
+									  name="farm_categ" 
+									  id="farm_categ_personal"
+									  value="1"
+									  {{ $question['farm_categ'] == 1 ? 'checked' : '' }} 
+									  >
+									  <label 
+									  class="form-check-label" 
+									  for="farm_categ_personal">
+									    Personal
+									  </label>
+									</div>
+									<div class="form-check form-check-inline">
+									  <input class="form-check-input" 
+									  type="radio" 
+									  name="farm_categ" 
+									  id="farm_categ_farm"
+									  value="0"
+									  {{ $question['farm_categ'] == 0 ? 'checked' : '' }} 
+									  >
+									  <label class="form-check-label" 
+									  for="farm_categ_farm">
+									    Farm
+									  </label>
+									</div>
+								</div>
+							</div>
+
 							<div class="row mb-1 {{ $question['conditional'] == 0 ? 'd-none' : '' }}" id="question_list_div">
 								<div class="col-sm-3 text-right">
 									<label 
@@ -149,7 +181,7 @@
 										<option value="Date Picker" {{ $question['field_type'] == 'Date Picker' ? 'selected' : '' }}>Date Picker</option>
 										<option value="Ratings" {{ $question['field_type'] == 'Ratings' ? 'selected' : '' }}>Ratings</option>
 										<option value="Image" {{ $question['field_type'] == 'Image' ? 'selected' : '' }}>Image</option>
-										<option value="Coordinates" {{ $question['field_type'] == 'Coordnates' ? 'selected' : '' }}>Coordinates</option>
+										<option value="Coordinates" {{ $question['field_type'] == 'Coordinates' ? 'selected' : '' }}>Coordinates</option>
 									</select>
 								</div>
 								@if ($errors->has('field_type'))

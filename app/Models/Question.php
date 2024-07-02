@@ -16,6 +16,7 @@ class Question extends Model
         'conditional',
         'sub_field_type',
         'questionnaire_id',
+        'farm_categ',
         'status'
     ];
 

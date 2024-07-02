@@ -143,6 +143,7 @@ class SurveyController extends Controller
 								'field_type' => $sub_question->field_type,
 								'choices' => $arr,
 								'conditional' => $sub_question->conditional == 1 ? true : false,
+								'farm_category' => $sub_question->farm_categ == 1 ? 'Personal' : 'Farm',
 								'is_required' => $sub_question->required_field == 1 ? 'required' : 'not required'
 							);
 						}
@@ -169,6 +170,7 @@ class SurveyController extends Controller
         			'field_type' => $question->field_type,
         			'choices' => $arr,
         			'conditional' => $question->conditional == 1 ? true : false,
+        			'farm_category' => $question->farm_categ == 1 ? 'Personal' : 'Farm',
         			'sub_questionnaire' => $sub_questionnaire,
         			'is_required' => $question->required_field == 1 ? 'required' : 'not required'
         		];
@@ -229,6 +231,7 @@ class SurveyController extends Controller
 										'field_type' => $sub_question->field_type,
 										'choices' => $arr,
 										'conditional' => $sub_question->conditional == 1 ? true : false,
+										'farm_category' => $sub_question->farm_categ == 1 ? 'Personal' : 'Farm',
 										'is_required' => $sub_question->required_field == 1 ? 'required' : 'not required'
 									);
 								}
@@ -254,6 +257,7 @@ class SurveyController extends Controller
 		        			'field_type' => $question->field_type,
 		        			'choices' => $arr,
 		        			'conditional' => $question->conditional == 1 ? true : false,
+		        			'farm_category' => $question->farm_categ == 1 ? 'Personal' : 'Farm',
 							'sub_questionnaire' => $sub_questionnaire,
 		        			'is_required' => $question->required_field == 1 ? 'required' : 'not required'
 		        		];
@@ -274,6 +278,7 @@ class SurveyController extends Controller
         		'survey_id' => encrypt($survey_set->id),
         		'title' => $survey_set->title,
         		'slug' => $survey_set->slug,
+        		'expiry_date' => empty($survey_set->expiry_date) ? '-' : $survey_set->expiry_date,
         		'description' => $survey_set->description,
         		'questionnaires' => $questionnaires
         	];

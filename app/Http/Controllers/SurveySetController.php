@@ -84,7 +84,8 @@ class SurveySetController extends Controller
         $validated = $request->validate([
             'title' => 'required|string',
             'description' => 'required|string',
-            'questionnaires' => 'required|array'
+            'questionnaires' => 'required|array',
+            'expiry_date' => 'required|date',
         ]);
 
         $questionnaires = [];
@@ -100,6 +101,7 @@ class SurveySetController extends Controller
                 'slug' => Str::slug($request->title,'-'),
                 'description' => $request->description,
                 'questionnaire_data' => json_encode(['questionnaire_ids' => $questionnaires]),
+                'expiry_date' => $request->expiry_date,
                 'status' => 1
             ]);
 
@@ -144,7 +146,8 @@ class SurveySetController extends Controller
         $validated = $request->validate([
             'title' => 'required|string',
             'description' => 'required|string',
-            'questionnaires' => 'required|array'
+            'questionnaires' => 'required|array',
+            'expiry_date' => 'required|date'
         ]);
 
         $questionnaires = [];
@@ -162,6 +165,7 @@ class SurveySetController extends Controller
             $survey_set->slug = Str::slug($request->title,'-');
             $survey_set->description = $request->description;
             $survey_set->questionnaire_data = json_encode(['questionnaire_ids' => $questionnaires]);
+            $survey_set->expiry_date = $request->expiry_date;
             $survey_set->status = 1;
             $survey_set->save();
 
