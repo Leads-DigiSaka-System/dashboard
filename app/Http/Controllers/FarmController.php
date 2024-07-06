@@ -60,7 +60,8 @@ class FarmController extends Controller
                     })
                     ->addColumn('action', function ($farm) {
                             $btn = '';
-                            $btn = '<a href="' . route('farms.show', encrypt($farm->id)) . '" title="View"><i class="fas fa-eye"></i></a>&nbsp;&nbsp;';
+                            $btn .= '<a href="' . route('farms.show', encrypt($farm->id)) . '" title="View" class="btn btn-sm btn-info mb-1"><i class="fas fa-eye"></i></a>';
+                            $btn .= '<a href="#" title="View Map" class="btn btn-sm btn-secondary mb-2 viewMapBtn" data-id="'.encrypt($farm->id).'"><i class="fas fa-map"></i></a>';
                             /*$btn .= '<a href="' . route('farmers.edit', encrypt($farm->id)) . '" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;';*/
                             /*$btn .= '<a href="javascript:void(0);" delete_form="delete_customer_form"  data-id="' . encrypt($farm->id) . '" class="delete-datatable-record text-danger delete-users-record" title="Delete"><i class="fas fa-trash"></i></a>';*/
                         return $btn;
@@ -113,4 +114,13 @@ class FarmController extends Controller
         return returnErrorResponse('Something went wrong. Please try again later');
     }
 
+    public function getMapCoordinates(Request $request) {
+        $id = decrypt($request->id);
+
+        $user = new Farms;
+        $farmObj = $user->findFarmById($id);
+        $farm_address=json_decode($farmObj->area_location);
+
+        return response()->json($farm_address);
+    }
 }

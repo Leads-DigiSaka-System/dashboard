@@ -64,6 +64,7 @@
 					    <th>Title</th>
 					    <th>Description</th>
 					  	<th>Date Created</th>
+					  	<th>Date Revised</th>
 					  	<th>Link</th>
 					  	<th data-orderable="false">Status</th>
 					    <th data-orderable="false">Action</th>

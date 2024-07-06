@@ -114,25 +114,22 @@ class QuestionController extends Controller
         if($request->conditional == 'on')
         {
             $validated = $request->validate([
-                    'field_name' => 'required|string',
-                    'questionnaire' => 'required',
-                    'farm_categ' => 'required'
+                    'field_name' => 'required|string|unique:questions',
+                    'questionnaire' => 'required'
                 ]);
 
         } else {
             if($request->field_type == 'Date Picker' || $request->field_type == 'Image' || $request->field_type == 'Coordinates') {
                 $validated = $request->validate([
                     'field_name' => 'required|string',
-                    'field_type' => 'required|string',
-                    'farm_categ' => 'required'
+                    'field_type' => 'required|string'
                 ]);
 
             } else {
                 $validated = $request->validate([
                     'field_name' => 'required|string',
                     'field_type' => 'required|string',
-                    'sub_field_type' => 'required|array',
-                    'farm_categ' => 'required'
+                    'sub_field_type' => 'required|array'
                 ]);
 
             }
@@ -146,7 +143,6 @@ class QuestionController extends Controller
                 'required_field' => $request->required_field == 'on' ? 1 : 0,
                 'conditional' => $request->conditional == 'on' ? 1 : 0,
                 'questionnaire_id' => ($request->has('questionnaire')) ? $request->questionnaire : 0,
-                'farm_categ' => $request->farm_categ,
                 'sub_field_type' => json_encode(['choices' => empty($request->sub_field_type) ?"" : $request->sub_field_type]),
                 'status' => 1
             ]);

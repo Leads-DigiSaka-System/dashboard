@@ -49,6 +49,7 @@ Route::middleware('prevent-back-history')->group(function (){
         Route::get('user/change-password','UserController@changePasswordView')->name('user.changePassword');
         Route::post('user/change-password','UserController@changePassword')->name('user.changePassword.submit');
 
+        Route::get('/farms/getMapCoordinates','FarmController@getMapCoordinates');
         Route::resource('farms', 'FarmController');
         Route::resource('survey', 'SurveyController');
 

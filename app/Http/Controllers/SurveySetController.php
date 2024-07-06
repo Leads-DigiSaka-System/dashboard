@@ -82,10 +82,11 @@ class SurveySetController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string',
+            'title' => 'required|string|unique:survey_set',
             'description' => 'required|string',
             'questionnaires' => 'required|array',
             'expiry_date' => 'required|date',
+            'farm_categ' => 'required',
         ]);
 
         $questionnaires = [];
@@ -101,6 +102,7 @@ class SurveySetController extends Controller
                 'slug' => Str::slug($request->title,'-'),
                 'description' => $request->description,
                 'questionnaire_data' => json_encode(['questionnaire_ids' => $questionnaires]),
+                'farm_categ' => $request->farm_categ,
                 'expiry_date' => $request->expiry_date,
                 'status' => 1
             ]);
@@ -124,7 +126,9 @@ class SurveySetController extends Controller
             'title' => $survey_set->title,
             'description' => $survey_set->description,
             'questionnaire_data' => json_decode($survey_set->questionnaire_data),
-            'status' => $survey_set->status
+            'status' => $survey_set->status,
+            'farm_categ' => $survey_set->farm_categ,
+            'expiry_date' => $survey_set->expiry_date
         ];
 
         $query_questionnaires = Questionnaire::get();
@@ -147,7 +151,8 @@ class SurveySetController extends Controller
             'title' => 'required|string',
             'description' => 'required|string',
             'questionnaires' => 'required|array',
-            'expiry_date' => 'required|date'
+            'expiry_date' => 'required|date',
+            'farm_categ' => 'required'
         ]);
 
         $questionnaires = [];
@@ -166,6 +171,7 @@ class SurveySetController extends Controller
             $survey_set->description = $request->description;
             $survey_set->questionnaire_data = json_encode(['questionnaire_ids' => $questionnaires]);
             $survey_set->expiry_date = $request->expiry_date;
+            $survey_set->farm_categ = $request->farm_categ;
             $survey_set->status = 1;
             $survey_set->save();
 

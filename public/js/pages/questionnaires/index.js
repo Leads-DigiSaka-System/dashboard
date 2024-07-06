@@ -6,6 +6,7 @@ $(document).ready(function() {
             { data: 'title', name: 'title' },
             { data: 'description', name: 'description' },
             { data: 'created_at', name: 'created_at'},
+            { data: 'date_revised', name: 'date_revised'},
             { data: 'link', name: 'link', className:'text-break copy-link'},
             { data: 'status', name: 'status'},
             { data: 'action', name: 'action', orderable: false, searchable: false},

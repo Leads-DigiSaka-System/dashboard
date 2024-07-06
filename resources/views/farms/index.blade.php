@@ -52,11 +52,11 @@
                   <thead>
                   <tr>
                     <th>S.No</th>
-                    <th>Farmer Name</th>
+                    <th>Users</th>
                     <th>Farm Id</th>
                     <th>Role</th>
-                     <th>Address</th>
-                     <th>Registered date</th>
+                    <th>Address</th>
+                    <th>Registered date</th>
                   
                     <th data-orderable="false">Action</th>
                   </tr>
@@ -71,13 +71,16 @@
 		    </div>
        </div>    
       <!-- /.container-fluid -->
+      @include('farms.viewMapModal')
     </section>  
-  
+
+
 
   @push('page_script')
 
       @include('include.dataTableScripts')   
-
+      <script async src="https://maps.googleapis.com/maps/api/js?key={{ env('MAP_KEY') }}&loading=async&&libraries=geometry">
+      </script>
       <script src="{{ asset('js/pages/farms/index.js?time=12345') }}"></script>
 
   @endpush

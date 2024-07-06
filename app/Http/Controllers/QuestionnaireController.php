@@ -38,6 +38,9 @@ class QuestionnaireController extends Controller
                     ->addColumn('created_at', function ($questionnaire) {
                         return $questionnaire->created_at;
                     })
+                    ->addColumn('date_revised', function ($questionnaire) {
+                        return $questionnaire->updated_at;
+                    })
                     ->addColumn('title', function ($questionnaire) {
                         return $questionnaire->title;
                     })
@@ -101,7 +104,7 @@ class QuestionnaireController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string',
+            'title' => 'required|string|unique:questionnaires',
             'description' => 'required|string',
             'questions' => 'required|array'
         ]);

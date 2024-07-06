@@ -79,6 +79,58 @@
 									</div>
 								</div>
 
+								<div class="row mb-1">
+									<div class="col-sm-7">
+										<div class="form-check form-check-inline">
+										  <input class="form-check-input" 
+										  type="radio" 
+										  name="farm_categ" 
+										  id="farm_categ_personal"
+										  value="1"
+										  {{ $survey_set['farm_categ'] == 1 ? 'checked' : '' }} 
+										  >
+										  <label 
+										  class="form-check-label" 
+										  for="farm_categ_personal">
+										    Personal
+										  </label>
+										</div>
+										<div class="form-check form-check-inline">
+										  <input class="form-check-input" 
+										  type="radio" 
+										  name="farm_categ" 
+										  id="farm_categ_farm"
+										  value="0"
+										  {{ $survey_set['farm_categ'] == 0 ? 'checked' : '' }} 
+										  >
+										  <label class="form-check-label" 
+										  for="farm_categ_farm">
+										    Farm
+										  </label>
+										</div>
+									</div>
+								</div>
+
+								<div class="row mb-1">
+									<div class="col-sm-12">
+										<div class="form-group">
+											<label 
+											for="description" 
+											class="fs-5 fw-bold ">
+												Expiry Date *
+											</label>
+											<input type="date" name="expiry_date" class="form-control" value="{{ $survey_set['expiry_date'] }}">
+
+											@if ($errors->has('expiry_date'))
+		                                        <span class="invalid-feedback" role="alert">
+		                                            <strong>{{ $errors->first('expiry_date') }}</strong>
+		                                        </span>
+		                                    @endif
+										</div>
+									    
+									</div>
+								</div>
+
 								@foreach($survey_set['questionnaire_data']->questionnaire_ids as  $questionnaire_id)
 									<div class="row mb-1 {{ !$loop->first ? 'additional_option' :'' }}">
 										<div class="col-sm-12">

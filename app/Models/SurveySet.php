@@ -17,6 +17,7 @@ class SurveySet extends Model
         'description',
         'questionnaire_data',
         'expiry_date',
+        'farm_categ',
         'status'
     ];
 
