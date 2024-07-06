@@ -153,6 +153,7 @@ class AccountController extends Controller
 
         $userObj->fill($request->all());
         $userObj->full_name = $request->first_name . ' ' . $request->last_name;
+        $userObj->farmer_group = $request->farmer_group ?? '';
         
         
         if(!$userObj->save()){

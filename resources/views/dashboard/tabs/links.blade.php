@@ -46,6 +46,16 @@
         <div class="col-md-12 col-lg-6">
             <div class="card rounded-3 shadow-sm">
                 <div class="card-body">
+                    <a href="https://zenodo.org/records/8399173" target="_blank">
+                        <img class="w-100" style="height:800px;" src="{{ asset('images/Zenodo.png') }}"
+                            alt="Zenodo">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-6">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-body">
                     <a href="https://prism.philrice.gov.ph/dataproducts/" target="_blank">
                         <img class="w-100" style="height:800px;" src="{{ asset('images/Prism_area.png') }}"
                             alt="Rice Area">
