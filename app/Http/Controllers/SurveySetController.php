@@ -9,6 +9,7 @@ use App\Models\SurveySet;
 
 use Illuminate\Support\Str;
 use DB;
+use Carbon\Carbon;
 class SurveySetController extends Controller
 {
     public function index(Request $request, SurveySet $survey_set) {
@@ -81,11 +82,11 @@ class SurveySetController extends Controller
 
     public function store(Request $request)
     {
+        //dd($request->all());
         $validated = $request->validate([
             'title' => 'required|string|unique:survey_set',
             'description' => 'required|string',
             'questionnaires' => 'required|array',
-            'expiry_date' => 'required|date',
             'farm_categ' => 'required',
         ]);
 
@@ -103,7 +104,7 @@ class SurveySetController extends Controller
                 'description' => $request->description,
                 'questionnaire_data' => json_encode(['questionnaire_ids' => $questionnaires]),
                 'farm_categ' => $request->farm_categ,
-                'expiry_date' => $request->expiry_date,
+                'expiry_date' => !empty($request->expiry_date) ? $request->expiry_date : Carbon::now()->addMonth(),
                 'status' => 1
             ]);
 
@@ -151,7 +152,7 @@ class SurveySetController extends Controller
             'title' => 'required|string',
             'description' => 'required|string',
             'questionnaires' => 'required|array',
-            'expiry_date' => 'required|date',
+            
             'farm_categ' => 'required'
         ]);
 
@@ -170,7 +171,9 @@ class SurveySetController extends Controller
             $survey_set->slug = Str::slug($request->title,'-');
             $survey_set->description = $request->description;
             $survey_set->questionnaire_data = json_encode(['questionnaire_ids' => $questionnaires]);
-            $survey_set->expiry_date = $request->expiry_date;
+            if(!empty($request->expiry_date)) {
+                $survey_set->expiry_date = $request->expiry_date;
+            }
             $survey_set->farm_categ = $request->farm_categ;
             $survey_set->status = 1;
             $survey_set->save();

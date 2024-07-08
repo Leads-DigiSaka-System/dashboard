@@ -50,7 +50,7 @@
                   <thead>
                   <tr>
                     <th>S.No</th>
-                    <th>Farmer Name</th>
+                    <th>Users</th>
                     <th>Farm Id</th>
                     <th>Date</th>
                      <th>Status</th>
