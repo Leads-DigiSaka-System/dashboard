@@ -53,7 +53,7 @@ class DashboardController extends Controller
     
     public function index()
     {
-        
+        //dd($this->getSurveyV2());
         $farmerPercent = $this->getPercentageCount("User");
         $farmPercent = $this->getPercentageCount("Farms");
         $surveyPercent = $this->getPercentageCount("Survey");
@@ -1589,9 +1589,15 @@ class DashboardController extends Controller
 
         $survey_array = array();
         
+        $test = [];
         $questions = array( 2 => array());
         foreach($surveyList as $survey){
             $survey_data = json_decode($survey->survey_data);
+
+            if(count($survey_data) == 13) {
+                array_push($test, $survey_data);
+
+            }
 
             foreach($survey_data as $data) {
                 $skippedCount = 0;
@@ -1599,84 +1605,13 @@ class DashboardController extends Controller
                 foreach($question_sets as $set) {
                     if(count($survey_data) == 13 && $set->survey_id == 2 ) {
                         $this->transformSurveyData($questions, 2, $data, $set);
-
-                        // if($set->question_id == $data->question_id) {
-                        //     if(array_key_exists($set->question,$questions[2])) {
-                        //         if(array_key_exists($data->answer, $questions[2][$set->question])) {
-                        //             if($data->answer == "") {
-                        //                 $skippedCount++;
-                        //             } else {
-                        //                 $answeredCount++;
-                        //                 $questions[2][$set->question][$data->answer] += 1;
-                        //             }
-                        //         } else {
-                        //             if($data->answer == "") {
-                        //                 $skippedCount++;
-                        //             } else {
-                        //                 $answeredCount++;
-                        //                 $questions[2][$set->question][$data->answer] = 1;
-                        //             }
-                        //         }
-
-                        //         if(array_key_exists('skippedCount', $questions[2][$set->question])) {
-                        //             $questions[2][$set->question]['skippedCount'] += $skippedCount;
-                        //         } else {
-                        //             $questions[2][$set->question]['skippedCount'] = 1;
-                        //         }
-
-                        //         if(array_key_exists('answeredCount', $questions[2][$set->question])) {
-                        //             $questions[2][$set->question]['answeredCount'] += $answeredCount;
-                        //         } else {
-                        //             $questions[2][$set->question]['answeredCount'] = 1;
-                        //         }
-
-                        //     } else {
-                        //         if($data->answer == "") {
-                        //             $skippedCount++;
-                        //             $questions[2][$set->question]['answeredCount'] = 1;
-                        //         } else {
-                        //             $answeredCount++;
-                        //             $questions[2][$set->question][$data->answer] = 1;
-                        //             $questions[2][$set->question]['answeredCount'] = 1;
-                        //         }
-                                
-                        //     }
-                        // }
                     }
-                    /*else if(count($survey_data) == 41 && $set->survey_id == 1) {
-                        if($set->question_id == $data->question_id) {
-                            $this->transformSurveyData($questions, 1, $data, $set);
-                            // if(array_key_exists($set->question,$questions[1])) {
-                            //     if(array_key_exists($data->answer, $questions[1][$set->question])) {
-                            //         if($data->answer == "") {
-                            //             $skippedCount++;
-                            //         } else {
-                            //             $answeredCount++;
-                            //             $questions[1][$set->question][$data->answer] += 1;
-                            //         }
-                            //     } else {
-                            //         if($data->answer == "") {
-                            //             $skippedCount++;
-                            //         } else {
-                            //             $answeredCount++;
-                            //             $questions[1][$set->question][$data->answer] = 1;
-                            //         }
-                            //     }
-                            // } else {
-                            //     if($data->answer == "") {
-                            //         $skippedCount++;
-                            //     } else {
-                            //         $answeredCount++;
-                            //         $questions[1][$set->question][$data->answer] = 1;
-                            //     }
-                            // }
-                        }
-                    }*/
                 }
             }
 
         }
 
+        //dd($test);
         $chartData = array();
         $chart_no = 1;
         foreach($questions[2] as $key => $value) {
@@ -1693,6 +1628,7 @@ class DashboardController extends Controller
             $chart_no++;
         }
 
+        //dd($chartData);
         return response()->json($chartData);
     }
 
@@ -1733,7 +1669,6 @@ class DashboardController extends Controller
             } else {
                 if($data->answer == "") {
                     $skippedCount++;
-                    $questions[$survey_id][$set->question]['answeredCount'] = 1;
                 } else {
                     $answeredCount++;
                     $questions[$survey_id][$set->question]['answers'][$data->answer] = 1;
