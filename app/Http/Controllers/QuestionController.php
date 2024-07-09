@@ -186,7 +186,6 @@ class QuestionController extends Controller
             'required_field' => $question->required_field,
             'field_type' => $question->field_type,
             'conditional' => $question->conditional,
-            'farm_categ' => $question->farm_categ,
             'questionnaire_id' => $question->questionnaire_id,
             'sub_field_type' => json_decode($question->sub_field_type)
         ];
@@ -205,12 +204,13 @@ class QuestionController extends Controller
     public function update(Request $request, $id)
     {
         
+
         if($request->conditional == 'on')
         {
             $validated = $request->validate([
                     'field_name' => 'required|string',
                     'questionnaire' => 'required',
-                    'farm_categ' => 'required'
+                    
                 ]);
 
         } else {
@@ -218,7 +218,7 @@ class QuestionController extends Controller
                 $validated = $request->validate([
                     'field_name' => 'required|string',
                     'field_type' => 'required|string',
-                    'farm_categ' => 'required'
+                    
                 ]);
 
             } else {
@@ -226,7 +226,7 @@ class QuestionController extends Controller
                     'field_name' => 'required|string',
                     'field_type' => 'required|string',
                     'sub_field_type' => 'required|array',
-                    'farm_categ' => 'required'
+                    
                 ]);
 
             }
@@ -243,7 +243,6 @@ class QuestionController extends Controller
             $question->required_field = $request->required_field == 'on' ? 1 : 0;
             $question->sub_field_type = json_encode(['choices' => $request->sub_field_type]);
             $question->conditional = $request->conditional == 'on' ? 1 : 0;
-            $question->farm_categ = $request->farm_categ;
             $question->questionnaire_id = ($request->has('questionnaire')) ? $request->questionnaire : 0;
             $question->status = 1;
             $question->save();
