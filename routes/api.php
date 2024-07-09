@@ -87,7 +87,6 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::post('/updateProfileAdmin', 'AccountController@updateProfileAdmin')->name('updateProfileAdmin');
 			Route::post('/update_profile_pic','AccountController@updateProfilePic')->name('updateProfilePic');
 			Route::get('/notification', 'AccountController@notification')->name('notification');
-			Route::get('/home', 'HomeController@index')->name('home');
 			Route::post('/contactUs', 'HomeController@contactUs')->name('contactUs');
 			Route::get('/farm-list', 'FarmController@index')->name('farm_list');
 			Route::post('/farm-store', 'FarmController@store')->name('farm_store');
@@ -102,6 +101,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::post('/verify-farmer', 'AccountController@verifyFarmer')->name('verifyFarmer');
 			
 		});
+		Route::get('/home', 'HomeController@index')->name('home');
     });
 	
 	Route::post('/farms/upsertJournal/{id?}','JournalController@upsert');
