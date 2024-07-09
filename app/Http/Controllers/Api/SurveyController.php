@@ -276,6 +276,7 @@ class SurveyController extends Controller
         	$survey = [
         		'survey_id' => encrypt($survey_set->id),
         		'title' => $survey_set->title,
+        		'reward_points' => $survey_set->reward_points,
         		'slug' => $survey_set->slug,
         		'farm_category' => $survey_set->farm_categ == 1 ? 'Personal' : 'Farm',
         		'expiry_date' => empty($survey_set->expiry_date) ? '-' : $survey_set->expiry_date,
