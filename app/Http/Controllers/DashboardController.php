@@ -53,7 +53,6 @@ class DashboardController extends Controller
     
     public function index()
     {
-        //dd($this->getSurveyV2());
         $farmerPercent = $this->getPercentageCount("User");
         $farmPercent = $this->getPercentageCount("Farms");
         $surveyPercent = $this->getPercentageCount("Survey");
@@ -1621,8 +1620,8 @@ class DashboardController extends Controller
                 'title' => $key,
                 'categories' => array_keys($value['answers']),
                 'data' => array_values($value['answers']),
-                'answeredCount' => $value['answeredCount'],
-                'skippedCount' => $value['skippedCount'],
+                'answeredCount' => array_key_exists('answeredCount',$value) ? $value['answeredCount'] : 0,
+                'skippedCount' => array_key_exists('skippedCount', $value) ? $value['skippedCount'] : 0,
                 'element_id' => "element{$chart_no}"
             );
 
