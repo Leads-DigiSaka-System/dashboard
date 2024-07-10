@@ -110,6 +110,8 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 
 	Route::get('/questionnaire/{id}','SurveyController@getQuestionnaire')->name('getQuestionnaireById');
 	Route::get('/survey_set/{id}','SurveyController@getSurveySet')->name('getSurveySetById');
+
+	Route::get('/survey_set/categ/{id}','SurveyController@getSurveySetByCateg')->name('getSurveySetByCateg');
 });
 /*
 Route::prefix('v2')->namespace('Api2')->group(function () {
