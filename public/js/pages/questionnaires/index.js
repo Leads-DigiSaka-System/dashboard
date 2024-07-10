@@ -36,7 +36,7 @@ $(document).on("click",'.copy-link', function () {
     document.body.removeChild(text);
 })
 
-$(document).on('click', '.delete-datatable-record', function(e){
+$(document).on('click', '.delete-questionnaire-record', function(e){
     let url  = site_url + "/questionnaires/" + $(this).attr('data-id');
     let tableId = 'questionnaire_table'
     

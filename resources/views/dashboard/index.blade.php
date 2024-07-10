@@ -69,18 +69,6 @@
             <li class="nav-item">
                 <a class="nav-link navs" id="tab5" data-toggle="tab" href="#content6">Map Explorers</a>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
-                    aria-expanded="false">
-                    Agri Data PH
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content11">Reports</a></li>
-                    <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content12">Infographics</a></li>
-                    <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content13">Webinars</a></li>
-                </ul>
-            </li>
-            
             <li class="nav-item">
                 <a class="nav-link navs" id="tab9" data-toggle="tab" href="#content9">Geospatial AI Solutions</a>
             </li>
@@ -90,7 +78,7 @@
             <li class="nav-item dropdown">
                 <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
                     aria-expanded="false">
-                    Demos
+                    Techno-Demo
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item navs" id="tab4" data-bs-toggle="tab" href="#demo1">Agri-Products</a></li>
@@ -100,6 +88,7 @@
                     <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo5">Corporate Farming</a></li>
                     <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo6">Provincial Rice Techno Forum</a></li>
                     <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo7">Recipient / Beneficiary</a></li>
+                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo8">Progress and Results</a></li>
                 </ul>
             </li>
 
@@ -120,13 +109,24 @@
             <li class="nav-item dropdown">
                 <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
                     aria-expanded="false">
+                    Agri Data PH
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content11">Reports</a></li>
+                    <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content12">Infographics</a></li>
+                    <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content13">Webinars</a></li>
+                </ul>
+            </li>
+            {{-- <li class="nav-item dropdown">
+                <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
+                    aria-expanded="false">
                     Survey Results
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link navs" id="tab2" data-toggle="tab" href="#content2">Version 1</a></li>
                     <li><a class="nav-link navs" id="tab2" data-toggle="tab" href="#content10">Version 2</a></li>
                 </ul>
-            </li>
+            </li> --}}
             {{-- <li class="nav-item">
                 <a class="nav-link navs" id="tab3" data-toggle="tab" href="#content3">Rice Derby</a>
             </li> --}}
@@ -381,17 +381,21 @@
                         <div class="card rounded-3 shadow-sm">
                             <div class="p-2">
                                 <h4 class="">Top Performing Technician</h4>
+                                @foreach($top_performers as $performer)
                                 <div class="d-flex flex-row w-100 pt-2 justify-content-between align-items-center">
+                                    
                                     <div class="d-flex align-items-center">
                                         <div class="h-3 w-3 bg-success rounded-circle" style="padding:5px;"></div>
                                         <div style="width: 5px;"></div>
-                                        <span>{{ $top_performer->first_name . ' ' . $top_performer->last_name }}</span>
+                                        <span>{{ $performer->first_name . ' ' . $performer->last_name }}</span>
                                     </div>
                                     <div class="align-items-left">
-                                        <span class="font-weight-bold">{{ $top_performer->user_count }}</span>
+                                        <span class="font-weight-bold">{{ $performer->user_count }}</span>
                                         <span class="font-weight-light">farmers</span>
                                     </div>
+
                                 </div>
+                                @endforeach
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-12">
@@ -816,7 +820,8 @@
         @include('dashboard.demos.corporate')
         @include('dashboard.demos.provincial')
         @include('dashboard.demos.recipient')
-        @include('dashboard.tabs.survey_v2')
+        @include('dashboard.demos.progress')
+        {{-- @include('dashboard.tabs.survey_v2') --}}
 
         
 

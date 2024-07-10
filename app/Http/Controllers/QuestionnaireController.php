@@ -53,7 +53,7 @@ class QuestionnaireController extends Controller
                     ->addColumn('action', function ($questionnaire) {
                             $btn = '';
                             $btn = '<a href="' . route('questionnaires.edit', encrypt($questionnaire->id)) . '" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;';
-                            $btn .= '<a href="javascript:void(0);" delete_form="delete_customer_form"  data-id="' . encrypt($questionnaire->id) . '" class="delete-datatable-record text-danger delete-users-record" title="Delete"><i class="fas fa-trash"></i></a>';
+                            $btn .= '<a href="javascript:void(0);" delete_form="delete_customer_form"  data-id="' . encrypt($questionnaire->id) . '" class="delete-questionnaire-record text-danger delete-users-record" title="Delete"><i class="fas fa-trash"></i></a>';
                         return $btn;
                     })
                     ->addColumn('status', function ($questionnaire) {
@@ -126,10 +126,10 @@ class QuestionnaireController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route("questionnaires.index")->with('success', 'Questionnaire created successfully.');
+            return redirect()->route("survey.index")->with('success', 'Questionnaire created successfully.');
         } catch (Exception $e) {
             DB::rollback();
-            return redirect()->route("questionnaires.index")->with('error', 'Unable to create questionnaire. Please try again later.');
+            return redirect()->route("survey.index")->with('error', 'Unable to create questionnaire. Please try again later.');
         }
     }
 
@@ -214,10 +214,10 @@ class QuestionnaireController extends Controller
             $questionnaire->save();
 
             DB::commit();
-            return redirect()->route("questionnaires.index")->with('success', 'Questionnaire updated successfully.');
+            return redirect()->route("survey.index")->with('success', 'Questionnaire updated successfully.');
         } catch (Exception $e) {
             DB::rollback();
-            return redirect()->route("questionnaires.index")->with('error', 'Unable to update questionnaire. Please try again later.');
+            return redirect()->route("survey.index")->with('error', 'Unable to update questionnaire. Please try again later.');
         }
     }
 

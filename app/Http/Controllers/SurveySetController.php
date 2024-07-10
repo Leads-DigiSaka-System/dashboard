@@ -47,7 +47,7 @@ class SurveySetController extends Controller
                     ->addColumn('action', function ($survey_set) {
                             $btn = '';
                             $btn = '<a href="' . route('survey_set.edit', encrypt($survey_set->id)) . '" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;';
-                            $btn .= '<a href="javascript:void(0);" delete_form="delete_customer_form"  data-id="' . encrypt($survey_set->id) . '" class="delete-datatable-record text-danger delete-users-record" title="Delete"><i class="fas fa-trash"></i></a>';
+                            $btn .= '<a href="javascript:void(0);" delete_form="delete_customer_form"  data-id="' . encrypt($survey_set->id) . '" class="delete-survey_set-record text-danger delete-users-record" title="Delete"><i class="fas fa-trash"></i></a>';
                         return $btn;
                     })
                     ->addColumn('status', function ($survey_set) {
@@ -109,10 +109,10 @@ class SurveySetController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route("survey_set.index")->with('success', 'Survey Set created successfully.');
+            return redirect()->route("survey.index")->with('success', 'Survey Set created successfully.');
         } catch (Exception $e) {
             DB::rollback();
-            return redirect()->route("survey_set.index")->with('error', 'Unable to create Survey Set. Please try again later.');
+            return redirect()->route("survey.index")->with('error', 'Unable to create Survey Set. Please try again later.');
         }
     }
 
@@ -179,10 +179,10 @@ class SurveySetController extends Controller
             $survey_set->save();
 
             DB::commit();
-            return redirect()->route("survey_set.index")->with('success', 'Survey Set updated successfully.');
+            return redirect()->route("survey.index")->with('success', 'Survey Set updated successfully.');
         } catch (Exception $e) {
             DB::rollback();
-            return redirect()->route("survey_set.index")->with('error', 'Unable to update survey set. Please try again later.');
+            return redirect()->route("survey.index")->with('error', 'Unable to update survey set. Please try again later.');
         }
     }
 

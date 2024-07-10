@@ -35,7 +35,7 @@ $(document).on("click",'.copy-link', function () {
     document.body.removeChild(text);
 })
 
-$(document).on('click', '.delete-datatable-record', function(e){
+$(document).on('click', '.delete-survey_set-record', function(e){
     let url  = site_url + "/survey_set/" + $(this).attr('data-id');
     let tableId = 'survey_set_table'
     

@@ -78,7 +78,7 @@
 			</div>
 			<!-- /.card -->
 		</div>
-   </div>    
+   	</div>    
   <!-- /.container-fluid -->
 </section>
 

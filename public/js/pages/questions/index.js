@@ -25,9 +25,10 @@ $(document).ready(function() {
     });
 });
 
-$(document).on('click', '.delete-datatable-record', function(e){
+$(document).on('click', '.delete-question-record', function(e){
+
     let url  = site_url + "/questions/" + $(this).attr('data-id');
     let tableId = 'question_table'
-    
+    console.log(url);
     deleteDataTableRecord(url, tableId);
 });

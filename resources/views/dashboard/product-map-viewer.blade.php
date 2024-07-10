@@ -10,6 +10,7 @@
             initMapProduct(document.getElementById('corporate_map'));
             initMapProduct(document.getElementById('provincial_map'));
             initMapProduct(document.getElementById('recipient_map'));
+            initMapProduct(document.getElementById('progress_map'));
         });
 
         function initMapProduct(element) {

@@ -73,7 +73,7 @@ class QuestionController extends Controller
                     ->addColumn('action', function ($question) {
                             $btn = '';
                             $btn = '<a href="' . route('questions.edit', encrypt($question->id)) . '" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;';
-                            $btn .= '<a href="javascript:void(0);" delete_form="delete_customer_form"  data-id="' . encrypt($question->id) . '" class="delete-datatable-record text-danger delete-users-record" title="Delete"><i class="fas fa-trash"></i></a>';
+                            $btn .= '<a href="javascript:void(0);" delete_form="delete_customer_form"  data-id="' . encrypt($question->id) . '" class="delete-question-record text-danger delete-users-record" title="Delete"><i class="fas fa-trash"></i></a>';
                         return $btn;
                     })
                     ->addColumn('status', function ($question) {
@@ -148,10 +148,10 @@ class QuestionController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route("questions.index")->with('success', 'Question created successfully.');
+            return redirect()->route("survey.index")->with('success', 'Question created successfully.');
         } catch (Exception $e) {
             DB::rollback();
-            return redirect()->route("questions.index")->with('error', 'Unable to create question. Please try again later.');
+            return redirect()->route("survey.index")->with('error', 'Unable to create question. Please try again later.');
         }
     }
 
@@ -249,10 +249,10 @@ class QuestionController extends Controller
 
 
             DB::commit();
-            return redirect()->route("questions.index")->with('success', 'Question updated successfully.');
+            return redirect()->route("survey.index")->with('success', 'Question updated successfully.');
         } catch (Exception $e) {
             DB::rollback();
-            return redirect()->route("questions.index")->with('error', 'Unable to update question. Please try again later.');
+            return redirect()->route("survey.index")->with('error', 'Unable to update question. Please try again later.');
         }
     }
 

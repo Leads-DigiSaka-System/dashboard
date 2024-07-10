@@ -321,7 +321,7 @@
             }]
         });
 
-    axios.get('/dashboard/getAgeChartData').then(response => {
+    /*axios.get('/dashboard/getAgeChartData').then(response => {
         const ageChart = Highcharts.chart('age', chartScript(response));
     });
 
@@ -399,7 +399,7 @@
 
     axios.get('/dashboard/getfarmGroupAppChartData').then(response => {
         const farmGroupAppChart = Highcharts.chart('farmGroupApp', chartScript(response));
-    });
+    });*/
 
     axios.get('/dashboard/getAreaPlantedPerVariety').then(response => {
         const data = response.data; // Assuming the data is present in the 'data' property of the response
@@ -412,7 +412,7 @@
         demoAreaPlanted('financing_area_planted',data);
         demoAreaPlanted('provincial_area_planted',data);
         demoAreaPlanted('recipient_area_planted',data);
-
+        demoAreaPlanted('progress_area_planted',data);
         /*Highcharts.chart('area_planted', {
             chart: {
                 type: 'pie'
@@ -510,6 +510,7 @@
         demoVarietyPlanted('financing_variety_planted', categories, seriesData);
         demoVarietyPlanted('provincial_variety_planted', categories, seriesData);
         demoVarietyPlanted('recipient_variety_planted', categories, seriesData);
+        demoVarietyPlanted('progress_variety_planted', categories, seriesData);
     })
     .catch(error => {
         console.error('Error fetching data:', error);

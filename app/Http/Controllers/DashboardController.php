@@ -61,11 +61,12 @@ class DashboardController extends Controller
         $users = User::where('role', '!=', 0)->count();
         $latest_farmers = User::where('role', '!=', 0)->orderBy('id', 'desc')->limit(10)->get();
         $latest_farms = Farms::orderBy('id', 'desc')->limit(10)->get();
-        $top_performer = User::select('users.id', 'users.first_name', 'users.last_name', DB::raw('COUNT(referrers.referer) as user_count'))
+        $top_performers = User::select('users.id', 'users.first_name', 'users.last_name', DB::raw('COUNT(referrers.referer) as user_count'))
         ->leftJoin('users as referrers', 'users.id', '=', 'referrers.referer')
         ->groupBy('users.id', 'users.first_name', 'users.last_name')
         ->orderByDesc('user_count')
-        ->first();
+        ->take(5)
+        ->get();
         $farms = Farms::count();
         $survey = Survey::count();
         $allFarms = Farms::getAllFarmWithFarmerDetails();
@@ -82,7 +83,7 @@ class DashboardController extends Controller
             'regions' => $distinctFilters->pluck('region')->unique()->values()
         ];
 
-        return view('dashboard.index', compact("webinars","filters", "users", "farms", "survey", "latest_farmers", "latest_farms", "allFarms", "farmerPercent", "farmPercent", "surveyPercent", "allRegion", "top_performer", "randomFarms"));
+        return view('dashboard.index', compact("webinars","filters", "users", "farms", "survey", "latest_farmers", "latest_farms", "allFarms", "farmerPercent", "farmPercent", "surveyPercent", "allRegion", "top_performers", "randomFarms"));
     }
 
     public function getDistinctFilters(Request $request)

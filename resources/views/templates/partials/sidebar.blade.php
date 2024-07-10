@@ -70,7 +70,7 @@
                     href="{{ route('survey.index') }}"><i data-feather="book"></i><span
                         class="menu-title text-truncate" data-i18n="Kanban">Survey</span></a>
             </li>
-            <li class=" nav-item {{request()->is('questions') || request()->is('questions/*')?'active':''}}">
+            {{-- <li class=" nav-item {{request()->is('questions') || request()->is('questions/*')?'active':''}}">
                 <a class="d-flex align-items-center" href="{{route('questions.index')}}"><i data-feather="book"></i><span class="menu-title text-truncate" data-i18n="Kanban">Questions</span></a>
             </li> 
             <li class=" nav-item {{request()->is('questionnaires') || request()->is('questionnaires/*')?'active':''}}">
@@ -78,7 +78,7 @@
             </li> 
             <li class=" nav-item {{request()->is('survey_set') || request()->is('survey_set/*')?'active':''}}">
                 <a class="d-flex align-items-center" href="{{route('survey_set.index')}}"><i data-feather="book"></i><span class="menu-title text-truncate" data-i18n="Kanban">Survey Set</span></a>
-            </li> 
+            </li>  --}}
             <li class="nav-item" style="margin-top:50%;">
                 <div>
                     {{-- <div class="divider"></div> --}}
