@@ -130,12 +130,4 @@
         const farmGroupAppChart = Highcharts.chart('farmGroupApp', chartScript(response));
     });
 
-    
-
-$(document).ready(function() {
-    const recom_year = $('#recom_year').val();
-
-    getRecommendations(recom_year);
-})
-
 </script>
