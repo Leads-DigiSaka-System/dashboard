@@ -36,7 +36,11 @@ Route::middleware('prevent-back-history')->group(function (){
     Auth::routes();
     
     Route::middleware('auth')->group(function(){
-        Route::get('/', 'HomeController@index')->name('user.home');
+        Route::get('/', function () {
+            return redirect()->route('dashboard.index');
+        })->name('user.home');
+        
+        
         Route::get('/farmers/export', 'UserController@export')->name('farmers.export');
         Route::resource('farmers', 'UserController');
         Route::get('getProvinceByRegion','UserController@getProvinceByRegion');
