@@ -14,21 +14,22 @@
         <!-- /.card-header -->
         
         <div class="card-body">
-          <table id="survey_set_table" class="table table-bordered table-hover">
+          <div class="table-responsive">
+              <table id="survey_set_table" class="table table-bordered table-hover">
             <thead>
             <tr>
               <th>#</th>
               <th>Title</th>
               <th>Description</th>
               <th>Date Created</th>
-              <th>Link</th>
+              <th style="min-width: 450px;">Link</th> 
               <th data-orderable="false">Status</th>
               <th data-orderable="false">Action</th>
             </tr>
             </thead>
-
           </table>
         </div>
+      </div>
         <!-- /.card-body -->
 
       </div>

@@ -15,21 +15,22 @@
         <!-- /.card-header -->
         
         <div class="card-body">
-          <table id="questionnaire_table" class="table table-bordered table-hover">
-            <thead>
-            <tr>
-              <th>#</th>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Date Created</th>
-              <th>Date Revised</th>
-              <th>Link</th>
-              <th data-orderable="false">Status</th>
-              <th data-orderable="false">Action</th>
-            </tr>
-            </thead>
-
-          </table>
+          <div class="table-responsive">
+              <table id="questionnaire_table" class="table table-bordered table-hover">
+                  <thead>
+                      <tr>
+                          <th>#</th>
+                          <th>Title</th>
+                          <th>Description</th>
+                          <th>Date Created</th>
+                          <th>Date Revised</th>
+                          <th style="min-width: 450px;">Link</th> <!-- Widen the Link header -->
+                          <th data-orderable="false">Status</th>
+                          <th data-orderable="false">Action</th>
+                      </tr>
+                  </thead>
+              </table>
+          </div>
         </div>
         <!-- /.card-body -->
 
