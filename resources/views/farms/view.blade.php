@@ -204,6 +204,7 @@ $images=explode(',',$farmObj->farm_image);
             const map = new google.maps.Map(document.getElementById("map"), {
                 center: { lat: 37.774929, lng: -122.419418 }, // Set your initial map center
                 zoom: 13, // Adjust the zoom level as needed
+                mapTypeId: 'satellite'
             });
 
             // Construct the polygon using the provided coordinates

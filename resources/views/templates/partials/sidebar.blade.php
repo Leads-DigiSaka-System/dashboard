@@ -6,7 +6,7 @@
     <div class="navbar-header">
         <ul class="nav navbar-nav flex-row">
             <li class="nav-item me-auto">
-                <a class="navbar-brand" style="text-decoration: none;" href="{{ route('user.home') }}">
+                <a class="navbar-brand" style="text-decoration: none;" href="/dashboard">
                     <span class="brand-logo">
                         <img src="{{ asset('images/logo.png') }}" class="img-fluid"
                             style="max-width: 100px; height: auto;">

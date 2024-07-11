@@ -3,7 +3,7 @@
 <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
     <div class="navbar-header">
         <ul class="nav navbar-nav flex-row">
-            <li class="nav-item me-auto"><a class="navbar-brand" href="{{route('user.home')}}"><span class="brand-logo">
+            <li class="nav-item me-auto"><a class="navbar-brand" href="/dashboard"><span class="brand-logo">
                 <img src="{{asset('images/logo.png')}}">
                        </span>
                     <h2 class="brand-text">{{config('app.name')}}</h2>
