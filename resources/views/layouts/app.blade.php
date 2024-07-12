@@ -78,7 +78,7 @@
     <!-- Main Footer -->
    <footer class="main-footer">
         <div class="float-right d-none d-sm-block">
-            {{date("Y")}}&copy; Safe Exam
+            {{date("Y")}}&copy; DigiSaka
         </div>
 <!--         <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights
         reserved. -->
