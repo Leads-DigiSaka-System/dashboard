@@ -52,8 +52,8 @@ class LocationController extends Controller
             'data' => $data
         ]);
     }
-    public function searchBarangay($search){
-        $data = Barangay::searchBarangay($search);
+    public function searchBarangay($search, $reg, $prov, $muni){
+        $data = Barangay::searchBarangay($search, $reg, $prov, $muni);
         return response()->json([
             'status' => 'success',
             'data' => $data

@@ -19,11 +19,16 @@ class Barangay extends Model
     }
 
     //search municipalities, provinces, and regions based on search text joined with provinces and regions use join not union
-    public static function searchBarangay($search)
+    public static function searchBarangay($search, $reg, $prov, $muni)
     {
         return self::select('*')
             ->where('brgyDesc', 'like', '%' . $search . '%')
+            ->where('regCode', 'like', '%' . $reg . '%')
+            ->where('provCode', 'like', '%' . $prov . '%')
+            ->where('citymunCode', 'like', '%' . $muni . '%')
             ->limit(10)
             ->get();
     }
+    
+    
 }
