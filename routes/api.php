@@ -98,20 +98,20 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::post('/survey-store', 'SurveyController@store')->name('survey_store');
 			Route::get('/get-farmer-info/{farmerInfo}', 'AccountController@getFarmerInfo')->name('getFarmerInfo');
 			//this should have admin privellege
+			Route::get('/home', 'HomeController@index')->name('home');
 			Route::post('/verify-farmer', 'AccountController@verifyFarmer')->name('verifyFarmer');
 			
 		});
-		Route::get('/home', 'HomeController@index')->name('home');
     });
 	
 	Route::post('/farms/upsertJournal/{id?}','JournalController@upsert');
 	Route::get('/farms/getJournals','JournalController@get');
 	Route::get('/farms/getJournal/{id}','JournalController@find');
-
+	Route::get('/survey_set/categ/{id}','SurveyController@getSurveySetByCateg')->name('getSurveySetByCateg');
 	Route::get('/questionnaire/{id}','SurveyController@getQuestionnaire')->name('getQuestionnaireById');
 	Route::get('/survey_set/{id}','SurveyController@getSurveySet')->name('getSurveySetById');
+	
 
-	Route::get('/survey_set/categ/{id}','SurveyController@getSurveySetByCateg')->name('getSurveySetByCateg');
 });
 /*
 Route::prefix('v2')->namespace('Api2')->group(function () {
