@@ -133,12 +133,16 @@ class Farms extends Model
     }
 
     //get all farm with farmer details
-    public static function getAllFarmWithFarmerDetails()
+    public static function getAllFarmWithFarmerDetails($region = NULL)
     {
-        return self::with('farmerDetails')->get();
+        if($region == NULL){
+            return self::with('farmerDetails')->get();
+        } else {
+            return self::with('farmerDetails')->where("region", $region)->get();
+        }
     }
 
-    public static function getRandomFarmWthFarmerDetails() {
+    public static function getRandomFarmWthFarmerDetails($region = NULL) {
         return self::whereHas('farmerDetails', function ($query) {
             $query->where('via_app',1);
         })

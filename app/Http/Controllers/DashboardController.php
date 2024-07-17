@@ -19,6 +19,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\File;
+use Auth;
+
 class DashboardController extends Controller
 {
     //
@@ -57,25 +59,26 @@ class DashboardController extends Controller
         $farmPercent = $this->getPercentageCount("Farms");
         $surveyPercent = $this->getPercentageCount("Survey");
         $webinars = Webinar::orderBy('id', 'desc')->get();
-        $users = User::where('role', '!=', 0)->count();
-        $latest_farmers = User::where('role', '!=', 0)->orderBy('id', 'desc')->limit(10)->get();
-        $latest_farms = Farms::orderBy('id', 'desc')->limit(10)->get();
+        $users = User::where('role', '!=', 0)->where('region', Auth::user()->region)->count();
+        $latest_farmers = User::where('role', '!=', 0)->where('region', Auth::user()->region)->orderBy('id', 'desc')->limit(10)->get();
+        $latest_farms = Farms::orderBy('id', 'desc')->where('region', Auth::user()->region)->limit(10)->get();
         $top_performers = User::select('users.id', 'users.first_name', 'users.last_name', DB::raw('COUNT(referrers.referer) as user_count'))
         ->leftJoin('users as referrers', 'users.id', '=', 'referrers.referer')
+        ->where('users.region', Auth::user()->region)
         ->groupBy('users.id', 'users.first_name', 'users.last_name')
         ->orderByDesc('user_count')
         ->take(5)
         ->get();
-        $farms = Farms::count();
-        $survey = Survey::count();
-        $allFarms = Farms::getAllFarmWithFarmerDetails();
-        $randomFarms = Farms::getRandomFarmWthFarmerDetails();
-        $allArea = Province::getAllArea();
+        $farms = Farms::where('region', Auth::user()->region)->count();
+        $survey = Survey::leftJoin('farms', 'farms.farm_id', '=', 'surveys.farm_id')->where('farms.region', Auth::user()->region)->count();
+        $allFarms = Farms::getAllFarmWithFarmerDetails(Auth::user()->region);
+        $randomFarms = Farms::getRandomFarmWthFarmerDetails(Auth::user()->region);
+        $allArea = Province::getAllArea(Auth::user()->region);
         $allRegion = Region::all();
         $distinctFilters = Derby::select('region')
         ->distinct()
         ->where('region','!=', '')
-        ->orderBy('region')
+        ->orderBy('region') 
         ->get();
 
         $filters = [

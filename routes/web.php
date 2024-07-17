@@ -44,7 +44,7 @@ Route::middleware('prevent-back-history')->group(function (){
         Route::get('/farmers/export', 'UserController@export')->name('farmers.export');
         Route::resource('farmers', 'UserController');
         Route::get('getProvinceByRegion','UserController@getProvinceByRegion');
-        Route::get('leads', 'UserController@leadsUser');
+        Route::get('leads', 'UserController@leadsUser')->name("leads");
         
         Route::get('/farmer/changeStatus/{id}','UserController@changeStatus')->name('farmer.changeStatus');
         Route::get('user/profile','UserController@profile')->name('user.profile');
@@ -108,4 +108,7 @@ Route::middleware('prevent-back-history')->group(function (){
     Route::get('/dashboard/getRecommendations', 'DashboardController@getRecommendations');
     Route::get('/dashboard/getAgriProducts','DashboardController@getAgriProducts');
     Route::get('/dashboard/getSurveyV2','DashboardController@getSurveyV2');
+    
+    Route::get('/calibrate/{level}/{code}','CalibrateLocationController@calibrate');
+
 });

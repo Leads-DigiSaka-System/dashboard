@@ -15,13 +15,24 @@ class Province extends Model
     {
         return self::select('provcode', 'name')->where('regcode', $regionCode)->get();
     }
-    public static function getAllArea()
+    public static function getAllArea($region = NULL)
     {
-        $areas = self::select('area')
+
+        if($region == NULL){
+            $areas = self::select('area')
+                ->whereNotNull('area')
+                ->orderBy('area', 'asc')
+                ->distinct()
+                ->pluck('area');
+        } else {
+            $areas = self::select('area')
             ->whereNotNull('area')
+            ->where('regcode', $region)
             ->orderBy('area', 'asc')
             ->distinct()
             ->pluck('area');
+        }
+       
 
         return $areas->prepend('All', '')->map(function ($area) {
             return [

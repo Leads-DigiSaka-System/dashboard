@@ -14,6 +14,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersExport;
 use Carbon\Carbon;
 use App\Models\Farms;
+use DB;
+
 class UserController extends Controller
 {
 
@@ -177,7 +179,7 @@ class UserController extends Controller
                     ->addColumn('action', function ($user) {
                             $btn = '';
                             $btn = '<a href="' . route('farmers.show', encrypt($user->id)) . '" title="View"><i class="fas fa-eye"></i></a>&nbsp;&nbsp;';
-                            /*$btn .= '<a href="' . route('farmers.edit', encrypt($user->id)) . '" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;';*/
+                            $btn .= '<a href="' . route('farmers.edit', encrypt($user->id)) . '" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;';
                             $btn .= '<a href="javascript:void(0);" delete_form="delete_customer_form"  data-id="' . encrypt($user->id) . '" class="delete-datatable-record text-danger delete-users-record" title="Delete"><i class="fas fa-trash"></i></a>';
                         return $btn;
                     })
@@ -255,7 +257,13 @@ class UserController extends Controller
             if (! $userObj) {
                 return redirect()->back()->with('error', 'This user does not exist');
             }
-            return view('user.edit', compact('userObj'));
+
+            $roleList = DB::table("roles")->get();
+            $regionList = DB::table("regions")->get();
+            $provList = DB::table("provinces")->where("regcode", $userObj->region)->get();
+            $munList = DB::table("municipalities")->where("provcode", $userObj->province)->get();
+
+            return view('user.edit', compact('userObj', 'roleList', 'regionList', 'provList', 'munList'));
         } catch (\Exception $ex) {
             if($ex->getMessage() == "The payload is invalid."){
                 return redirect()->back()->with('error', "Invalid-request");
@@ -268,12 +276,21 @@ class UserController extends Controller
     {
         $userId = decrypt($id);
         $rules = array(
-            'full_name' => 'required',
+            'last_name' => 'required',
+            'first_name' => 'required',
             'email' => 'required|email:rfc,dns,filter|unique:users,email,' . $userId . ',id,deleted_at,NULL',
             'phone_code' => 'required',
             'iso_code' => 'required',
-            'phone_number' => 'required|unique:users,phone_number,' . $userId . ',id,deleted_at,NULL|min:8|max:15'
+            'phone_number' => 'required|unique:users,phone_number,' . $userId . ',id,deleted_at,NULL|min:8|max:15', 
+            'dob' => 'required',
+            'region' => 'required',
+            'province' => 'required',
+            'municipality' => 'required',
+            'barangay' => 'required',
+            'role' => 'required',
         );
+
+        // dd($request->all());
 
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -287,10 +304,13 @@ class UserController extends Controller
         }
 
         $userArr = $request->except(['_method','_token']);
+        $userArr["full_name"] = $userArr["first_name"] . " " . $userArr["last_name"];
+        $userArr["phone_code"] = "+" . $userArr["phone_code"];
+        $userArr["dob"] = date('F d, Y', strtotime($userArr["dob"]));
         $hasUpdated = $user->updateUserById($userId,$userArr);
 
         if ($hasUpdated) 
-            return redirect()->route('users.index')->with('success', 'User updated successfully.');
+            return redirect()->route('leads')->with('success', 'User updated successfully.');
         
         return redirect()->back()->with('error', 'Unable to update user. Please try again later.');
     }

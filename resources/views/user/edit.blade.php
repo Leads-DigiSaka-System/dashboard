@@ -40,20 +40,31 @@
                             <div class="row">
                                 <div class="col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="full_name">Full Name <span class="text-danger asteric-sign">&#42;</span></label>
-                                            <input id="full_name" type="text" class="form-control {{ $errors->has('full_name') ? ' is-invalid' : '' }}" name="full_name" value="{{ (old('full_name')) ? (old('full_name')) : ($userObj->full_name) }}" placeholder="Full Name">
-                                            @if ($errors->has('full_name'))
+                                        <label class="form-label" for="last_name">Last Name <span class="text-danger asteric-sign">&#42;</span></label>
+                                            <input id="last_name" type="text" class="form-control {{ $errors->has('last_name') ? ' is-invalid' : '' }}" name="last_name" value="{{ (old('last_name')) ? (old('last_name')) : ($userObj->last_name) }}" placeholder="Last Name">
+                                            @if ($errors->has('last_name'))
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('full_name') }}</strong>
+                                                    <strong>{{ $errors->first('last_name') }}</strong>
                                                 </span>
                                             @endif
                                         
                                     </div>
                                 </div>
-                               
                                 <div class="col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="email">Email</label>
+                                        <label class="form-label" for="first_name">First Name <span class="text-danger asteric-sign">&#42;</span></label>
+                                            <input id="first_name" type="text" class="form-control {{ $errors->has('first_name') ? ' is-invalid' : '' }}" name="first_name" value="{{ (old('first_name')) ? (old('first_name')) : ($userObj->first_name) }}" placeholder="First Name">
+                                            @if ($errors->has('first_name'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('first_name') }}</strong>
+                                                </span>
+                                            @endif
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="email">Email <span class="text-danger asteric-sign">&#42;</span></label>
                                             <input id="email" type="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ (old('email')) ? (old('email')) : ($userObj->email) }}" placeholder="Enter Email" autocomplete="off">
                                         @if ($errors->has('email'))
                                             <span class="invalid-feedback" role="alert">
@@ -64,10 +75,11 @@
                                 </div>
                                 <div class="col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="phone_number">Phone Number </label><br>
-                                        <input type="hidden" name="phone_code" id="phone_code" value="{{ (old('phone_code')) ? (old('phone_code')) : ($userObj->phone_code) }}"/>
+                                        <label class="form-label" for="phone_number">Phone Number <span class="text-danger asteric-sign">&#42;</span></label><br>
+                                        <input type="hidden" name="phone_code" id="phone_code" value="{{ (old('phone_code')) ? (old('phone_code')) : (str_replace("+","",$userObj->phone_code)) }}"/>
                                         <input type="hidden" name="iso_code" id="iso_code" value="{{ (old('iso_code')) ? (old('iso_code')) : ($userObj->iso_code) }}"/>
 
+                                        
                                         <input id="phone_number" type="text" class="form-control {{ $errors->has('phone_number') || $errors->has('phone_code') || $errors->has('iso_code') ? ' is-invalid' : '' }}" name="phone_number" value="{{ (old('phone_number')) ? (old('phone_number')) : ($userObj->phone_number) }}">
                                         @if ($errors->has('phone_number'))
                                             <span class="invalid-feedback d-block" role="alert">
@@ -82,6 +94,130 @@
                                                 <strong>{{ $errors->first('iso_code') }}</strong>
                                             </span>
                                         @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="dob">Birthdate <span class="text-danger asteric-sign">&#42;</span></label>
+                                            <input id="dob" type="date" class="form-control {{ $errors->has('dob') ? ' is-invalid' : '' }}" name="dob" value="{{ (old('dob')) ? (old('dob')) : (date('Y-m-d', strtotime($userObj->dob))) }}" autocomplete="off">
+                                        @if ($errors->has('dob'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('dob') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                {{-- <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="gender">Gender <span class="text-danger asteric-sign">&#42;</span></label><br>\
+                                        <input type="radio" id="male" name="gender" value="0" {{ ($userObj->gender == 0) ? "checked" : ""}}>
+                                        <label for="male">Male</label><br>
+                                        <input type="radio" id="female" name="gender" value="1"{{ ($userObj->gender == 1) ? "checked" : ""}}>
+                                        <label for="female">Female</label><br>
+                                        @if ($errors->has('gender'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('gender') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div> --}}
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="region">Region <span class="text-danger asteric-sign">&#42;</span></label>
+                                            {{-- <input id="region" type="text" class="form-control {{ $errors->has('region') ? ' is-invalid' : '' }}" name="region" value="{{ (old('region')) ? (old('region')) : ($userObj->region) }}" placeholder="Region">
+                                            @if ($errors->has('region'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('region') }}</strong>
+                                                </span>
+                                            @endif --}}
+                                            <select name="region" id="region" class="form-control {{ $errors->has('region') ? ' is-invalid' : '' }}">
+                                                @foreach ($regionList as $region)
+                                                    <option value="{{ $region->regcode }}" {{ ($userObj->region == $region->regcode) ? "selected" : "" }}>{{ $region->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has('region'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('region') }}</strong>
+                                                </span>
+                                            @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="province">Province <span class="text-danger asteric-sign">&#42;</span></label>
+                                            {{-- <input id="province" type="text" class="form-control {{ $errors->has('province') ? ' is-invalid' : '' }}" name="province" value="{{ (old('province')) ? (old('province')) : ($userObj->province) }}" placeholder="Province">
+                                            @if ($errors->has('province'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('province') }}</strong>
+                                                </span>
+                                            @endif --}}
+                                            
+                                            <select name="province" id="province" class="form-control {{ $errors->has('province') ? ' is-invalid' : '' }}">
+                                                @foreach ($provList as $province)
+                                                    <option value="{{ $province->provcode }}" {{ ($userObj->province == $province->provcode) ? "selected" : "" }}>{{ $province->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has('province'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('province') }}</strong>
+                                                </span>
+                                            @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="municipality">Municipality <span class="text-danger asteric-sign">&#42;</span></label>
+                                            {{-- <input id="municipality" type="text" class="form-control {{ $errors->has('municipality') ? ' is-invalid' : '' }}" name="municipality" value="{{ (old('municipality')) ? (old('municipality')) : ($userObj->municipality) }}" placeholder="Municipality">
+                                            @if ($errors->has('municipality'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('municipality') }}</strong>
+                                                </span>
+                                            @endif --}}
+                                            <select name="municipality" id="municipality" class="form-control {{ $errors->has('municipality') ? ' is-invalid' : '' }}">
+                                                @foreach ($munList as $municipality)
+                                                    <option value="{{ $municipality->muncode }}" {{ ($userObj->municipality == $municipality->muncode) ? "selected" : "" }}>{{ $municipality->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has('municipality'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('municipality') }}</strong>
+                                                </span>
+                                            @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="barangay">Barangay <span class="text-danger asteric-sign">&#42;</span></label>
+                                            <input id="barangay" type="text" class="form-control {{ $errors->has('barangay') ? ' is-invalid' : '' }}" name="barangay" value="{{ (old('barangay')) ? (old('barangay')) : ($userObj->barangay) }}" placeholder="Barangay" oninput="toUpperCaseInput(this)">
+                                            @if ($errors->has('barangay'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('barangay') }}</strong>
+                                                </span>
+                                            @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="role">Role <span class="text-danger asteric-sign">&#42;</span></label>
+                                        {{-- <input id="role" type="text" class="form-control {{ $errors->has('role') ? ' is-invalid' : '' }}" name="role" value="{{ (old('role')) ? (old('role')) : ($userObj->role) }}" placeholder="Role">
+                                        @if ($errors->has('role'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('role') }}</strong>
+                                            </span>
+                                        @endif --}}
+
+                                        <select name="role" id="role" class="form-control {{ $errors->has('role') ? ' is-invalid' : '' }}">
+                                            @foreach ($roleList as $role)
+                                                <option value="{{ $role->id }}" {{ ($userObj->role == $role->id) ? "selected" : "" }}>{{ $role->title }}</option>
+                                            @endforeach
+                                        </select>
+
+                                        @if ($errors->has('role'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('role') }}</strong>
+                                            </span>
+                                        @endif
+                                        
                                     </div>
                                 </div>
 
@@ -123,6 +259,78 @@
             $("#iso_code").val(phoneInstance.getSelectedCountryData().iso2);
         });
         
+    </script>
+    <script>
+
+        const clearLocation = (level) => {
+            if(level == "region"){
+                $("#province").empty();
+                $("#municipality").empty();
+                $("#barangay").empty();
+            } else if (level == "province") {
+                $("#municipality").empty();
+                $("#barangay").empty();
+            } else {
+                $("#barangay").empty();
+            }
+        }
+
+        $("#region").change(() => {
+            clearLocation("region");
+            let selected_region = $("#region").val();
+            fetchData("region", selected_region);
+        })
+
+        $("#province").change(() => {
+            clearLocation("province");
+            let selected_province = $("#province").val();
+            fetchData("province", selected_province);
+        })
+
+        $("#municipality").change(() => {
+            clearLocation("municipality");
+            fetchData("province", selected_province);
+        })
+        
+        const fetchData = (level, code) => {
+
+            let id_name = "";
+            let location_name = "";
+            let dropdown_id = "";
+
+            if(level == "region"){
+                id_name = "provcode";
+                location_name = "name";
+                dropdown_id = "province";
+            } else {
+                id_name = "muncode";
+                location_name = "name";
+                dropdown_id = "municipality";
+            }
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '../../calibrate/' + level + '/' + code,
+                type: 'GET',
+
+                success: function (data) {
+                    console.log(data);
+
+                    let html = "";
+                    data.forEach(element => {
+                        // html += `<option value="${element.id}">${element.category}</option>`;
+                        html += `<option value="${ element[id_name] }">${ element[location_name] }</option>`;
+                    });
+                    $(`#${dropdown_id}`).empty().append(html);
+                }
+            });
+        }
+
+        const toUpperCaseInput = (input) => {
+            input.value = input.value.toUpperCase();
+        }
     </script>
 @endpush
 
