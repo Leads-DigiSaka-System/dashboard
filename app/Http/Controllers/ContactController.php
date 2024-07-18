@@ -26,13 +26,15 @@ class ContactController extends Controller
     public function index(Request $request){
         if ($request->ajax()) {
             $restriction = $this->getRegionFilter();
-    
+        
             // Fetch the data from the database
             $results = DB::table('contacts')
-                ->join('users', 'contacts.farmer_id', '=', 'users.id')
+                ->join('users as contact_user', 'contacts.farmer_id', '=', 'contact_user.id')
+                ->leftJoin('users as added_by_user', 'contacts.added_by', '=', 'added_by_user.id')
                 ->select(
-                    'users.*',
+                    'contact_user.*',
                     'contacts.*',
+                    'added_by_user.full_name as added_by_name'
                 )
                 ->where(function($query) use ($restriction) {
                     $query->where('contacts.region', 'like', $restriction);
@@ -41,7 +43,7 @@ class ContactController extends Controller
                     }
                 })
                 ->get();
-    
+        
             // Convert the results to User model instances
             $users = $results->map(function ($result) {
                 // Create a new instance of User model
@@ -54,7 +56,7 @@ class ContactController extends Controller
                 
                 return $user;
             });
-    
+        
             return datatables()
                 ->of($users)
                 ->addIndexColumn()
@@ -66,6 +68,9 @@ class ContactController extends Controller
                 })
                 ->addColumn('full_name', function ($user) {
                     return $user->full_name ? $user->full_name : 'N/A';
+                })
+                ->addColumn('added_by', function ($user) {
+                    return $user->added_by_name ? $user->added_by_name : 'N/A';
                 })
                 ->addColumn('role', function ($user) {
                     return $user->role_title ? $user->role_title : 'N/A';

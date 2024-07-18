@@ -14,6 +14,7 @@ $(document).ready(function() {
                 d.filter_column3 = $('input[name=filter_role]').val(); // Role
                 d.filter_column4 = $('input[name=filter_status]').val(); // Status
                 d.filter_column5 = $('input[name=registered_by]').val(); // Registered via App
+                d.filter_column6 = $('input[name=filter_added_by]').val(); // Added By
             }
         },
         columns: [
@@ -24,6 +25,7 @@ $(document).ready(function() {
             {data: 'status', name: 'status'},
             {data: 'via_app', name: 'via_app'},
             {data: 'registered_date', name: 'registered_date'},
+            {data: 'added_by', name: 'added_by'}, // Added column
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         // dom: 'Bfrtip',

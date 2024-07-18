@@ -54,6 +54,7 @@
                     <th>Status</th>
                     <th>Registered via App</th>
                     <th>Registered date</th>
+                    <th>Added by</th>
                     <th data-orderable="false">Action</th>
                   </tr>
                   </thead>
