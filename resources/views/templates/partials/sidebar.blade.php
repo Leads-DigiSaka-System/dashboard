@@ -79,6 +79,19 @@
             <li class=" nav-item {{request()->is('survey_set') || request()->is('survey_set/*')?'active':''}}">
                 <a class="d-flex align-items-center" href="{{route('survey_set.index')}}"><i data-feather="book"></i><span class="menu-title text-truncate" data-i18n="Kanban">Survey Set</span></a>
             </li>  --}}
+
+
+            @if (Auth::user()->role == 1 || Auth::user()->role == 0)
+                <li class=" nav-item {{ request()->is('sales') || request()->is('sales/*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" style="text-decoration: none;"
+                        href="{{ route('sales.index') }}"><i data-feather="book"></i><span
+                            class="menu-title text-truncate" data-i18n="Kanban">Sales Team</span></a>
+                </li>
+            @endif
+
+            
+
+
             <li class="nav-item" style="margin-top:50%;">
                 <div>
                     {{-- <div class="divider"></div> --}}
