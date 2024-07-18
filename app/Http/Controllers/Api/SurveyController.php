@@ -108,6 +108,16 @@ class SurveyController extends Controller
 		]);
 		
 	}
+	public function checkDone($id)
+    {
+        $survey = Survey::select('status', 'id', 'created_at', 'updated_at')->find($id);
+
+        if ($survey) {
+            return response()->json($survey);
+        } else {
+            return response()->json(['error' => 'Survey not found'], 404);
+        }
+    }
 
 	public function getQuestionnaire($id) {
         $decrypt_id = decrypt($id);

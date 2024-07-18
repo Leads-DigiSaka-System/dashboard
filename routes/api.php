@@ -109,9 +109,11 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 	Route::get('/farms/getJournals','JournalController@get');
 	Route::post('/farms/deleteJournal/{id}','JournalController@delete');
 	Route::get('/farms/getJournal/{id}','JournalController@find');
+
 	Route::get('/survey_set/categ/{id}','SurveyController@getSurveySetByCateg')->name('getSurveySetByCateg');
 	Route::get('/questionnaire/{id}','SurveyController@getQuestionnaire')->name('getQuestionnaireById');
 	Route::get('/survey_set/{id}','SurveyController@getSurveySet')->name('getSurveySetById');
+	Route::get('/surveys/checkDone/{survey_id}','SurveyController@checkDone')->name('checkDone');
 	
 
 });
