@@ -80,7 +80,11 @@
                 <a class="d-flex align-items-center" href="{{route('survey_set.index')}}"><i data-feather="book"></i><span class="menu-title text-truncate" data-i18n="Kanban">Survey Set</span></a>
             </li>  --}}
 
-
+            <li class=" nav-item {{ request()->is('contacts') || request()->is('contacts/*') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" style="text-decoration: none;"
+                    href="{{ route('contacts.index') }}"><i data-feather="book"></i><span
+                        class="menu-title text-truncate" data-i18n="Kanban">Contacts</span></a>
+            </li>
             @if (Auth::user()->role == 1 || Auth::user()->role == 0)
                 <li class=" nav-item {{ request()->is('sales') || request()->is('sales/*') ? 'active' : '' }}">
                     <a class="d-flex align-items-center" style="text-decoration: none;"
