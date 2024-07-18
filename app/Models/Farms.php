@@ -133,20 +133,27 @@ class Farms extends Model
     }
 
     //get all farm with farmer details
-    public static function getAllFarmWithFarmerDetails($region = NULL)
+    public static function getAllFarmWithFarmerDetails($restriction = NULL)
     {
-        if($region == NULL){
-            return self::with('farmerDetails')->get();
-        } else {
-            return self::with('farmerDetails')->where("region", $region)->get();
-        }
+        return self::with('farmerDetails')->where(function($query) use ($restriction) {
+            $query->where('region', 'like', $restriction);
+            if($restriction == "%%"){
+                $query->orWhereNull('region');
+            }
+        })->get();
     }
 
-    public static function getRandomFarmWthFarmerDetails($region = NULL) {
+    public static function getRandomFarmWthFarmerDetails($restriction = NULL) {
         return self::whereHas('farmerDetails', function ($query) {
             $query->where('via_app',1);
         })
         ->with('farmerDetails')
+        ->where(function($query) use ($restriction) {
+            $query->where('region', 'like', $restriction);
+            if($restriction == "%%"){
+                $query->orWhereNull('region');
+            }
+        })
         ->inRandomOrder()
         ->limit(5)
         ->get();

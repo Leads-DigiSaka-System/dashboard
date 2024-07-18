@@ -53,27 +53,67 @@ class DashboardController extends Controller
         $this->years_data = $data;
     }
     
+    public function getRegionFilter() {
+        $user_role = Auth::user()->role;
+        $user_region = Auth::user()->region;
+
+        if($user_role == 0 || $user_role == 1){
+            return "%%";
+        } else if($user_role == 6){
+            return $user_region;
+        } else {
+            return "";
+        }
+    }
+
     public function index()
     {
+        $restriction = $this->getRegionFilter();
+
         $farmerPercent = $this->getPercentageCount("User");
         $farmPercent = $this->getPercentageCount("Farms");
         $surveyPercent = $this->getPercentageCount("Survey");
         $webinars = Webinar::orderBy('id', 'desc')->get();
-        $users = User::where('role', '!=', 0)->where('region', Auth::user()->region)->count();
-        $latest_farmers = User::where('role', '!=', 0)->where('region', Auth::user()->region)->orderBy('id', 'desc')->limit(10)->get();
-        $latest_farms = Farms::orderBy('id', 'desc')->where('region', Auth::user()->region)->limit(10)->get();
+        $users = User::where('role', '!=', 0)->where(function($query) use ($restriction) {
+            $query->where('region', 'like', $restriction);
+            if($restriction == "%%"){
+                $query->orWhereNull('region');
+            }
+        })->where('role', 2)->count();
+        $latest_farmers = User::where('role', '!=', 0)->where('region', 'like', $restriction)->orderBy('id', 'desc')->limit(10)->get();
+        $latest_farms = Farms::orderBy('id', 'desc')->where('region', 'like', $restriction)->limit(10)->get();
         $top_performers = User::select('users.id', 'users.first_name', 'users.last_name', DB::raw('COUNT(referrers.referer) as user_count'))
-        ->leftJoin('users as referrers', 'users.id', '=', 'referrers.referer')
-        ->where('users.region', Auth::user()->region)
-        ->groupBy('users.id', 'users.first_name', 'users.last_name')
-        ->orderByDesc('user_count')
-        ->take(5)
-        ->get();
-        $farms = Farms::where('region', Auth::user()->region)->count();
-        $survey = Survey::leftJoin('farms', 'farms.farm_id', '=', 'surveys.farm_id')->where('farms.region', Auth::user()->region)->count();
-        $allFarms = Farms::getAllFarmWithFarmerDetails(Auth::user()->region);
-        $randomFarms = Farms::getRandomFarmWthFarmerDetails(Auth::user()->region);
-        $allArea = Province::getAllArea(Auth::user()->region);
+            ->leftJoin('users as referrers', 'users.id', '=', 'referrers.referer')
+            ->where('users.region', 'like', $restriction)
+            ->groupBy('users.id', 'users.first_name', 'users.last_name')
+            ->orderByDesc('user_count')
+            ->take(5)
+            ->get();
+        $farms = Farms::where(function($query) use ($restriction) {
+            $query->where('region', 'like', $restriction);
+            if($restriction == "%%"){
+                $query->orWhereNull('region');
+            }
+        })->count();
+        
+        $survey = 0;
+        $survey_temp = Survey::get();
+        foreach ($survey_temp as $key => $value) {
+            $temp = User::where("id", $value->farmer_id)
+            ->where(function($query) use ($restriction) {
+                $query->where('region', 'like', $restriction);
+                if($restriction == "%%"){
+                    $query->orWhereNull('region');
+                }
+            })->get();
+            if(count($temp) > 0){
+                $survey++;
+            }
+        }
+
+        $allFarms = Farms::getAllFarmWithFarmerDetails($restriction);
+        $randomFarms = Farms::getRandomFarmWthFarmerDetails($restriction);
+        $allArea = Province::getAllArea($restriction);
         $allRegion = Region::all();
         $distinctFilters = Derby::select('region')
         ->distinct()

@@ -27,7 +27,7 @@ class Province extends Model
         } else {
             $areas = self::select('area')
             ->whereNotNull('area')
-            ->where('regcode', $region)
+            ->where('regcode', 'like', $region)
             ->orderBy('area', 'asc')
             ->distinct()
             ->pluck('area');
