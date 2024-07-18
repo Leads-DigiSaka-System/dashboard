@@ -109,6 +109,14 @@ Route::middleware('prevent-back-history')->group(function (){
     Route::get('/dashboard/getAgriProducts','DashboardController@getAgriProducts');
     Route::get('/dashboard/getSurveyV2','DashboardController@getSurveyV2');
     
+    // Custom for Fetching locations \\
     Route::get('/calibrate/{level}/{code}','CalibrateLocationController@calibrate');
+    
+    // Sale Team Section \\
+    Route::get('/sales','SalesTeamController@index')->name('sales.index');
+    Route::get('/getProfile/{id}','SalesTeamController@getProfile')->name('sales.profile');
 
+    // Contacts Section \\
+    Route::get('/contacts','ContactController@index')->name('contacts.index');
+    
 });
