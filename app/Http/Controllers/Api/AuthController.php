@@ -383,7 +383,7 @@ class AuthController extends Controller
             $diffInSeconds = $now->diffInSeconds($lastSent);
 
             // Check if the last OTP was sent more than 5 minutes ago
-            if ($diffInSeconds > 2) {
+            if ($diffInSeconds > 300) {
                 $response = $this->myCurl(
                     'To=%2B' . $fullNumber . '&Channel=sms',
                     "https://verify.twilio.com/v2/Services/VAd2e21b5c21757f6ee0ee2aef26efa46e/Verifications"
