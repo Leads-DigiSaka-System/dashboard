@@ -23,6 +23,7 @@ $(document).ready(function() {
             {data: 'status', name: 'status'},
             {data: 'via_app', name: 'via_app'},
             {data: 'registered_date', name: 'registered_date'},
+            {data: 'added_by', name: 'added_by'}, // Added column
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         // dom: 'Bfrtip',

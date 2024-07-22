@@ -346,54 +346,96 @@ class AuthController extends Controller
         return returnSuccessResponse('Password reset successfully');
     }
 
-    public function sendSMSOTP(Request $request){
+    public function sendSMSOTP(Request $request)
+    {
         date_default_timezone_set('Asia/Manila');
+        
         $countryCode = preg_replace('/[^\p{L}\p{N}\s]/u', '', $request->country_code);
         $number = $request->to;
-        $fullNumber = $request->country_code . $number;
-        $query = DB::table('verifications')->where('number',$fullNumber);
-        if($query->count() < 1){
-            $response = $this->myCurl('To=%2B'.$countryCode.$number.'&Channel=sms',"https://verify.twilio.com/v2/Services/VAd2e21b5c21757f6ee0ee2aef26efa46e/Verifications");
-            if(json_decode($response,true)["status"] == "pending"){
-                $query = DB::table('verifications')->insert([
-                    "number" => $fullNumber
+        $fullNumber = $countryCode . $number;
+
+        // Check if the number is already in the database
+        $verification = DB::table('verifications')->where('number', $fullNumber)->first();
+
+        // Determine the current time
+        $now = Carbon::now();
+
+        // If no existing verification record is found
+        if (!$verification) {
+            $response = $this->myCurl(
+                'To=%2B' . $fullNumber . '&Channel=sms',
+                "https://verify.twilio.com/v2/Services/VAd2e21b5c21757f6ee0ee2aef26efa46e/Verifications"
+            );
+
+            // Check if the response status is pending
+            if (json_decode($response, true)["status"] == "pending") {
+                DB::table('verifications')->insert([
+                    'number' => $fullNumber,
+                    'last_sent' => $now,
                 ]);
-                return "success";
-            }else{
-                return "invalid number";
+                return response()->json(['status' => 'success']);
+            } else {
+                return response()->json(['error' => 'invalid number'], 400);
             }
-        }else{
-            $data = $query->first();
-            $lastSent = $data->last_sent;
-            $diff = Carbon::now()->diffInSeconds($lastSent);
-            if($diff > 300){
-                $response = $this->myCurl('To=%2B'.$countryCode.$number.'&Channel=sms',"https://verify.twilio.com/v2/Services/VAd2e21b5c21757f6ee0ee2aef26efa46e/Verifications");
-                if(json_decode($response,true)["status"] == "pending"){
-                    $query = DB::table('verifications')->insert([
-                        "number" => $fullNumber
-                    ]);
-                    return "success";
-                }else{
-                    return "invalid number";
+        } else {
+            // If a verification record is found
+            $lastSent = Carbon::parse($verification->last_sent);
+            $diffInSeconds = $now->diffInSeconds($lastSent);
+
+            // Check if the last OTP was sent more than 5 minutes ago
+            if ($diffInSeconds > 300) {
+                $response = $this->myCurl(
+                    'To=%2B' . $fullNumber . '&Channel=sms',
+                    "https://verify.twilio.com/v2/Services/VAd2e21b5c21757f6ee0ee2aef26efa46e/Verifications"
+                );
+
+                // Check if the response status is pending
+                if (json_decode($response, true)["status"] == "pending") {
+                    DB::table('verifications')->updateOrInsert(
+                        ['number' => $fullNumber],
+                        ['last_sent' => $now]
+                    );
+                    return response()->json(['status' => 'success']);
+                } else {
+                    return response()->json(['error' => 'invalid number'], 400);
                 }
-            }else{
-                return $diff;
+            } else {
+                // Return the time difference if less than 5 minutes
+                return response()->json(['wait' => $diffInSeconds]);
             }
         }
     }
 
-    public function verifySMSOTP(Request $request){
+   
+    public function verifySMSOTP(Request $request)
+    {
         $countryCode = preg_replace('/[^\p{L}\p{N}\s]/u', '', $request->country_code);
         $number = $request->to;
         $code = $request->code;
-        
-        $response = $this->myCurl('To=%2B'.$countryCode.$number.'&Code=' . $code,'https://verify.twilio.com/v2/Services/VAd2e21b5c21757f6ee0ee2aef26efa46e/VerificationCheck');
-        if(json_decode($response,true)["status"] == "approved"){
-            $fullNumber = $request->country_code . $number;
-            $query = DB::table('verifications')->where('number',$fullNumber)->update(["status"=>"approved"]);
-            return "success";
-        }else{
-            return "incorrect verification";
+        $fullNumber = $countryCode . $number;
+
+        $response = $this->myCurl(
+            'To=%2B' . $fullNumber . '&Code=' . $code,
+            'https://verify.twilio.com/v2/Services/VAd2e21b5c21757f6ee0ee2aef26efa46e/VerificationCheck'
+        );
+
+        $responseArray = json_decode($response, true);
+
+        if ($responseArray["status"] === "approved") {
+            // Update the verification status in the database
+            DB::table('verifications')->where('number', $fullNumber)->update(['status' => 'approved']);
+
+            // Return success response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Verification successful.'
+            ]);
+        } else {
+            // Return failure response
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Incorrect verification code.'
+            ], 400);
         }
     }
 

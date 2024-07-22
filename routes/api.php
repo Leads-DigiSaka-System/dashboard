@@ -99,6 +99,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::get('/get-farmer-info/{farmerInfo}', 'AccountController@getFarmerInfo')->name('getFarmerInfo');
 			//this should have admin privellege
 			Route::get('/home', 'HomeController@index')->name('home');
+			Route::get('/getAllMobile', 'AccountController@getAllMobile')->name('allMobile');
 			Route::post('/verify-farmer', 'AccountController@verifyFarmer')->name('verifyFarmer');
 			
 		});
@@ -106,10 +107,13 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 	
 	Route::post('/farms/upsertJournal/{id?}','JournalController@upsert');
 	Route::get('/farms/getJournals','JournalController@get');
+	Route::post('/farms/deleteJournal/{id}','JournalController@delete');
 	Route::get('/farms/getJournal/{id}','JournalController@find');
+
 	Route::get('/survey_set/categ/{id}','SurveyController@getSurveySetByCateg')->name('getSurveySetByCateg');
 	Route::get('/questionnaire/{id}','SurveyController@getQuestionnaire')->name('getQuestionnaireById');
 	Route::get('/survey_set/{id}','SurveyController@getSurveySet')->name('getSurveySetById');
+	Route::get('/surveys/checkDone/{survey_id}','SurveyController@checkDone')->name('checkDone');
 	
 
 });

@@ -38,8 +38,22 @@ class ContactController extends Controller
                             $query->orWhereNull('region');
                         }
                     }
-                }
-            )->get();
+                })
+                ->get();
+        
+            // // Convert the results to User model instances
+            // $users = $results->map(function ($result) {
+            //     // Create a new instance of User model
+            //     $user = new \App\Models\User();
+                
+            //     // Assign the properties from the result to the model
+            //     foreach ($result as $key => $value) {
+            //         $user->{$key} = $value;
+            //     }
+                
+            //     return $user;
+            // });
+        
             return datatables()
                 ->of($users)
                 ->addIndexColumn()
@@ -48,6 +62,12 @@ class ContactController extends Controller
                 })
                 ->addColumn('phone_number', function ($user) {
                     return $user->phone_number ? $user->phone_number : 'N/A';
+                })
+                ->addColumn('full_name', function ($user) {
+                    return $user->full_name ? $user->full_name : 'N/A';
+                })
+                ->addColumn('added_by', function ($user) {
+                    return $user->added_by_name ? $user->added_by_name : 'N/A';
                 })
                 ->addColumn('role', function ($user) {
                     return $user->role_title ? $user->role_title : 'N/A';
@@ -65,17 +85,14 @@ class ContactController extends Controller
                     $btn = '';
                     $btn .= '<button class="btn btn-primary" onclick="handleViewProfile(\''.encrypt($user->id).'\')">View Profile</button>&nbsp;&nbsp;';
                     $btn .= '<button class="btn btn-primary" onclick="handleContactProfile(\''.encrypt($user->id).'\')">View Contact</button>';
-                    // $btn = '<a href="' . route('farmers.show', encrypt($user->id)) . '" title="View"></a>&nbsp;&nbsp;';
-                    // $btn .= '<a href="javascript:void(0);" delete_form="delete_customer_form"  data-id="' . encrypt($user->id) . '" class="delete-datatable-record text-danger delete-users-record" title="Delete"><i class="fas fa-trash"></i></a>';
                     return $btn;
                 })
-                ->rawColumns([
-                    'action',
-                    'status',
-                ])
-            ->make(true);
+                ->rawColumns(['action', 'status'])
+                ->make(true);
         }
-
+    
         return view('contacts.index');
     }
+    
+    
 }

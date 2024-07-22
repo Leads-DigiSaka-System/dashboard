@@ -82,7 +82,14 @@ class AccountController extends Controller
         }
 
     }
+    public function getAllMobile(){
+        $users = User::where('role', '2')
+        ->where('phone_number', '!=', '')
+        ->select('phone_number', 'phone_code', 'full_name', 'id', 'verified')
+        ->get();
     
+        return returnSuccessResponse('All mobile numbers', $users);
+    }
     public function notification(Request $request){
 
     	$rules = [

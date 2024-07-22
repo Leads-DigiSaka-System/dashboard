@@ -45,7 +45,21 @@ class JournalController extends Controller
             return response()->json('error',500);
         }
     }
-
+    public function delete(Int $id) {
+        try {
+            $journal = Journal::find($id);
+          
+            if(!empty($journal)) {
+                $journal->delete();
+            }
+            else{
+                return response()->json(['error' => 'Journal not found'], 404);
+            }
+            return response()->json('success');
+        } catch(Exception $e) {
+            return response()->json('error',500);
+        }
+    }
     public function get() {
         $journals = Journal::all();
 
