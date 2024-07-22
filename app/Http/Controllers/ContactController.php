@@ -25,12 +25,18 @@ class ContactController extends Controller
 
     public function index(Request $request, User $user){
         if($request->ajax()){
+            
             $restriction = $this->getRegionFilter();
             $users = DB::table("contacts")->where(
-                function($query) use ($restriction) {
-                    $query->where('region', 'like', $restriction);
-                    if($restriction == "%%"){
-                        $query->orWhereNull('region');
+                function($query) use ($restriction, $request) {
+                    if($request->get('added_by') != null){
+                        $id = decrypt($request->get("added_by"));
+                        $query->where('added_by', $id);
+                    } else {
+                        $query->where('region', 'like', $restriction);
+                        if($restriction == "%%"){
+                            $query->orWhereNull('region');
+                        }
                     }
                 }
             )->get();

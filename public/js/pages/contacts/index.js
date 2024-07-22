@@ -5,15 +5,14 @@ $(document).on('click', '.delete-datatable-record', function(e){
 });
 
 $(document).ready(function() {
+    let added_by = window.location.search;
+    let result = added_by.replace("?added_by=", "");
+
     $('#salesTeamTable').DataTable({
         ajax: {
             url: site_url + "/contacts/",
             data: function (d) {
-                d.filter_column1 = $('input[name=filter_full_name]').val(); // Full Name
-                d.filter_column2 = $('input[name=filter_phone_number]').val(); // Phone Number
-                d.filter_column3 = $('input[name=filter_role]').val(); // Role
-                d.filter_column4 = $('input[name=filter_status]').val(); // Status
-                d.filter_column5 = $('input[name=registered_by]').val(); // Registered via App
+                d.added_by = result;
             }
         },
         columns: [

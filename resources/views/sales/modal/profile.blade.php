@@ -7,10 +7,10 @@
       </div>
       <div class="modal-body">
         <div>
-          <p id="full_name"></p>
-          <p id="phone_number"></p>
+          <h1 id="full_name" style="font-weight: bold;"></h1>
+          <p id="phone_number" style="font-weight: bold;"></p>
+          <p id="dob" style="font-weight: bold;"></p>
           <p id="address"></p>
-          <p id="main_data"></p>
         </div>
       </div>
       <div class="modal-footer">

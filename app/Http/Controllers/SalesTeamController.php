@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use DB;
 
 class SalesTeamController extends Controller
 {
@@ -52,6 +53,19 @@ class SalesTeamController extends Controller
     public function getProfile($id){
         $id = decrypt($id);
         $user_info = User::find($id);
+
+        $res = DB::table("regions")->where("regcode", $user_info->region)->get();
+        $user_info["region_name"] = (count($res) > 0) ? $res[0]->name : "Unsettled";
+
+        $res = DB::table("provinces")->where("provcode", $user_info->province)->get();
+        $user_info["province_name"] = (count($res) > 0) ? $res[0]->name : "Unsettled";
+
+        $res = DB::table("municipalities")->where("muncode", $user_info->municipality)->get();
+        $user_info["municipality_name"] = (count($res) > 0) ? $res[0]->name : "Unsettled";
+        
+        $user_info["brgy_name"] = ($user_info["barangay"] != NULL) ? $user_info["barangay"] : "Unsettled";
+        $user_info["dob"] = ($user_info["dob"] != NULL) ? $user_info["dob"] : "Unsettled";
+
         return $user_info;
     }
 }

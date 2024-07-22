@@ -92,18 +92,25 @@
                 url: site_url + "/getProfile/" + encrypted_id,
                 method: "GET",
                 success: function(data) {
-                    console.log(data);
-                    // $("#full_name").empty().append(data.full_name);
-                    // $("#phone_number").empty().append(data.phone_code + "" +data.phone_number);
-                    // $("#address").empty().append("Sample Address");
-                    // $("#main_data").empty().append(data);
+                    // console.log(data);
+                    $("#full_name").empty().append("Name: " + data.full_name);
+                    $("#phone_number").empty().append("Mobile No.: " + data.phone_code + "" +data.phone_number);
+                    $("#dob").empty().append("Birthdate: " + data.dob);
+
+                    $("#address").empty().append(`
+                      <span>Region: ${data.region_name}</span><br>
+                      <span>Province: ${data.province_name}</span><br>
+                      <span>Municipality/City: ${data.municipality_name}</span><br>
+                      <span>Barangay: ${data.brgy_name}</span><br>
+                    `);
+                    
+                    $("#viewProfileModal").modal("show");
                 }
             });
-            // $("#viewProfileModal").modal("show");
         }
 
         const handleContactProfile = (encrypted_id) => {
-            // console.log(encrypted_id);
+          window.location.assign('contacts?added_by=' + encrypted_id);
         }
       </script>
 
