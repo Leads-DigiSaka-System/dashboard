@@ -48,8 +48,6 @@ class ContactController extends Controller
                 }
             })
             ->get();
-
-        
             // Convert the results to User model instances
             $users = $results->map(function ($result) {
                 // Create a new instance of User model
