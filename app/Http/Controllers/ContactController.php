@@ -23,37 +23,39 @@ class ContactController extends Controller
         }
     }
 
-    public function index(Request $request, User $user){
-
-        if($request->ajax()){
-            
+    public function index(Request $request){
+        if ($request->ajax()) {
             $restriction = $this->getRegionFilter();
-            $users = DB::table("contacts")->where(
-                function($query) use ($restriction, $request) {
-                    if($request->get('added_by') != null){
-                        $id = decrypt($request->get("added_by"));
-                        $query->where('added_by', $id);
-                    } else {
-                        $query->where('region', 'like', $restriction);
-                        if($restriction == "%%"){
-                            $query->orWhereNull('region');
-                        }
+        
+            // Fetch the data from the database
+            $results = DB::table('contacts')
+                ->join('users as contact_user', 'contacts.farmer_id', '=', 'contact_user.id')
+                ->leftJoin('users as added_by_user', 'contacts.added_by', '=', 'added_by_user.id')
+                ->select(
+                    'contact_user.*',
+                    'contacts.*',
+                    'added_by_user.full_name as added_by_name'
+                )
+                ->where(function($query) use ($restriction) {
+                    $query->where('contacts.region', 'like', $restriction);
+                    if ($restriction == "%%") {
+                        $query->orWhereNull('contacts.region');
                     }
                 })
                 ->get();
         
-            // // Convert the results to User model instances
-            // $users = $results->map(function ($result) {
-            //     // Create a new instance of User model
-            //     $user = new \App\Models\User();
+            // Convert the results to User model instances
+            $users = $results->map(function ($result) {
+                // Create a new instance of User model
+                $user = new \App\Models\User();
                 
-            //     // Assign the properties from the result to the model
-            //     foreach ($result as $key => $value) {
-            //         $user->{$key} = $value;
-            //     }
+                // Assign the properties from the result to the model
+                foreach ($result as $key => $value) {
+                    $user->{$key} = $value;
+                }
                 
-            //     return $user;
-            // });
+                return $user;
+            });
         
             return datatables()
                 ->of($users)
@@ -84,8 +86,8 @@ class ContactController extends Controller
                 })
                 ->addColumn('action', function ($user) {
                     $btn = '';
-                    // $btn .= '<button class="btn btn-primary" onclick="handleViewProfile(\''.encrypt($user->id).'\')">View Profile</button>&nbsp;&nbsp;';
-                    // $btn .= '<button class="btn btn-primary" onclick="handleContactProfile(\''.encrypt($user->id).'\')">View Contact</button>';
+                    $btn .= '<button class="btn btn-primary" onclick="handleViewProfile(\''.encrypt($user->id).'\')">View Profile</button>&nbsp;&nbsp;';
+                    $btn .= '<button class="btn btn-primary" onclick="handleContactProfile(\''.encrypt($user->id).'\')">View Contact</button>';
                     return $btn;
                 })
                 ->rawColumns(['action', 'status'])
