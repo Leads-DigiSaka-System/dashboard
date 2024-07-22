@@ -29,20 +29,26 @@ class ContactController extends Controller
         
             // Fetch the data from the database
             $results = DB::table('contacts')
-                ->join('users as contact_user', 'contacts.farmer_id', '=', 'contact_user.id')
-                ->leftJoin('users as added_by_user', 'contacts.added_by', '=', 'added_by_user.id')
-                ->select(
-                    'contact_user.*',
-                    'contacts.*',
-                    'added_by_user.full_name as added_by_name'
-                )
-                ->where(function($query) use ($restriction) {
+            ->join('users as contact_user', 'contacts.farmer_id', '=', 'contact_user.id')
+            ->leftJoin('users as added_by_user', 'contacts.added_by', '=', 'added_by_user.id')
+            ->select(
+                'contact_user.*',
+                'contacts.*',
+                'added_by_user.full_name as added_by_name'
+            )
+            ->where(function ($query) use ($restriction, $request) {
+                if ($request->get('added_by') != null) {
+                    $id = decrypt($request->get("added_by"));
+                    $query->where('contacts.added_by', $id);
+                } else {
                     $query->where('contacts.region', 'like', $restriction);
                     if ($restriction == "%%") {
                         $query->orWhereNull('contacts.region');
                     }
-                })
-                ->get();
+                }
+            })
+            ->get();
+
         
             // Convert the results to User model instances
             $users = $results->map(function ($result) {
