@@ -242,7 +242,7 @@ class User extends Authenticatable
         // $otp = 1234;
         // return $otp;
 
-        $otp = mt_rand(1000,9999);
+        $otp = mt_rand(100000, 999999);
         // $otp = 123456;
         $count = self::where('email_verification_otp', $otp)->count();
         if($count > 0){
