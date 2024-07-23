@@ -32,7 +32,13 @@ $(document).ready(function() {
             className: "btn-sm btn-success",
             titleAttr: 'Export in Excel',
             text: '<i class="fa fa-file-export"></i>',
+            action: function ( e, dt, button, config ) {
+                window.location = site_url + "/leads/export";
+            },
             exportOptions: {
+                modifier: {
+                    page: 'all'
+                },
                 columns: ':not(:last-child)',
             },
         }],

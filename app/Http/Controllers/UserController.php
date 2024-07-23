@@ -12,33 +12,118 @@ use Illuminate\Support\Facades\Hash;
 use App\Jobs\ProcessEmail;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersExport;
+use App\Exports\LeadsExport;
 use Carbon\Carbon;
 use App\Models\Farms;
 use DB;
+use Auth;
 
 class UserController extends Controller
 {
 
+    public function getRegionFilter() {
+        $user_role = Auth::user()->role;
+        $user_region = Auth::user()->region;
+
+        if($user_role == 0 || $user_role == 1){
+            return "%%";
+        } else if($user_role == 6){
+            return $user_region;
+        } else {
+            return "";
+        }
+    }
+
+    public function getStatusBadge($status){
+        $status_temp = "";
+        if($status == 1){
+            $status_temp = "primary";
+        } else {
+            $status_temp = "danger";
+        }
+
+        return $status_temp;
+    }
+
+    public function getStatus($status){
+        $status_temp = "";
+        if($status == 1){
+            $status_temp = "Active";
+        } else {
+            $status_temp = "Inactive";
+        }
+        
+        return $status_temp;
+    }
+
+    public function getMyFarmers($request, $restriction){
+        $res = DB::table("users")
+        ->select("users.*", "roles.title as role_title")
+        ->join("roles", "roles.id", "=", "users.role")
+        ->where("users.role", 2)
+        ->where(function($query) use ($restriction) {
+            $query->where('users.region', 'like', $restriction);
+            if($restriction == "%%"){
+                $query->orWhereNull('users.region');
+            }
+        })
+        ->where(function($query) use ($request) {
+            if (!empty($request['filter_column1'])) {
+                $query->where('users.full_name', 'like', '%' . $request['filter_column1'] . '%');
+            }
+    
+            if (!empty($request['filter_column2'])) {
+                $query->where('users.phone_number', 'like', '%' . $request['filter_column2'] . '%');
+            }
+    
+            if (!empty($request['filter_column3'])) {
+                $query->where('users.role', 'like', '%' . $request['filter_column3'] . '%');
+            }
+    
+            if (!empty($request['filter_column4'])) {
+                $query->where('users.status', $request['filter_column4'] === 'Active' ? 1 : 0);
+            }
+            if (!empty($request['filter_column5'])) {
+                $query->where('ref.full_name', 'like', '%' . $request['filter_column5'] . '%');
+            }
+
+            if (!empty($request['region'])) {
+                if($request['region'] != "All") {
+                    $query->where('users.region',$request['region']);
+                }
+            }            
+            if(!empty($request['province']) && $request['province'] != "All") {
+                $query->where('users.province',$request['province']);
+            }
+        })
+        ->get();
+
+        return $res;
+    }
+
     public function index(Request $request, User $user)
     {
         if ($request->ajax()) {
-            $users = $user->getAllUsers($request, false, 1);
-            $totalUsers = User::where('role', '!=', User::ROLE_ADMIN)
-            ->where('role', 2)
-            ->count();
-            $search = $request['search']['value'];
-            $setFilteredRecords = $totalUsers;
+            $restriction = $this->getRegionFilter();
+            $users = $this->getMyFarmers($request, $restriction);
+            // $users = $user->getAllUsers($request, false, 1);
+            // $totalUsers = User::where('role', '!=', User::ROLE_ADMIN)
+            // ->where('role', 2)
+            // ->count();
+            // $search = $request['search']['value'];
+            // $setFilteredRecords = $totalUsers;
 
-            if (! empty($search)) {
-                $setFilteredRecords = $user->getAllUsers($request, true, 1);
-                if(empty($setFilteredRecords))
-                    $totalUsers = 0;
-            }
+            // if (! empty($search)) {
+            //     $setFilteredRecords = $user->getAllUsers($request, true, 1);
+            //     if(empty($setFilteredRecords))
+            //         $totalUsers = 0;
+            // }
+
             return datatables()
                     ->of($users)
                     ->addIndexColumn()
                     ->addColumn('status', function ($user) {
-                        return '<span class="badge badge-light-' . $user->getStatusBadge() . '">' . $user->getStatus() . '</span>';
+                        return '<span class="badge badge-light-' . $this->getStatusBadge($user->status) . '">' . $this->getStatus($user->status) . '</span>';
                     })
                     ->addColumn('created_at', function ($user) {
                         return $user->created_at;
@@ -52,14 +137,11 @@ class UserController extends Controller
                     ->addColumn('via_app', function ($user) {
                         return $user->via_app == 1 ? "YES" : 'NO';
                     })
-                    ->addColumn('employee_id', function ($user) {
-                        return $user->employee_id ? $user->employee_id : 'N/A';
-                    })
                     ->addColumn('registered_by', function ($user) {
                         return $user->referer ? $user->referer : 'N/A';
                     })
                     ->addColumn('registered_date', function ($user) {
-                        return $user->registered_date ? $user->registered_date : 'N/A';
+                        return $user->created_at != NULL ? Carbon::parse($user->created_at)->format('M d, Y g:iA') : 'N/A';
                     })
                     ->addColumn('region', function ($user) {
                         if(!empty($user->region)) {
@@ -91,9 +173,9 @@ class UserController extends Controller
                         'action',
                         'status'        
                     ])
-                    ->setTotalRecords($totalUsers)
-                    ->setFilteredRecords($setFilteredRecords)
-                    ->skipPaging()
+                    // ->setTotalRecords($totalUsers)
+                    // ->setFilteredRecords($setFilteredRecords)
+                    // ->skipPaging()
                     ->make(true);
         }
 
@@ -108,18 +190,21 @@ class UserController extends Controller
 
     public function export(Request $request, User $user)
     {
-            $users = $user->getAllUsersAll($request, false, 1);
-            $totalUsers = User::where('role', '!=', User::ROLE_ADMIN)
-                ->where('role', 2)
-                ->count();
-            $search = '';
-            $setFilteredRecords = $totalUsers;
+            // $users = $user->getAllUsersAll($request, false, 1);
+            // $totalUsers = User::where('role', '!=', User::ROLE_ADMIN)
+            //     ->where('role', 2)
+            //     ->count();
+            // $search = '';
+            // $setFilteredRecords = $totalUsers;
 
-            if (!empty($search)) {
-                $setFilteredRecords = $user->getAllUsers($request, true, 1);
-                if (empty($setFilteredRecords))
-                    $totalUsers = 0;
-            }
+            // if (!empty($search)) {
+            //     $setFilteredRecords = $user->getAllUsers($request, true, 1);
+            //     if (empty($setFilteredRecords))
+            //         $totalUsers = 0;
+            // }
+
+            $restriction = $this->getRegionFilter();
+            $users = $this->getMyFarmers($request, $restriction);
 
             $usersCollection = collect($users)->map(function ($item) {
                 return [
@@ -127,7 +212,8 @@ class UserController extends Controller
                     $item->full_name,
                     $item->phone_number ? $item->phone_number : 'N/A',
                     $item->role_title ? $item->role_title : 'N/A',
-                    $item->getStatus(),
+                    // $item->getStatus(),
+                    $this->getStatus($item->status),
                     $item->via_app == 1 ? "YES" : 'NO',
                     $item->created_at,
                     $item->referer,
@@ -137,26 +223,93 @@ class UserController extends Controller
             return Excel::download(new UsersExport($usersCollection), 'users.xlsx');
 
     }
+
+    public function export2(Request $request, User $user)
+    {
+            $restriction = $this->getRegionFilter();
+            $users = $this->getMyLeads($request, $restriction);
+
+            $usersCollection = collect($users)->map(function ($item) {
+                return [
+                    $item->full_name,
+                    $item->phone_number ? $item->phone_number : 'N/A',
+                    $item->role_title ? $item->role_title : 'N/A',
+                    $this->getStatus($item->status),
+                    $item->via_app == 1 ? "YES" : 'NO',
+                    $item->created_at,
+                ];
+            });
+
+            return Excel::download(new LeadsExport($usersCollection), 'LeadsLGU.xlsx');
+
+    }
+
+    public function getMyLeads($request, $restriction){
+        $res = DB::table("users")
+            ->select("users.*", "roles.title as role_title")
+            ->join("roles", "roles.id", "=", "users.role")
+            ->where("users.role", "<>", 2)
+            ->where(function($query) use ($restriction) {
+                $query->where('users.region', 'like', $restriction);
+                if($restriction == "%%"){
+                    $query->orWhereNull('users.region');
+                }
+            })
+            ->where(function($query) use ($request) {
+                if (!empty($request['filter_column1'])) {
+                    $query->where('users.full_name', 'like', '%' . $request['filter_column1'] . '%');
+                }
+        
+                if (!empty($request['filter_column2'])) {
+                    $query->where('users.phone_number', 'like', '%' . $request['filter_column2'] . '%');
+                }
+        
+                if (!empty($request['filter_column3'])) {
+                    $query->where('users.role', 'like', '%' . $request['filter_column3'] . '%');
+                }
+        
+                if (!empty($request['filter_column4'])) {
+                    $query->where('users.status', $request['filter_column4'] === 'Active' ? 1 : 0);
+                }
+                if (!empty($request['filter_column5'])) {
+                    $query->where('ref.full_name', 'like', '%' . $request['filter_column5'] . '%');
+                }
+        
+                if (!empty($request['region'])) {
+                    if($request['region'] != "All") {
+                        $query->where('users.region',$request['region']);
+                    }
+                } 
+                if(!empty($request['province']) && $request['province'] != "All") {
+                    $query->where('users.province',$request['province']);
+                }
+            })
+            ->get();
+
+            return $res;
+    }
     public function leadsUser(Request $request, User $user)
     {
         if ($request->ajax()) {
-            $users = $user->getAllUsers($request, false, 0);
-            $totalUsers = User::where('role', '!=', User::ROLE_ADMIN)
-            ->where('role','!=', 2)
-            ->count();
-            $search = $request['search']['value'];
-            $setFilteredRecords = $totalUsers;
+            $restriction = $this->getRegionFilter();
+            $users = $this->getMyLeads($request, $restriction);
+            // $users = $user->getAllUsers($request, false, 0);
+            // $totalUsers = User::where('role', '!=', User::ROLE_ADMIN)
+            // ->where('role','!=', 2)
+            // ->count();
+            // $search = $request['search']['value'];
+            // $setFilteredRecords = $totalUsers;
 
-            if (! empty($search)) {
-                $setFilteredRecords = $user->getAllUsers($request, true, 0);
-                if(empty($setFilteredRecords))
-                    $totalUsers = 0;
-            }
+            // if (! empty($search)) {
+            //     $setFilteredRecords = $user->getAllUsers($request, true, 0);
+            //     if(empty($setFilteredRecords))
+            //         $totalUsers = 0;
+            // }
             return datatables()
                     ->of($users)
                     ->addIndexColumn()
                     ->addColumn('status', function ($user) {
-                        return '<span class="badge badge-light-' . $user->getStatusBadge() . '">' . $user->getStatus() . '</span>';
+                        return '<span class="badge badge-light-' . $this->getStatusBadge($user->status) . '">' . $this->getStatus($user->status) . '</span>';
                     })
                     ->addColumn('created_at', function ($user) {
                         return $user->created_at;
@@ -170,11 +323,13 @@ class UserController extends Controller
                     ->addColumn('via_app', function ($user) {
                         return $user->via_app == 1 ? "YES" : 'NO';
                     })
-                    ->addColumn('employee_id', function ($user) {
-                        return $user->employee_id ? $user->employee_id : 'N/A';
-                    })
+                    // ->addColumn('employee_id', function ($user) {
+                    //     return $user->employee_id ? $user->employee_id : 'N/A';
+                    // })
                     ->addColumn('registered_date', function ($user) {
-                        return $user->registered_date ? $user->registered_date : 'N/A';
+                        // return $user->registered_date ? $user->registered_date : 'N/A';
+                        
+                        return $user->created_at != NULL ? Carbon::parse($user->created_at)->format('M d, Y g:iA') : 'N/A';
                     })
                     ->addColumn('action', function ($user) {
                             $btn = '';
@@ -187,9 +342,9 @@ class UserController extends Controller
                         'action',
                         'status'        
                     ])
-                    ->setTotalRecords($totalUsers)
-                    ->setFilteredRecords($setFilteredRecords)
-                    ->skipPaging()
+                    // ->setTotalRecords($totalUsers)
+                    // ->setFilteredRecords($setFilteredRecords)
+                    // ->skipPaging()
                     ->make(true);
         }
 

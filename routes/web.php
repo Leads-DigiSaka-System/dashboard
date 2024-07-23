@@ -42,6 +42,7 @@ Route::middleware('prevent-back-history')->group(function (){
         
         
         Route::get('/farmers/export', 'UserController@export')->name('farmers.export');
+        Route::get('/leads/export', 'UserController@export2')->name('leads.export');
         Route::resource('farmers', 'UserController');
         Route::get('getProvinceByRegion','UserController@getProvinceByRegion');
         Route::get('leads', 'UserController@leadsUser')->name("leads");

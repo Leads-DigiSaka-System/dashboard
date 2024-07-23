@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Jobs\ProcessEmail;
 use Carbon\Carbon;
 use App\Models\Survey;
+use DB, Auth;
+
 class FarmController extends Controller
 {
    
@@ -23,21 +25,68 @@ class FarmController extends Controller
      * This function use to show farm list
      */
 
+    public function getRegionFilter() {
+        $user_role = Auth::user()->role;
+        $user_region = Auth::user()->region;
+
+        if($user_role == 0 || $user_role == 1){
+            return "%%";
+        } else if($user_role == 6){
+            return $user_region;
+        } else {
+            return "";
+        }
+    }
+
+    public function getStatusBadge($status){
+        $status_temp = "";
+        if($status == 1){
+            $status_temp = "primary";
+        } else {
+            $status_temp = "danger";
+        }
+
+        return $status_temp;
+    }
+
+    public function getStatus($status){
+        $status_temp = "";
+        if($status == 1){
+            $status_temp = "Active";
+        } else {
+            $status_temp = "Inactive";
+        }
+        
+        return $status_temp;
+    }
+
     public function index(Request $request, Farms $farm)
     {
         if ($request->ajax()) {
-            $farms = $farm->getAllFarms($request);
-            $search = $request['search']['value'];
+            // $farms = $farm->getAllFarms($request);
+            // $search = $request['search']['value'];
 
-            $totalFarms = Farms::count();
-            $search = $request['search']['value'];
-            $setFilteredRecords = $totalFarms;
+            // $totalFarms = Farms::count();
+            // $search = $request['search']['value'];
+            // $setFilteredRecords = $totalFarms;
 
-            if (! empty($search)) {
-                $setFilteredRecords = $farm->getAllFarms($request, true);
-                if(empty($setFilteredRecords))
-                    $totalFarms = 0;
-            }
+            // if (! empty($search)) {
+            //     $setFilteredRecords = $farm->getAllFarms($request, true);
+            //     if(empty($setFilteredRecords))
+            //         $totalFarms = 0;
+            // }
+
+            $restriction = $this->getRegionFilter();
+            $farms = DB::table("farms")
+                ->select("users.*", "roles.title as role_title", "farms.*")
+                ->join("users", "users.id", "=", "farms.farmer_id")
+                ->join("roles", "roles.id", "=", "users.role")
+                ->where(function($query) use ($restriction) {
+                    $query->where('farms.region', 'like', $restriction);
+                    if($restriction == "%%"){
+                        $query->orWhereNull('farms.region');
+                    }
+                })->get();
 
             return datatables()
                     ->of($farms)
@@ -47,16 +96,19 @@ class FarmController extends Controller
                         return $farm->created_at;
                     })
                     ->addColumn('full_name', function ($farm) {
-                        return $farm->farmerDetails ? $farm->farmerDetails->full_name : 'N/A';
+                        // return $farm->farmerDetails ? $farm->farmerDetails->full_name : 'N/A';
+                        return $farm->full_name ? $farm->full_name : "N/A";
                     })
                     ->addColumn('farm_id', function ($farm) {
                         return $farm->farm_id ? $farm->farm_id : 'N/A';
                     })
                     ->addColumn('role', function ($farm) {
-                        return $farm->farmerDetails && $farm->farmerDetails->roleDetails ? $farm->farmerDetails->roleDetails->title : 'N/A';
+                        // return $farm->farmerDetails && $farm->farmerDetails->roleDetails ? $farm->farmerDetails->roleDetails->title : 'N/A';
+                        return $farm->role_title ? $farm->role_title : 'N/A';;
                     })
                     ->addColumn('registered_date', function ($farm) {
-                        return $farm->registered_date ? $farm->registered_date : 'N/A';
+                        // return $farm->registered_date ? $farm->registered_date : 'N/A';
+                        return $farm->created_at != NULL ? Carbon::parse($farm->created_at)->format('M d, Y g:iA') : 'N/A';
                     })
                     ->addColumn('action', function ($farm) {
                             $btn = '';
@@ -70,9 +122,9 @@ class FarmController extends Controller
                         'action',
                         'status'        
                     ])
-                    ->setTotalRecords($totalFarms)
-                    ->setFilteredRecords($setFilteredRecords)
-                    ->skipPaging()
+                    // ->setTotalRecords($totalFarms)
+                    // ->setFilteredRecords($setFilteredRecords)
+                    // ->skipPaging()
                     ->make(true);
         }
 
