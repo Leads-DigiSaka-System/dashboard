@@ -251,7 +251,7 @@ class AuthController extends Controller
         $authToken = $userObj->createToken('authToken')->plainTextToken;
         $returnArr = $userObj->jsonResponse();
         $returnArr['auth_token'] = $authToken;
-        $roleList = ["Admin","Leads","Farmer","LGU","Other"];
+        $roleList = Role::getAllRole()->pluck('name')->toArray();
         $userRole = $roleList[(int)$returnArr["role"]];
         
         return returnSuccessResponse($userRole . ' logged in successfully', $returnArr);
