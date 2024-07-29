@@ -76,11 +76,10 @@
                                 <div class="col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="phone_number">Phone Number <span class="text-danger asteric-sign">&#42;</span></label><br>
-                                        <input type="hidden" name="phone_code" id="phone_code" value="{{ (old('phone_code')) ? (old('phone_code')) : (str_replace("+","",$userObj->phone_code)) }}"/>
-                                        <input type="hidden" name="iso_code" id="iso_code" value="{{ (old('iso_code')) ? (old('iso_code')) : ($userObj->iso_code) }}"/>
-
+                                        <input type="hidden" name="phone_code" id="phone_code" value="{{ old('phone_code', str_replace("+", "", $userObj->phone_code ?? '63')) }}"/>
+                                        <input type="hidden" name="iso_code" id="iso_code" value="{{ old('iso_code', $userObj->iso_code ?? 'PH') }}"/>
                                         
-                                        <input id="phone_number" type="text" class="form-control {{ $errors->has('phone_number') || $errors->has('phone_code') || $errors->has('iso_code') ? ' is-invalid' : '' }}" name="phone_number" value="{{ (old('phone_number')) ? (old('phone_number')) : ($userObj->phone_number) }}">
+                                        <input id="phone_number" type="text" class="form-control {{ $errors->has('phone_number') || $errors->has('phone_code') || $errors->has('iso_code') ? ' is-invalid' : '' }}" name="phone_number" value="{{ old('phone_number', $userObj->phone_number ?? '') }}">
                                         @if ($errors->has('phone_number'))
                                             <span class="invalid-feedback d-block" role="alert">
                                                 <strong>{{ $errors->first('phone_number') }}</strong>
