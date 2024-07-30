@@ -41,3 +41,17 @@ $(document).on('click', '.delete-survey_set-record', function(e){
     
     deleteDataTableRecord(url, tableId);
 });
+
+$(document).on('click', '.lock-survey_set-record', function(e){
+    let url  = site_url + "/survey_set/finalized/" + $(this).attr('data-id');
+    let tableId = 'survey_set_table'
+    
+    finalizedDataTableRecord(url, tableId);
+});
+
+$(document).on('click', '.unlock-survey_set-record', function(e){
+    let url  = site_url + "/survey_set/unfinalized/" + $(this).attr('data-id');
+    let tableId = 'survey_set_table'
+    
+    unfinalizedDataTableRecord(url, tableId);
+});

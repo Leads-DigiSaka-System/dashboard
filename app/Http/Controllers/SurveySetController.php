@@ -7,6 +7,9 @@ use App\Models\Question;
 use App\Models\Questionnaire;
 use App\Models\SurveySet;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 use Illuminate\Support\Str;
 use DB;
 use Carbon\Carbon;
@@ -45,9 +48,15 @@ class SurveySetController extends Controller
                         return route('getSurveySetById', encrypt($survey_set->id));
                     })
                     ->addColumn('action', function ($survey_set) {
-                            $btn = '';
-                            $btn = '<a href="' . route('survey_set.edit', encrypt($survey_set->id)) . '" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;';
+                        $btn = '';
+                        $btn .= '<a href="' . route('survey_set.view', encrypt($survey_set->id)) . '" title="Preview"><i class="fas fa-eye"></i></a>&nbsp;&nbsp;';
+                        if($survey_set->is_finalized == 0){
+                            $btn .= '<a href="' . route('survey_set.edit', encrypt($survey_set->id)) . '" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;';
+                            $btn .= '<a href="javascript:void(0);" lock_form="lock_customer_form"  data-id="' . encrypt($survey_set->id) . '" class="lock-survey_set-record text-primary lock-users-record" title="Finalized"><i class="fas fa-lock"></i></a>&nbsp;&nbsp;';
                             $btn .= '<a href="javascript:void(0);" delete_form="delete_customer_form"  data-id="' . encrypt($survey_set->id) . '" class="delete-survey_set-record text-danger delete-users-record" title="Delete"><i class="fas fa-trash"></i></a>';
+                        } else {
+                            $btn .= '<a href="javascript:void(0);" lock_form="unlock_customer_form"  data-id="' . encrypt($survey_set->id) . '" class="unlock-survey_set-record text-primary unlock-users-record" title="Unlock"><i class="fas fa-unlock"></i></a>&nbsp;&nbsp;';
+                        }
                         return $btn;
                     })
                     ->addColumn('status', function ($survey_set) {
@@ -78,6 +87,19 @@ class SurveySetController extends Controller
         }
 
         return view('survey_set.create', ['questionnaires' => $data]);
+    }
+
+    public function viewSurveySet($id){
+        $id = decrypt($id);
+        $survey_set = SurveySet::find($id);
+
+        $options = new Options();
+        $options->set('defaultFont', 'Courier');
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($survey_set);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        $dompdf->stream('document.pdf', ['Attachment' => false]);
     }
 
     public function store(Request $request)
@@ -144,6 +166,36 @@ class SurveySetController extends Controller
         }
 
         return view('survey_set.edit', ['survey_set' => $data,'questionnaires' => $questionnaires,'id' => $id]);
+    }
+
+    public function finalized(Request $request, $id){
+        $id = decrypt($id);
+        $survey_set = SurveySet::find($id);
+        DB::beginTransaction();
+        try{
+            $survey_set->is_finalized = 1;
+            $survey_set->save();
+            DB::commit();
+            return response()->json(['message' => 'Survey Set updated successfully', "statusCode" => 200], 200);
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Unable to update survey set. Please try again later.', "statusCode" => 500], 500);
+        }
+    }
+
+    public function unfinalized(Request $request, $id){
+        $id = decrypt($id);
+        $survey_set = SurveySet::find($id);
+        DB::beginTransaction();
+        try{
+            $survey_set->is_finalized = 0;
+            $survey_set->save();
+            DB::commit();
+            return response()->json(['message' => 'Survey Set updated successfully', "statusCode" => 200], 200);
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Unable to update survey set. Please try again later.', "statusCode" => 500], 500);
+        }
     }
 
     public function update(Request $request, $id)

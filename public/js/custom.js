@@ -118,3 +118,99 @@ function deleteDataTableRecord(url, tableId,className = ''){
       }
     });
 }
+
+function finalizedDataTableRecord(url, tableId,className = ''){
+  Swal.fire({
+      title: "Are you sure want to finalized this record?",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, finalized it!',
+      customClass: {
+        confirmButton: 'btn btn-primary',
+        cancelButton: 'btn btn-danger ms-1'
+      },
+      buttonsStyling: false
+    }).then(function (result) {
+      if (result.value) {
+        $("#pageloader").addClass("pageloader");
+          $.ajax({
+            type: "PUT",
+            url: url,
+            success: function (data) {
+                $("#pageloader").removeClass("pageloader");
+                if(data.statusCode >= 200 && data.statusCode < 400){
+                    toastr.success(data.message);
+                    if(className != ''){
+                      $(className).remove();
+                    }
+                    let oTable = $('#'+tableId).dataTable(); 
+                      oTable.fnDraw(false);
+                }
+
+                if(data.statusCode >= 400 && data.statusCode < 500){
+                    toastr.info(data.message);
+                }
+
+                if(data.statusCode >= 500){
+                  alert(data.message);
+                  toastr.error(data.message);
+                }
+            },
+            error: function (data) {
+              $("#pageloader").removeClass("pageloader");
+                if(data.responseJSON.statusCode >= 500){
+                    toastr.error(data.responseJSON.message);
+                }
+            }
+        });
+      }
+    });
+}
+
+function unfinalizedDataTableRecord(url, tableId,className = ''){
+  Swal.fire({
+      title: "Are you sure want to unfinalized this record?",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, unfinalized it!',
+      customClass: {
+        confirmButton: 'btn btn-primary',
+        cancelButton: 'btn btn-danger ms-1'
+      },
+      buttonsStyling: false
+    }).then(function (result) {
+      if (result.value) {
+        $("#pageloader").addClass("pageloader");
+          $.ajax({
+            type: "PUT",
+            url: url,
+            success: function (data) {
+                $("#pageloader").removeClass("pageloader");
+                if(data.statusCode >= 200 && data.statusCode < 400){
+                    toastr.success(data.message);
+                    if(className != ''){
+                      $(className).remove();
+                    }
+                    let oTable = $('#'+tableId).dataTable(); 
+                      oTable.fnDraw(false);
+                }
+
+                if(data.statusCode >= 400 && data.statusCode < 500){
+                    toastr.info(data.message);
+                }
+
+                if(data.statusCode >= 500){
+                  alert(data.message);
+                  toastr.error(data.message);
+                }
+            },
+            error: function (data) {
+              $("#pageloader").removeClass("pageloader");
+                if(data.responseJSON.statusCode >= 500){
+                    toastr.error(data.responseJSON.message);
+                }
+            }
+        });
+      }
+    });
+}

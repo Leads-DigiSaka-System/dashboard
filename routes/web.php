@@ -69,7 +69,10 @@ Route::middleware('prevent-back-history')->group(function (){
         Route::get('survey_set/create','SurveySetController@create')->name('survey_set.create');
         Route::get('survey_set/{survey_set}/edit','SurveySetController@edit')->name('survey_set.edit');
         Route::post('survey_set','SurveySetController@store')->name('survey_set.store');
+        Route::get('survey_set/view/{survey_set}','SurveySetController@viewSurveySet')->name('survey_set.view');
         Route::put('survey_set/{survey_set}','SurveySetController@update')->name('survey_set.update');
+        Route::put('survey_set/finalized/{survey_set}','SurveySetController@finalized')->name('survey_set.finalized');
+        Route::put('survey_set/unfinalized/{survey_set}','SurveySetController@unfinalized')->name('survey_set.unfinalized');
         Route::delete('survey_set/{survey_set}','SurveySetController@destroy')->name('surevy_set.destroy');
 
     });
