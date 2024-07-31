@@ -219,6 +219,8 @@ class JasController extends Controller
                 'average_yield_dry' => $j->average_yield_dry,
                 'dealers' => $j->dealers,
                 'year' => $j->year,
+                'farmer_id' => $j->farmer_id,
+                'batch' => $j->batch,
                 'image' => asset($j->image)
             );
         }
