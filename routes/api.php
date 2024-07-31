@@ -103,6 +103,26 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::post('/verify-farmer', 'AccountController@verifyFarmer')->name('verifyFarmer');
 			Route::get('/user-list/{role}', 'AccountController@userList')->name('userList');
 			
+			//JAS-profile
+			Route::post('/jas/upsertProfile/{id?}','JasController@upsert');
+			Route::get('/jas/getProfiles/{id?}','JasController@get');
+			Route::post('/jas/delete/{id}','JasController@delete');
+
+			//jas-activities
+			Route::get('/jas/getActivities','JasController@getActivities');
+
+			//jas-monitoring
+			Route::post('/jas/upsertMonitoring/{id?}','JasController@upsertMonitoring');
+			Route::get('/jas/getMonitoring/{id?}','JasController@getMonitoring');
+			Route::get('/jas/getMonitoringByProfile/{id}','JasController@getMonitoringByProfile');
+			Route::post('/jas/deleteMonitoring/{id}','JasController@deleteMonitoring');
+
+			
+			//jas-monitoring data
+			Route::post('/jas/upsertMonitoringData/{id?}','JasController@upsertMonitoringData');
+			Route::get('/jas/getMonitoringData/{id?}','JasController@getMonitoringData');
+			Route::get('/jas/getMonitoringDataByProfile/{id}','JasController@getMonitoringDataByProfile');
+			Route::post('/jas/deleteMonitoringData/{id}','JasController@deleteMonitoringData');
 		});
     });
 	
