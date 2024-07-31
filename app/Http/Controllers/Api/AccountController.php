@@ -221,6 +221,16 @@ class AccountController extends Controller
         return returnSuccessResponse('Profile updated successfully', $returnArr);
     }
 
+    public function userList($role){
+        $users = User::where('role', $role)->get();
+
+        if(count($users) == 0){
+            return returnErrorResponse('No user found');
+        }
+        else{
+            return returnSuccessResponse('User list', $users);
+        }
+    }
     public function getProof($farmerId){
         $files = File::select(['filename'])->where('farmer_id', $farmerId)->orderBy('id', 'desc')->first();
         return returnSuccessResponse('get proof successful',$files);

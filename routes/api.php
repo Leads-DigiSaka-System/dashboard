@@ -101,6 +101,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::get('/home', 'HomeController@index')->name('home');
 			Route::get('/getAllMobile', 'AccountController@getAllMobile')->name('allMobile');
 			Route::post('/verify-farmer', 'AccountController@verifyFarmer')->name('verifyFarmer');
+			Route::get('/user-list/{role}', 'AccountController@userList')->name('userList');
 			
 		});
     });

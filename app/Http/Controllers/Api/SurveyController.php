@@ -120,8 +120,8 @@ class SurveyController extends Controller
     }
 
 	public function getQuestionnaire($id) {
+		
         $decrypt_id = decrypt($id);
-
         $questionnaire = Questionnaire::find($decrypt_id);
 
         $data = array();
@@ -198,10 +198,10 @@ class SurveyController extends Controller
     }
 
     public function getSurveySet($id) {
+		
         $decrypt_id = decrypt($id);
 
         $survey_set = SurveySet::find($decrypt_id);
-
         
         $survey = array();
 
@@ -299,9 +299,8 @@ class SurveyController extends Controller
     }
 
     public function getSurveySetByCateg($id) {
-    	$decrypt_id = decrypt($id);
 
-    	$survey_sets = SurveySet::where('farm_categ',$decrypt_id)->get();
+    	$survey_sets = SurveySet::where('farm_categ',$id)->get();
 
     	$surveys = array();
     	if(!$survey_sets->isEmpty()) {
