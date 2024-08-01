@@ -88,6 +88,8 @@ class FarmController extends Controller
             $farmArr['municipality'] = $request->municipality;
             $farmArr['area'] = $request->area;
             $farmArr['barangay'] =$request->barangay;
+            $farmArr['isDemo'] = $request->isDemo;
+            $farmArr['category'] = $request->category;
             
             $farmArr['farm_image']=implode(",", $farm_images);
             $farmObj = $farm->saveNewFarm($farmArr);
