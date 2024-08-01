@@ -21,7 +21,9 @@ class Farms extends Model
         'province',
         'municipality',
         'barangay',
-        'area'
+        'area',
+        'isDemo',
+        'category'
     ];
 
       public static function getColumnForSorting($value){
