@@ -81,7 +81,23 @@ class AuthController extends Controller
         return response()->json(['message' => 'Files uploaded successfully'], 200);
         
     }
-    
+    public function searchUser(Request $request, $search, $role = null)
+    {
+        $query = User::select('*')
+            ->where(function ($query) use ($search) {
+                $query->whereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$search}%"])
+                ->orWhere('phone_number', 'LIKE', "%{$search}%");
+            })->limit(10);
+
+        if ($role != null && $role != '') {
+            $query->where('role', $role);
+        }
+
+        $users = $query->get();
+
+        return response()->json($users);
+    }
+
     
     public function register(Request $request, User $user)
     {

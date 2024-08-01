@@ -123,6 +123,8 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::get('/jas/getMonitoringData/{id?}','JasController@getMonitoringData');
 			Route::get('/jas/getMonitoringDataByProfile/{id}','JasController@getMonitoringDataByProfile');
 			Route::post('/jas/deleteMonitoringData/{id}','JasController@deleteMonitoringData');
+
+			Route::get('/search/{search}/{role?}','AuthController@searchUser')->name('searchUser');
 		});
     });
 	
