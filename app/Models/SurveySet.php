@@ -18,7 +18,8 @@ class SurveySet extends Model
         'questionnaire_data',
         'expiry_date',
         'farm_categ',
-        'status'
+        'status',
+        'is_finalized',
     ];
 
     public static function getColumnForSorting($value){
