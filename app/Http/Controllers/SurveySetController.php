@@ -9,6 +9,7 @@ use App\Models\SurveySet;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Barryvdh\DomPDF\Facade as PDF;
 
 use Illuminate\Support\Str;
 use DB;
@@ -93,10 +94,16 @@ class SurveySetController extends Controller
         $id = decrypt($id);
         $survey_set = SurveySet::find($id);
 
+        if (!$survey_set) {
+            abort(404);
+        }
+    
+        $html = view('survey_set.pdf.view', ['survey' => $survey_set])->render();
+    
         $options = new Options();
         $options->set('defaultFont', 'Courier');
         $dompdf = new Dompdf($options);
-        $dompdf->loadHtml($survey_set);
+        $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
         $dompdf->stream('document.pdf', ['Attachment' => false]);
