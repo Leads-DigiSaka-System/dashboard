@@ -9,11 +9,12 @@ use App\Models\SurveySet;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use Barryvdh\DomPDF\Facade as PDF;
 
 use Illuminate\Support\Str;
 use DB;
 use Carbon\Carbon;
+use App\Http\Controllers\API\SurveyController;
+
 class SurveySetController extends Controller
 {
     public function index(Request $request, SurveySet $survey_set) {
@@ -91,20 +92,23 @@ class SurveySetController extends Controller
     }
 
     public function viewSurveySet($id){
-        $id = decrypt($id);
-        $survey_set = SurveySet::find($id);
+        // $id = decrypt($id);
+        
+        $surveyController = new SurveyController();
+        $survey_set = $surveyController->getSurveySet($id);
 
         if (!$survey_set) {
             abort(404);
         }
-    
+
+        $survey_set = json_decode($survey_set);
         $html = view('survey_set.pdf.view', ['survey' => $survey_set])->render();
-    
+        // return $html;
         $options = new Options();
         $options->set('defaultFont', 'Courier');
         $dompdf = new Dompdf($options);
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         $dompdf->stream('document.pdf', ['Attachment' => false]);
     }
