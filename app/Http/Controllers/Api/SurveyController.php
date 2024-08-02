@@ -291,6 +291,7 @@ class SurveyController extends Controller
         		'farm_category' => $survey_set->farm_categ == 1 ? 'Personal' : 'Farm',
         		'expiry_date' => empty($survey_set->expiry_date) ? '-' : $survey_set->expiry_date,
         		'description' => $survey_set->description,
+        		'is_finalized' => $survey_set->is_finalized,
         		'questionnaires' => $questionnaires
         	];
         }
