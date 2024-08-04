@@ -200,36 +200,25 @@ class JasController extends Controller
         }
     }
     public function get(?Int $id = 0) {
-        $jas = JasProfile::all();
-        if($id > 0) {
+        if ($id > 0) {
             $jas = JasProfile::where('id', $id)->get();
+        } else {
+            $jas = JasProfile::all();
         }
+    
         $data = array();
-        foreach($jas as $j) {
-            $data[] = array(
-                'id' => $j->id,
-                'first_name' => $j->first_name,
-                'last_name' => $j->last_name,
-                'middle' => $j->middle,
-                'birthdate' => $j->birthdate,
-                'phone' => $j->phone,
-                'variety_used_wet' => $j->variety_used_wet,
-                'variety_used_dry' => $j->variety_used_dry,
-                'average_yield_wet' => $j->average_yield_wet,
-                'average_yield_dry' => $j->average_yield_dry,
-                'dealers' => $j->dealers,
-                'year' => $j->year,
-                'farmer_id' => $j->farmer_id,
-                'batch' => $j->batch,
-                'image' => asset($j->image)
-            );
+        foreach ($jas as $j) {
+            $jArray = $j->toArray();
+            $jArray['image'] = asset($j->image);
+            $data[] = $jArray;
         }
-        if($jas->count() == 0) {
+    
+        if ($jas->count() == 0) {
             return response()->json(['error' => 'No data found'], 404);
         }
-
+    
         return response()->json($data);
-
     }
+    
 
 }
