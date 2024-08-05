@@ -23,6 +23,8 @@ class JasProfile extends Model
         'average_yield_dry',
         'dealers',
         'year',
-        'image' 
+        'image' ,
+        'technician',
+        'area' 
     ];
 }
