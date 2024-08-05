@@ -87,7 +87,7 @@ class AuthController extends Controller
             ->where(function ($query) use ($search) {
                 $query->whereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$search}%"])
                 ->orWhere('phone_number', 'LIKE', "%{$search}%");
-            })->limit(10);
+            })->limit(50);
 
         if ($role != null && $role != '') {
             $query->where('role', $role);

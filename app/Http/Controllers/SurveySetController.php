@@ -13,7 +13,7 @@ use Dompdf\Options;
 use Illuminate\Support\Str;
 use DB;
 use Carbon\Carbon;
-use App\Http\Controllers\API\SurveyController;
+use App\Http\Controllers\Api\SurveyController;
 
 class SurveySetController extends Controller
 {
