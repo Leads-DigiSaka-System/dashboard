@@ -127,7 +127,7 @@
                 <div class="sub-title">{{ $questionnaire->description }}</div>
                 @foreach ($questionnaire->questions as $no => $question)
                     <div class="question">
-                        <div class="question-title">{{ $no + 1 }}. {{ ucfirst($question->field_name) }}</div>
+                        <div class="question-title">{{ $no + 1 }}. {{ ucfirst($question->field_name) }} {{ $question->field_type }}</div>
 
                         <div class="question-details">
                             @if ($question->field_type == 'Checkbox')
@@ -141,17 +141,19 @@
                                         <div class="d-inline-block mr">{{ $qc }}</div>
                                     </div>
                                 @endforeach
-                            @elseif ($question->field_type == 'Radio')
+                            @elseif ($question->field_type == 'Radio Button')
                                 @php
-                                    $choices = explode(',', $question->choices);
+                                    $choices = explode(',', $question->choices ?? '');
                                 @endphp
+                                
                                 @foreach ($choices as $qc)
                                     <div class="d-inline-block">
-                                        <input type="radio" name="question_{{ $question->id }}"
+                                        <input type="radio" name="question_{{ $question->id ?? '' }}"
                                             {{ $question->is_required == 'required' ? 'required' : '' }}>
                                         <div class="d-inline-block mr">{{ $qc }}</div>
                                     </div>
                                 @endforeach
+                        
                                 {{-- @elseif ($question->field_type == 'Text')
                                 <input type="text" {{ $question->is_required == 'required' ? 'required' : '' }}> --}}
                             @elseif ($question->field_type == 'Textbox')
@@ -173,7 +175,9 @@
                                 @endphp
                                 <div class="d-inline-block">
                                     @foreach ($choices as $index => $qc)
-                                        <div>{{ $letters[$index] }}. {{ $qc }}</div>
+                                        @if (isset($letters[$index]))
+                                            <div>{{ $letters[$index] }}. {{ $qc }}</div>
+                                        @endif
                                     @endforeach
                                 </div>
 
