@@ -95,7 +95,7 @@
         .mr {
             margin-right: 20px;
         }
-        
+
         textarea {
             width: 100%;
         }
@@ -152,11 +152,46 @@
                                         <div class="d-inline-block mr">{{ $qc }}</div>
                                     </div>
                                 @endforeach
-                            {{-- @elseif ($question->field_type == 'Text')
+                                {{-- @elseif ($question->field_type == 'Text')
                                 <input type="text" {{ $question->is_required == 'required' ? 'required' : '' }}> --}}
                             @elseif ($question->field_type == 'Textbox')
                                 <textarea {{ $question->is_required == 'required' ? 'required' : '' }}></textarea>
+
+                                {{-- @elseif ($question->field_type == 'Dropdown')
+                                @php
+                                    $choices = explode(',', $question->choices);
+                                @endphp
+                                <select {{ $question->is_required == 'required' ? 'required' : '' }}>
+                                    @foreach ($choices as $qc)
+                                        <option value="{{ $qc }}">{{ $qc }}</option>
+                                    @endforeach
+                                </select> --}}
+                            @elseif ($question->field_type == 'Dropdown' || $question->field_type == 'Ratings')
+                                @php
+                                    $choices = explode(',', $question->choices);
+                                    $letters = range('a', 'z');
+                                @endphp
+                                <div class="d-inline-block">
+                                    @foreach ($choices as $index => $qc)
+                                        <div>{{ $letters[$index] }}. {{ $qc }}</div>
+                                    @endforeach
+                                </div>
+
+                            @elseif ($question->field_type == 'Date Picker')
+                                <input type="date" {{ $question->is_required == 'required' ? 'required' : '' }} value="Select a Date" style="height: 20px; padding: 10px">
+
+                            @elseif ($question->field_type == 'Image')
+                                <input type="file" {{ $question->is_required == 'required' ? 'required' : '' }}>
+
+                            @elseif ($question->field_type == "Coordinates")
+                                <div>
+                                    <div class="d-inline-block" style="margin-bottom:5px">Latitude:</div>
+                                    <input type="text" {{ $question->is_required == "required" ? "required" : ""}} style="height: 20px">
+                                    <div class="d-inline-block" style="margin-bottom:5px">Longitude:</div>
+                                    <input type="text" {{ $question->is_required == "required" ? "required" : ""}} style="height: 20px">
+                                </div>
                             @endif
+
                         </div>
 
                     </div>
