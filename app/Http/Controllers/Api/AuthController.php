@@ -103,8 +103,8 @@ class AuthController extends Controller
     {
     	$rules = [
     		'full_name'=>'',
-    		'first_name'=>'required',
-    		'last_name'=>'required',
+    		'first_name'=>'',
+    		'last_name'=>'',
             'phone_code'=>'required',
             'email'=>'nullable|email|unique:users,email,NULL,id,deleted_at,NULL',
             'role'=>'required',
