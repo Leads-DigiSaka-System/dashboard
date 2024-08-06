@@ -165,7 +165,25 @@ class JasController extends Controller
 
         return response()->json($data);
     }
-    
+    public function getMonitoring(int $id = 0)
+    {
+        if($id>0){
+            $jas = JasMonitoring::where('monitoring_id', $id)->get();
+        }else{
+            $jas = JasMonitoring::all();
+        }
+
+        if ($jas->isEmpty()) {
+            return response()->json(['error' => 'No data found'], 404);
+        }
+
+        $data = $jas->map(function ($j) {
+            $jArray = $j->toArray();
+            return $jArray;
+        });
+
+        return response()->json($data);
+    }
     public function upsert(Request $request, ?Int $id = 0) {
 
         DB::beginTransaction();
