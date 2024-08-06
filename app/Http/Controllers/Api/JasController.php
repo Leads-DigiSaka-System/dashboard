@@ -33,7 +33,13 @@ class JasController extends Controller
                     return response()->json(['error' => 'Record not found'], 404);
                 }
             }
-
+            if ($request->hasFile('signature')) {
+                $file = $request->file('signature');
+                $name = $file->getClientOriginalName();
+                $path = 'upload/images';
+                $file->move($path, $name);
+                $JasMonitoring->signature = $path . '/' . $name;
+            }
             $JasMonitoring->fill($request->all());
             $JasMonitoring->save();
 
