@@ -104,19 +104,19 @@
     </div>
     <div class="container">
         <form>
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 30px">
                 <label for="name">Name of Cooperator: </label>
                 <div class="underline" style="width: calc(100% - 170px);"></div>
                 <span>(Pangalan)</span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 20px">
                 <div class="label-container">
                     <label for="address">Address: </label>
                     <div class="underline" style="width: calc(100% - 95px);"></div>
                 </div>
                 <span>(Tirahan)</span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 20px">
                 <div class="label-container" style="width: 45%; display: inline-block">
                     <label for="birthdate">Birthdate: </label>
                     <div class="underline" style="width: calc(100% - 75px);"></div>
@@ -129,52 +129,53 @@
                 </div>
                 
             </div>
-            <div class="form-group">
-                <div class="label-container" style="width: 30%; display: inline-block">
+            <div class="form-group" style="margin-top: 30px">
+                <div class="label-container" style="width: 30%; display: inline-block; padding-bottom: 55px">
                     <label for="variety-wet">VARIETY USUALLY USED</label>
                     <span>(Binhing Ginagamit)</span>  
                 </div>
-                <div class="label-container" style="width: 45%; display: inline-block">
+                <div class="label-container" style="width: 68%; display: inline-block">
                     <label for="variety-wet">WET SEASON: </label>
-                    <div class="underline" style="width: calc(100% - 300px);"></div>
+                    <div class="underline" style="width: calc(100% - 130px);"></div>
                     <span>(Tag Ulan)</span>  
 
-                    <label for="variety-dry">DRY SEASON: </label>
-                    <div class="underline" style="width: calc(100% - 150px);"></div>
+                    <label for="variety-dry" style="margin-top: 20px">DRY SEASON: </label>
+                    <div class="underline" style="width: calc(100% - 130px);"></div>
                     <span>(Tag Tuyo)</span>
                 </div>
                 
             </div>
-            <div class="form-group">
-                <div class="label-container">
-                    
+            <div class="form-group" style="margin-top: 20px">
+                <div class="label-container" style="width: 30%; display: inline-block; padding-bottom: 55px">
+                    <label for="variety-wet">AVERAGE YIELD PER HECTARE</label>
+                    <span>(Dami ng Sako ng Ani)</span>  
+                </div>
+                <div class="label-container" style="width: 68%; display: inline-block">
+                    <label for="variety-wet">WET SEASON: </label>
+                    <div class="underline" style="width: calc(100% - 130px);"></div>
+                    <span>(Tag Ulan)</span>  
+
+                    <label for="variety-dry" style="margin-top: 20px">DRY SEASON: </label>
+                    <div class="underline" style="width: calc(100% - 130px);"></div>
+                    <span>(Tag Tuyo)</span>
                 </div>
                 
             </div>
-            <div class="form-group">
-                <div class="label-container">
-                    <label for="yield-wet">AVERAGE YIELD PER HECTARE – WET SEASON: </label>
-                    <div class="underline" style="width: calc(100% - 300px);"></div>
-                </div>
-                <span>(Dami ng Sako ng Ani - Tag Ulan)</span>
-            </div>
-            <div class="form-group">
-                <div class="label-container">
-                    <label for="yield-dry">DRY SEASON: </label>
-                    <div class="underline" style="width: calc(100% - 150px);"></div>
-                </div>
-                <span>(Tag Ulan)</span>
-            </div>
+           
             <div class="form-group">
                 <div class="label-container">
                     <label for="dealers">DEALER(S) WHERE YOU BUY FROM: </label>
-                    <div class="underline" style="width: calc(100% - 300px);"></div>
+                    <div class="underline" style="width: calc(100% - 290px);"></div>
                 </div>
                 <span>(Suking Tindahan)</span>
             </div>
+            <div class="form-group" style="margin-top: 40px;text-align: center">
+                <label style="font-size: 16px">I hereby affix my signature to manifest my agreement to abide by the</label>
+                <span>Kalakip nito ang aking lagda bilang pagpapatunay na susunod ako sa alituntunin</span>
+                <label style="font-size: 16px">mechanics of this program.</label>
+                <span>ng programang ito.</span>
+            </div>
             <div class="signature-section">
-                <p>I hereby affix my signature to manifest my agreement to abide by the mechanics of this program.</p>
-                <p>Kalakip nito ang aking lagda bilang pagpapatunay na susunod ako sa alituntunin ng programang ito.</p>
                 <div class="signatures">
                     <div>
                         <p>TPS or CPR/SIGNATURE: _________________</p>
