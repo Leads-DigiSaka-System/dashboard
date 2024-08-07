@@ -56,6 +56,7 @@ Route::middleware('prevent-back-history')->group(function (){
         Route::get('/farms/getMapCoordinates','FarmController@getMapCoordinates');
         Route::resource('farms', 'FarmController');
         Route::resource('survey', 'SurveyController');
+        Route::get('/registered_users', 'SurveyController@getRegisteredUsers');
 
         Route::get('/export-items/{id}', 'ExportController@exportItems')->name('export.items');
         Route::get('/export-survey/{id}', 'ExportController@exportSurveyItems')->name('export_survey_items');
