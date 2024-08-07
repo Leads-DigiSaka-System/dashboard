@@ -18,9 +18,9 @@
   <li class="nav-item">
     <a class="nav-link" href="#nav-survey-set" data-bs-toggle="tab">Survey Set</a>
   </li>
-  <li class="nav-item">
+  {{-- <li class="nav-item">
     <a class="nav-link" href="#nav-jackpot-allstar" data-bs-toggle="tab">Jackpot Allstars</a>
-  </li>
+  </li> --}}
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Survey Results</a>
     <ul class="dropdown-menu">
