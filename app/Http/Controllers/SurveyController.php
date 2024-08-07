@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use App\Jobs\ProcessEmail;
 use Carbon\Carbon;
+use DB;
 
 class SurveyController extends Controller
 {
@@ -21,6 +22,25 @@ class SurveyController extends Controller
      * @return object with survey
      * This function use to show survey list
      */
+
+    public function getStatus($status){
+        // $list = [
+        //     0=>"Active",
+        //     1=>"Inactive"
+        // ];
+        // return isset($list[$status]) ? $list[$status] : "Not defined";
+        return $status == 1 ? "Active" : "Inactive";
+    }
+
+    public function getStatusBadge($status){
+        // $list = [
+        //     0=>"primary",
+        //     1=>"danger"
+        // ];
+        // return isset($list[$status]) ? $list[$status] : "danger";
+
+        return $status == 1 ? "primary" : "danger";
+    }
 
     public function index(Request $request, Survey $survey)
     {
@@ -71,7 +91,10 @@ class SurveyController extends Controller
                     ->make(true);
         }
 
-        return view('survey.index');
+        $user_count = DB::table("users")->count();
+        $farms_count = DB::table("farms")->count();
+
+        return view('survey.index', ["user_count" => $user_count, "farms_count" => $farms_count]);
     }
 
     /**
@@ -105,6 +128,45 @@ class SurveyController extends Controller
                 return redirect()->back()->with('error', "Invalid-request");
             }
             return redirect()->back()->with('error', "Something went wrong. Please try again later.");
+        }
+    }
+
+    public function getRegisteredUsers(Request $request){
+        if($request->ajax()){
+            $users =DB::table("users")->get();
+            return datatables()
+                ->of($users)
+                ->addIndexColumn()
+                ->addColumn('status', function ($user) {
+                    return '<span class="badge badge-light-' . $this->getStatusBadge($user->status) . '">' . $this->getStatus($user->status) . '</span>';
+                })
+                ->addColumn('created_at', function ($user) {
+                    return $user->created_at;
+                })
+                ->addColumn('phone_number', function ($user) {
+                    return $user->phone_number ? $user->phone_number : 'N/A';
+                })
+                // ->addColumn('role', function ($user) {
+                //     return $user->role_title ? $user->role_title : 'N/A';
+                // })
+                ->addColumn('via_app', function ($user) {
+                    return $user->via_app == 1 ? "YES" : 'NO';
+                })
+                ->addColumn('registered_date', function ($user) {
+                    return $user->created_at != NULL ? Carbon::parse($user->created_at)->format('M d, Y g:iA') : 'N/A';
+                })
+                // ->addColumn('action', function ($user) {
+                //         $btn = '';
+                //         $btn = '<a href="' . route('farmers.show', encrypt($user->id)) . '" title="View"><i class="fas fa-eye"></i></a>&nbsp;&nbsp;';
+                //         $btn .= '<a href="' . route('farmers.edit', encrypt($user->id)) . '" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;';
+                //         $btn .= '<a href="javascript:void(0);" delete_form="delete_customer_form"  data-id="' . encrypt($user->id) . '" class="delete-datatable-record text-danger delete-users-record" title="Delete"><i class="fas fa-trash"></i></a>';
+                //     return $btn;
+                // })
+                ->rawColumns([
+                    'action',
+                    'status'        
+                ])
+                ->make(true);
         }
     }
 }
