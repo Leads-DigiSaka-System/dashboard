@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -122,5 +121,9 @@ Route::middleware('prevent-back-history')->group(function (){
 
     // Contacts Section \\
     Route::get('/contacts','ContactController@index')->name('contacts.index');
+
+    // JAS Profile
+    Route::resource('jasProfiles', JasProfileController::class);
+    Route::get('/jasProfiles/pdf/{id}', 'JasProfileController@viewJasProfilePDF')->name('jasProfiles.pdf');
     
 });
