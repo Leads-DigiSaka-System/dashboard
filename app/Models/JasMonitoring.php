@@ -22,5 +22,8 @@ class JasMonitoring extends Model
         'rate_water',
         'timing',
         'added_by',
+        'batch',
+        'location',
+        'duration',
     ];
 }
