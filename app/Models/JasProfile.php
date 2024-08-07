@@ -26,6 +26,7 @@ class JasProfile extends Model
         'image' ,
         'technician',
         'area',
-        'farmer_id' 
+        'farmer_id' ,
+        'batch' 
     ];
 }
