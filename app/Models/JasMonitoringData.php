@@ -16,6 +16,7 @@ class JasMonitoringData extends Model
     protected $fillable = [
         'data_id',
         'jas_profile_id',
+        'monitoring_id',
         'activity_id',
         'timing',
         'remarks',
