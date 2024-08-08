@@ -33,6 +33,7 @@ class JasController extends Controller
                     return response()->json(['error' => 'Record not found'], 404);
                 }
             }
+            $JasMonitoring->fill($request->all());
             if ($request->hasFile('signature')) {
                 $file = $request->file('signature');
                 $name = $file->getClientOriginalName();
@@ -40,7 +41,6 @@ class JasController extends Controller
                 $file->move($path, $name);
                 $JasMonitoring->signature = $path . '/' . $name;
             }
-            $JasMonitoring->fill($request->all());
             $JasMonitoring->save();
 
             DB::commit();
