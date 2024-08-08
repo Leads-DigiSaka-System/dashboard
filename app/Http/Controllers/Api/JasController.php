@@ -25,6 +25,7 @@ class JasController extends Controller
             if (!JasProfile::where('id', $request->jas_profile_id)->exists()) {
                 return response()->json(['error' => 'JobProfile not found'], 404);
             }
+
             if ($id == 0) {
                 $JasMonitoring = new JasMonitoringData;
             } else {
@@ -33,7 +34,9 @@ class JasController extends Controller
                     return response()->json(['error' => 'Record not found'], 404);
                 }
             }
+
             $JasMonitoring->fill($request->all());
+
             if ($request->hasFile('signature')) {
                 $file = $request->file('signature');
                 $name = $file->getClientOriginalName();
@@ -41,8 +44,40 @@ class JasController extends Controller
                 $file->move($path, $name);
                 $JasMonitoring->signature = $path . '/' . $name;
             }
-            $JasMonitoring->save();
 
+            if ($request->hasFile('image1')) {
+                $file = $request->file('image1');
+                $name = $file->getClientOriginalName();
+                $path = 'upload/images';
+                $file->move($path, $name);
+                $JasMonitoring->image1 = $path . '/' . $name;
+            }
+
+            if ($request->hasFile('image2')) {
+                $file = $request->file('image2');
+                $name = $file->getClientOriginalName();
+                $path = 'upload/images';
+                $file->move($path, $name);
+                $JasMonitoring->image2 = $path . '/' . $name;
+            }
+
+            if ($request->hasFile('image3')) {
+                $file = $request->file('image3');
+                $name = $file->getClientOriginalName();
+                $path = 'upload/images';
+                $file->move($path, $name);
+                $JasMonitoring->image3 = $path . '/' . $name;
+            }
+
+            if ($request->hasFile('image4')) {
+                $file = $request->file('image4');
+                $name = $file->getClientOriginalName();
+                $path = 'upload/images';
+                $file->move($path, $name);
+                $JasMonitoring->image4 = $path . '/' . $name;
+            }
+
+            $JasMonitoring->save();
             DB::commit();
             return response()->json($JasMonitoring);
         } catch (Exception $e) {
@@ -50,6 +85,7 @@ class JasController extends Controller
             return response()->json(['error' => 'An error occurred'], 500);
         }
     }
+
 
         
     public function deleteMonitoringData(Int $id) {

@@ -23,5 +23,9 @@ class JasMonitoringData extends Model
         'observation',
         'signature',
         'added_by',
+        'image1',
+        'image2',
+        'image3',
+        'image4',
     ];
 }
