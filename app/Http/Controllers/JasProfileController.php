@@ -15,12 +15,22 @@ class JasProfileController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $jasProfiles = JasProfile::select(['id', 'first_name', 'last_name', 'phone', 'year', 'technician', 'area']);
+            $jasProfiles = JasProfile::select([
+                'jas_profiles.id',
+                'jas_profiles.first_name',
+                'jas_profiles.last_name',
+                'jas_profiles.phone',
+                'jas_profiles.year',
+                'jas_profiles.area',
+                'users.full_name as technician_name'
+            ])
+            ->leftJoin('users', 'jas_profiles.technician', '=', 'users.id');
+    
             return DataTables::of($jasProfiles)
                 ->addColumn('action', function ($jasProfile) {
                     return '<a href="' . route('jasProfiles.pdf', encrypt($jasProfile->id)) . '" ><i class="fas fa-eye"></i></a>';
                 })
-                ->addIndexColumn() // Adds the index column
+                ->addIndexColumn()
                 ->make(true);
         }
         return view('jasProfiles.index');

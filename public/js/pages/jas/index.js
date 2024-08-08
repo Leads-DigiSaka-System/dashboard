@@ -14,7 +14,7 @@ $(document).ready(function () {
             { data: 'last_name', name: 'last_name' },
             { data: 'phone', name: 'phone' },
             { data: 'year', name: 'year' },
-            { data: 'technician', name: 'technician' },
+            { data: 'technician_name', name: 'technician_name' },
             { data: 'area', name: 'area' },
             { data: 'action', name: 'action', orderable: false, searchable: false },
         ],
