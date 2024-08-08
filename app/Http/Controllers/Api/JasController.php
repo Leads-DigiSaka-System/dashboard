@@ -18,8 +18,6 @@ class JasController extends Controller
         return response()->json($activities);
     }
 
-    use Illuminate\Support\Str;
-
     public function upsertMonitoringData(Request $request, ?int $id = 0)
     {
         DB::beginTransaction();
