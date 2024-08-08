@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JasActivity;
 use App\Models\JasProfile;
+use App\Models\JasMonitoringData;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Dompdf\Dompdf;
@@ -16,7 +18,7 @@ class JasProfileController extends Controller
             $jasProfiles = JasProfile::select(['id', 'first_name', 'last_name', 'phone', 'year', 'technician', 'area']);
             return DataTables::of($jasProfiles)
                 ->addColumn('action', function ($jasProfile) {
-                    return '<a href="'.route('jasProfiles.pdf', encrypt($jasProfile->id)).'" ><i class="fas fa-eye"></i></a>';
+                    return '<a href="' . route('jasProfiles.pdf', encrypt($jasProfile->id)) . '" ><i class="fas fa-eye"></i></a>';
                 })
                 ->addIndexColumn() // Adds the index column
                 ->make(true);
@@ -28,7 +30,20 @@ class JasProfileController extends Controller
     {
         $id = decrypt($id);
 
-        $html = view('jasProfiles.pdf.enrollment')->render();
+        $profile = JasProfile::find($id);
+
+        $monitoring = $profile->monitoring;
+        $monitoring_data = JasMonitoringData::where('jas_profile_id', $profile->id)
+            ->with('activity')
+            ->get();
+        
+        $first_activity = JasActivity::where('pdf_table_no', 1)->get();
+        $second_activity = JasActivity::where('pdf_table_no', 2)->get();
+        // $activities = $monitoring->first()->monitoringData->first()->activity;
+
+        // return $monitoring_data;
+
+        $html = view('jasProfiles.pdf.enrollment', compact('profile', 'monitoring', 'monitoring_data', 'first_activity', 'second_activity'))->render();
         // return $html;
         $options = new Options();
         $options->set('defaultFont', 'Courier');

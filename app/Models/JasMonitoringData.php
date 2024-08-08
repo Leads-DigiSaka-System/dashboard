@@ -28,4 +28,15 @@ class JasMonitoringData extends Model
         'image3',
         'image4',
     ];
+
+    public function profile()
+    {
+        return $this->belongsTo(JasProfile::class, 'jas_profile_id');
+    }
+
+    public function activity()
+    {
+        return $this->hasOne(JasActivity::class, 'activity_id');
+    }
+
 }

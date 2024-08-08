@@ -75,6 +75,8 @@
         .form-group .underline {
             border-bottom: #000 solid black;
             display: inline-block;
+            /* padding-left: 50px; */
+            text-align: center;
         }
 
         .form-group input[type="text"],
@@ -147,14 +149,14 @@
             width: 85%;
         }
 
-        table.form-activity tbody > tr > td:first-child{
+        table.form-activity tbody>tr>td:first-child {
             width: 25% !important;
             text-transform: uppercase;
             padding-top: 35px;
             padding-bottom: 35px;
         }
 
-        table.form-activity{
+        table.form-activity {
             margin-top: 30px;
         }
     </style>
@@ -169,57 +171,59 @@
         <form>
             <div class="form-group" style="margin-top: 30px">
                 <label for="name">Name of Cooperator: </label>
-                <div class="underline" style="width: calc(100% - 170px);"></div>
+                <div class="underline" style="width: calc(100% - 170px);">{{ $profile->first_name }}
+                    {{ $profile->middle != '' ? $profile->middle . '.' : '' }} {{ $profile->last_name }}</div>
                 <span>(Pangalan)</span>
             </div>
             <div class="form-group" style="margin-top: 20px">
                 <div class="label-container">
                     <label for="address">Address: </label>
-                    <div class="underline" style="width: calc(100% - 95px);"></div>
+                    <div class="underline" style="width: calc(100% - 95px);">{{ $profile->first_name }}</div>
                 </div>
                 <span>(Tirahan)</span>
             </div>
             <div class="form-group" style="margin-top: 20px">
                 <div class="label-container" style="width: 45%; display: inline-block">
                     <label for="birthdate">Birthdate: </label>
-                    <div class="underline" style="width: calc(100% - 75px);"></div>
+                    <div class="underline" style="width: calc(100% - 75px);">
+                        {{ date('F d, Y', strtotime($profile->birthdate)) }}</div>
                     <span>(Petsa ng Kapanganakan)</span>
                 </div>
                 <div class="label-container" style="width:53%; display: inline-block">
                     <label for="phone">Cellphone No. (if any): </label>
-                    <div class="underline" style="width: 220px"></div>
+                    <div class="underline" style="width: 220px">{{ $profile->phone }}</div>
                     <span>(Numero ng Telepono, Kung Mayroon)</span>
                 </div>
 
             </div>
             <div class="form-group" style="margin-top: 30px">
-                <div class="label-container" style="width: 30%; display: inline-block; padding-bottom: 55px">
+                <div class="label-container" style="width: 30%; display: inline-block; padding-bottom: 53px">
                     <label for="variety-wet">VARIETY USUALLY USED</label>
                     <span>(Binhing Ginagamit)</span>
                 </div>
                 <div class="label-container" style="width: 68%; display: inline-block">
                     <label for="variety-wet">WET SEASON: </label>
-                    <div class="underline" style="width: calc(100% - 130px);"></div>
+                    <div class="underline" style="width: calc(100% - 130px);">{{ $profile->variety_used_wet }}</div>
                     <span>(Tag Ulan)</span>
 
                     <label for="variety-dry" style="margin-top: 20px">DRY SEASON: </label>
-                    <div class="underline" style="width: calc(100% - 130px);"></div>
+                    <div class="underline" style="width: calc(100% - 130px);">{{ $profile->variety_used_dry }}</div>
                     <span>(Tag Tuyo)</span>
                 </div>
 
             </div>
             <div class="form-group" style="margin-top: 20px">
-                <div class="label-container" style="width: 30%; display: inline-block; padding-bottom: 55px">
+                <div class="label-container" style="width: 30%; display: inline-block; padding-bottom: 53px">
                     <label for="variety-wet">AVERAGE YIELD PER HECTARE</label>
                     <span>(Dami ng Sako ng Ani)</span>
                 </div>
                 <div class="label-container" style="width: 68%; display: inline-block">
                     <label for="variety-wet">WET SEASON: </label>
-                    <div class="underline" style="width: calc(100% - 130px);"></div>
+                    <div class="underline" style="width: calc(100% - 130px);">{{ $profile->average_yield_wet }}</div>
                     <span>(Tag Ulan)</span>
 
                     <label for="variety-dry" style="margin-top: 20px">DRY SEASON: </label>
-                    <div class="underline" style="width: calc(100% - 130px);"></div>
+                    <div class="underline" style="width: calc(100% - 130px);">{{ $profile->average_yield_dry }}</div>
                     <span>(Tag Tuyo)</span>
                 </div>
 
@@ -228,7 +232,7 @@
             <div class="form-group">
                 <div class="label-container">
                     <label for="dealers">DEALER(S) WHERE YOU BUY FROM: </label>
-                    <div class="underline" style="width: calc(100% - 290px);"></div>
+                    <div class="underline" style="width: calc(100% - 290px);">{{ $profile->dealers }}</div>
                 </div>
                 <span>(Suking Tindahan)</span>
             </div>
@@ -279,42 +283,22 @@
                         <th>Signature</th>
                     </tr>
                 </thead>
+                @php
+                    $activities = collect($monitoring_data);
+                @endphp
                 <tbody class="big-padding">
-                    <tr>
-                        <td>TRANSPLANTING</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>IRRIGATION</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>1st TOP DRESS</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>DE-IRRIGATE</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>HARVESTING</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                    @foreach ($first_activity as $a)
+                        @php
+                            $activity = $activities->where('activity_id', '=', $a->activity_id)->first();
+                        @endphp
+                        <tr>
+                            <td>{{ $a->title }}</td>
+                            <td>{{ $activity->timing ?? '' }}</td>
+                            <td>{{ $activity->remarks ?? '' }}</td>
+                            <td>{{ $activity->observation ?? '' }}</td>
+                            <td>{{ $activity->signature ?? '' }}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
 
@@ -432,41 +416,18 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Seed Bed Preparation Phase 1</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Seed Bed Preparation Phase 2</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Seed Soaking</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Seed Sowing</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Basal Fertilization</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                @foreach ($second_activity as $a)
+                    @php
+                        $activity = $activities->where('activity_id', '=', $a->activity_id)->first();
+                    @endphp
+                    <tr>
+                        <td>{{ $a->title }}</td>
+                        <td>{{ $activity->timing ?? '' }}</td>
+                        <td>{{ $activity->remarks ?? '' }}</td>
+                        <td>{{ $activity->observation ?? '' }}</td>
+                        <td>{{ $activity->signature ?? '' }}</td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
 

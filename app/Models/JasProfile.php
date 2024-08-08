@@ -29,4 +29,14 @@ class JasProfile extends Model
         'farmer_id' ,
         'batch' 
     ];
+
+    public function monitoring()
+    {
+        return $this->hasOne(JasMonitoring::class, 'jas_profile_id');
+    }
+
+    public function monitoringData()
+    {
+        return $this->hasMany(JasMonitoringData::class, 'jas_profile_id');
+    }
 }

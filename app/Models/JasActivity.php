@@ -11,4 +11,6 @@ class JasActivity extends Model
     use HasFactory;
 
     public $timestamps = false;
+
+    
 }

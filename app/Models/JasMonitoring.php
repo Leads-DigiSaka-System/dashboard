@@ -26,4 +26,10 @@ class JasMonitoring extends Model
         'location',
         'duration',
     ];
+
+    public function profile()
+    {
+        return $this->belongsTo(JasProfile::class, 'jas_profile_id');
+    }
+
 }
