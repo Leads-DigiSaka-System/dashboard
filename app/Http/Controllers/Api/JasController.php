@@ -8,6 +8,7 @@ use App\Models\JasProfile;
 use App\Models\JasActivity;
 use App\Models\JasMonitoring;
 use App\Models\JasMonitoringData;
+use Illuminate\Support\Str;
 use File, DB;
 class JasController extends Controller
 {
@@ -16,6 +17,8 @@ class JasController extends Controller
         $activities = JasActivity::orderBy('sort', 'asc')->get();
         return response()->json($activities);
     }
+
+    use Illuminate\Support\Str;
 
     public function upsertMonitoringData(Request $request, ?int $id = 0)
     {
@@ -39,39 +42,43 @@ class JasController extends Controller
 
             if ($request->hasFile('signature')) {
                 $file = $request->file('signature');
-                $name = $file->getClientOriginalName();
+                $name = Str::uuid() . '_' . time() . '_' . $file->getClientOriginalName();
                 $path = 'upload/images';
                 $file->move($path, $name);
                 $JasMonitoring->signature = $path . '/' . $name;
             }
 
+            // Handle image1
             if ($request->hasFile('image1')) {
                 $file = $request->file('image1');
-                $name = $file->getClientOriginalName();
+                $name = Str::uuid() . '_' . time() . '_' . $file->getClientOriginalName();
                 $path = 'upload/images';
                 $file->move($path, $name);
                 $JasMonitoring->image1 = $path . '/' . $name;
             }
 
+            // Handle image2
             if ($request->hasFile('image2')) {
                 $file = $request->file('image2');
-                $name = $file->getClientOriginalName();
+                $name = Str::uuid() . '_' . time() . '_' . $file->getClientOriginalName();
                 $path = 'upload/images';
                 $file->move($path, $name);
                 $JasMonitoring->image2 = $path . '/' . $name;
             }
 
+            // Handle image3
             if ($request->hasFile('image3')) {
                 $file = $request->file('image3');
-                $name = $file->getClientOriginalName();
+                $name = Str::uuid() . '_' . time() . '_' . $file->getClientOriginalName();
                 $path = 'upload/images';
                 $file->move($path, $name);
                 $JasMonitoring->image3 = $path . '/' . $name;
             }
 
+            // Handle image4
             if ($request->hasFile('image4')) {
                 $file = $request->file('image4');
-                $name = $file->getClientOriginalName();
+                $name = Str::uuid() . '_' . time() . '_' . $file->getClientOriginalName();
                 $path = 'upload/images';
                 $file->move($path, $name);
                 $JasMonitoring->image4 = $path . '/' . $name;
@@ -86,8 +93,6 @@ class JasController extends Controller
         }
     }
 
-
-        
     public function deleteMonitoringData(Int $id) {
         try {
             $JasProfile = JasMonitoringData::find($id);
