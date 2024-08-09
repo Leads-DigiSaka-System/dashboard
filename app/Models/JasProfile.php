@@ -32,11 +32,21 @@ class JasProfile extends Model
 
     public function monitoring()
     {
-        return $this->hasOne(JasMonitoring::class, 'jas_profile_id');
+        return $this->hasMany(JasMonitoring::class, 'jas_profile_id');
     }
 
     public function monitoringData()
     {
         return $this->hasMany(JasMonitoringData::class, 'jas_profile_id');
+    }
+
+    public function farmer()
+    {
+        return $this->hasOne(User::class, 'id', 'farmer_id');
+    }
+
+    public function technician()
+    {
+        return $this->hasOne(User::class, 'id', 'technician');
     }
 }

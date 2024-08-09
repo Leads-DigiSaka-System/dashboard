@@ -40,7 +40,7 @@ class JasProfileController extends Controller
     {
         $id = decrypt($id);
 
-        $profile = JasProfile::find($id);
+        $profile = JasProfile::with('technician', 'farmer')->find($id);
 
         $monitoring = $profile->monitoring;
         $monitoring_data = JasMonitoringData::where('jas_profile_id', $profile->id)
@@ -51,7 +51,7 @@ class JasProfileController extends Controller
         $second_activity = JasActivity::where('pdf_table_no', 2)->get();
         // $activities = $monitoring->first()->monitoringData->first()->activity;
 
-        // return $monitoring_data;
+        // return $profile;
 
         $html = view('jasProfiles.pdf.enrollment', compact('profile', 'monitoring', 'monitoring_data', 'first_activity', 'second_activity'))->render();
         // return $html;

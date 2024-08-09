@@ -117,6 +117,7 @@
             border: 1px solid #858585;
             text-align: center;
             padding: 8px;
+            font-size: 12px;
         }
 
         th {
@@ -178,7 +179,7 @@
             <div class="form-group" style="margin-top: 20px">
                 <div class="label-container">
                     <label for="address">Address: </label>
-                    <div class="underline" style="width: calc(100% - 95px);">{{ $profile->first_name }}</div>
+                    <div class="underline" style="width: calc(100% - 95px);">{{ $profile->address }}</div>
                 </div>
                 <span>(Tirahan)</span>
             </div>
@@ -236,7 +237,7 @@
                 </div>
                 <span>(Suking Tindahan)</span>
             </div>
-            <div class="form-group" style="margin-top: 40px;text-align: center">
+            <div class="form-group" style="margin-top: 40px;text-align: center; z-index: 2">
                 <label style="font-size: 16px">I hereby affix my signature to manifest my agreement to abide by
                     the</label>
                 <span>Kalakip nito ang aking lagda bilang pagpapatunay na susunod ako sa alituntunin</span>
@@ -244,8 +245,15 @@
                 <span>ng programang ito.</span>
             </div>
 
-            <div class="form-group" style="margin-top: 30px; margin-left: 65%;width: 215px;text-align:center">
-                <div class="underline" style="width: 100%;margin-bottom: 0px;"></div><br>
+            <div class="form-group" style="margin-top: 70px; margin-left: 65%;width: 215px;text-align:center">
+                <div class="underline" style="width: 100%;margin-bottom: 0px;">
+                    <div style="width: 100%;position: relative;">
+                        <img src="data:image/svg+xml;base64,{{ base64_encode(file_get_contents(public_path($profile->image))) }}"
+                            alt="Signature"
+                            style="width: 80%; position: absolute; bottom: 220px; margin-left: 10%; z-index: -1">
+                    </div>
+
+                </div><br>
                 <label for="name" style="margin-top: 0px; line-height: 0px">SIGNATURE</label>
                 <span style="margin-top: 0px; line-height: 0px">(Lagda)</span>
             </div>
@@ -318,36 +326,14 @@
                     </tr>
                 </thead>
                 <tbody class="small-padding">
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                    @foreach ($monitoring as $m)
+                        <tr>
+                            <td>{{ $m->product }}</td>
+                            <td>{{ $m->pest_disease }}</td>
+                            <td>{{ $m->rate_water }}</td>
+                            <td>{{ $m->timing }}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -385,23 +371,31 @@
         <table class="form-info">
             <tr>
                 <th>Name of TPS:</th>
-                <td></td>
+                <td>
+                    @if (isset($profile->technician))
+                        {{ $profile->technician->full_name ?? '' }}
+                    @endif
+                </td>
             </tr>
             <tr>
                 <th>Participant:</th>
-                <td></td>
+                <td>
+                    @if (isset($profile->farmer))
+                        {{ $profile->farmer->full_name ?? '' }}
+                    @endif
+                </td>
             </tr>
             <tr>
                 <th>Area:</th>
-                <td></td>
+                <td>{{ $profile->area }}</td>
             </tr>
             <tr>
                 <th>Location:</th>
-                <td></td>
+                <td>{{ $profile->location }}</td>
             </tr>
             <tr>
                 <th>Date Duration:</th>
-                <td></td>
+                <td>{{ $profile->duration }}</td>
             </tr>
         </table>
 
@@ -425,7 +419,14 @@
                         <td>{{ $activity->timing ?? '' }}</td>
                         <td>{{ $activity->remarks ?? '' }}</td>
                         <td>{{ $activity->observation ?? '' }}</td>
-                        <td>{{ $activity->signature ?? '' }}</td>
+                        <td>
+                            @if (isset($activity->signature))
+                                @if (file_exists(public_path($activity->signature)))
+                                    <img src="data:image/svg+xml;base64,{{ base64_encode(file_get_contents(public_path($activity->signature))) }}"
+                                        alt="Signature" style="width: 80%;">
+                                @endif
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
