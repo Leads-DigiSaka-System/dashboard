@@ -26,8 +26,10 @@ class JasProfile extends Model
         'image' ,
         'technician',
         'area',
-        'farmer_id' ,
-        'batch' 
+        'farmer_id',
+        'batch',
+        'location',
+        'duration' 
     ];
 
     public function monitoring()
