@@ -2,6 +2,7 @@
 /public/hot
 /public/uploads
 /public/upload
+/public/upload/*
 /public/storage
 /public/css
 /storage/*.key
