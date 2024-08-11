@@ -57,6 +57,12 @@ return [
                 ],
             ],
         ],
+        'public_upload' => [
+            'driver' => 'local',
+            'root' => public_path('upload/files'),
+            'url' => env('APP_URL').'/upload/files',
+            'visibility' => 'public',
+        ],
         'excel' => [
             'driver' => 'local',
             'root' => storage_path('app/public/excel'),
