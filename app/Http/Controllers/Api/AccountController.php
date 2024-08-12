@@ -232,17 +232,44 @@ class AccountController extends Controller
         }
     }
     
-    public function userListVia($via_app, $location_type, $search){
-        $users = User::where('via_app', $via_app)
-                     ->where($location_type, $search)
-                     ->get();
+    public function userListVia($via_app = 0, $region = '', $province = '', $municipality = '', $search = ''){
+        $query = User::query();
     
-        if($users->isEmpty()){
+        if ($via_app > 0) {
+            $query->where('via_app', $via_app);
+        }
+    
+        if ($region !== '') {
+            $query->where('region', $region);
+        }
+    
+        if ($province !== '') {
+            $query->where('province', $province);
+        }
+    
+        if ($municipality !== '') {
+            $query->where('municipality', $municipality);
+        }
+    
+        if ($search !== '') {
+            // Assuming $search should match in any of the provided columns
+            $query->where(function($q) use ($search) {
+                $q->where('region', 'like', "%$search%")
+                  ->orWhere('province', 'like', "%$search%")
+                  ->orWhere('municipality', 'like', "%$search%");
+            });
+        }
+    
+        $users = $query->get();
+    
+        if ($users->isEmpty()) {
             return returnErrorResponse('No user found');
         } else {
             return returnSuccessResponse('User list', $users);
         }
     }
+    
+    
     public function getProof($farmerId){
         $files = File::select(['filename'])->where('farmer_id', $farmerId)->orderBy('id', 'desc')->first();
         return returnSuccessResponse('get proof successful',$files);
