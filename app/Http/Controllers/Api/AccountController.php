@@ -251,15 +251,6 @@ class AccountController extends Controller
             $query->where('municipality', $municipality);
         }
     
-        if ($search !== '') {
-            // Assuming $search should match in any of the provided columns
-            $query->where(function($q) use ($search) {
-                $q->where('region', 'like', "%$search%")
-                  ->orWhere('province', 'like', "%$search%")
-                  ->orWhere('municipality', 'like', "%$search%");
-            });
-        }
-    
         $users = $query->get();
     
         if ($users->isEmpty()) {
