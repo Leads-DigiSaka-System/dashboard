@@ -112,6 +112,7 @@ class AuthController extends Controller
             'phone_number' => 'nullable',
             'password' => 'required',
             'fcm_token' => 'nullable',
+            'via_app' => 'nullable',
             'referer' => ''
         ];
 
