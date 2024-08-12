@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Farms;
+use App\Models\User;
 use App\Models\Survey;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Validator;
@@ -190,6 +191,31 @@ class FarmController extends Controller
          return returnSuccessResponse('Farms delete successfully');
         }
         return returnErrorResponse('Unable to delete farm. Please try again later');
+
+
+    }
+    public function farmer_delete(Request $request)
+    {
+        $rules = [
+            'farmer_id'=>'required'
+           ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $errorMessages = $validator->errors()->all();
+            throw new HttpResponseException(returnValidationErrorResponse($errorMessages[0]));
+        }
+        $farmer_id=$request->farmer_id;
+        $farmer = User::where('id',$farmer_id)->first();
+        if(empty($farmer))
+        {
+            return returnErrorResponse('Farmer not found');
+        }
+        if($farmer->delete())
+        {
+         return returnSuccessResponse('Farmer deleted successfully');
+        }
+        return returnErrorResponse('Unable to delete farmer. Please try again later');
 
 
     }

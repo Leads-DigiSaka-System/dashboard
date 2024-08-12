@@ -94,6 +94,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::get('/farm-detail', 'FarmController@detail')->name('farm_detail');
 			Route::post('/farm-update', 'FarmController@update')->name('farm_update');
 			Route::delete('/farm-delete', 'FarmController@delete')->name('farm_delete');
+			Route::post('/farmer-delete', 'FarmController@farmer_delete')->name('farm_delete');
 			Route::get('/get-weather', 'HomeController@getWeather')->name('getWeather');
 			Route::post('/survey-store', 'SurveyController@store')->name('survey_store');
 			Route::get('/get-farmer-info/{farmerInfo}', 'AccountController@getFarmerInfo')->name('getFarmerInfo');
