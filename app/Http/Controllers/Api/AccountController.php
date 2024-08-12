@@ -232,13 +232,14 @@ class AccountController extends Controller
         }
     }
     
-    public function userListVia($via_app){
-        $users = User::where('via_app', $via_app)->get();
-
-        if(count($users) == 0){
+    public function userListVia($via_app, $location_type, $search){
+        $users = User::where('via_app', $via_app)
+                     ->where($location_type, $search)
+                     ->get();
+    
+        if($users->isEmpty()){
             return returnErrorResponse('No user found');
-        }
-        else{
+        } else {
             return returnSuccessResponse('User list', $users);
         }
     }
