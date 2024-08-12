@@ -219,6 +219,14 @@ class FarmController extends Controller
 
 
     }
+    public function getAllFarms($id = 0){
+        if($id>0){
+            $farms = Farms::where('id',$id)->get();
+            return returnSuccessResponse('Farm list get successfully.', $farms);
+        }
+        $farms = Farms::all();
+        return returnSuccessResponse('Farm list get successfully.', $farms);
+    }
     public function getFarmsByID($id,Farms $farms){
         $farmObj=$farms->getFarmList($id);
         $listArr=array();
