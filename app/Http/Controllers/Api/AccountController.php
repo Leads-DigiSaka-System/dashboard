@@ -231,6 +231,17 @@ class AccountController extends Controller
             return returnSuccessResponse('User list', $users);
         }
     }
+    
+    public function userListVia($via_app){
+        $users = User::where('via_app', $via_app)->get();
+
+        if(count($users) == 0){
+            return returnErrorResponse('No user found');
+        }
+        else{
+            return returnSuccessResponse('User list', $users);
+        }
+    }
     public function getProof($farmerId){
         $files = File::select(['filename'])->where('farmer_id', $farmerId)->orderBy('id', 'desc')->first();
         return returnSuccessResponse('get proof successful',$files);

@@ -104,6 +104,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::get('/getAllMobile', 'AccountController@getAllMobile')->name('allMobile');
 			Route::post('/verify-farmer', 'AccountController@verifyFarmer')->name('verifyFarmer');
 			Route::get('/user-list/{role}', 'AccountController@userList')->name('userList');
+			Route::get('/user-list-via/{via_app}', 'AccountController@userListVia')->name('userListVia');
 			
 			//JAS-profile
 			Route::post('/jas/upsertProfile/{id?}','JasController@upsert');
