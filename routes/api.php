@@ -110,6 +110,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::post('/jas/upsertProfile/{id?}','JasController@upsert');
 			Route::get('/jas/getProfiles/{id?}','JasController@get');
 			Route::post('/jas/delete/{id}','JasController@delete');
+			Route::get('/jas/getProfileByTps/{id?}','JasController@getByTps');
 
 			//jas-activities
 			Route::get('/jas/getActivities','JasController@getActivities');

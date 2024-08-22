@@ -262,6 +262,27 @@ class JasController extends Controller
             return response()->json('error',500);
         }
     }
+
+    public function getByTps(?Int $id = 0) {
+        if ($id > 0) {
+            $jas = JasProfile::where('technician', $id)->get();
+        } else {
+            return response()->json(['error' => 'No data found'], 404);
+        }
+    
+        $data = array();
+        foreach ($jas as $j) {
+            $jArray = $j->toArray();
+            $jArray['image'] = asset($j->image);
+            $data[] = $jArray;
+        }
+    
+        if ($jas->count() == 0) {
+            return response()->json(['error' => 'No data found'], 404);
+        }
+    
+        return response()->json($data);
+    }
     public function get(?Int $id = 0) {
         if ($id > 0) {
             $jas = JasProfile::where('id', $id)->get();
