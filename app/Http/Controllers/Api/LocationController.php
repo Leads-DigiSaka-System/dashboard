@@ -52,13 +52,9 @@ class LocationController extends Controller
             'data' => $data
         ]);
     }
-    public function searchProvince($region = 0, $search = ''){
-       if($search!=''){
-            $data = Province::where('regcode', $region)->where('name', 'like', '%'.$search.'%')->limit(20)->get();
-       }
-       else{
-            $data = Province::where('regcode', $region)->limit(20)->get();
-       }
+    public function searchProvince($region = 0){
+     
+        $data = Province::where('regcode', $region)->limit(20)->get();
         return response()->json([
             'status' => 'success',
             'data' => $data
