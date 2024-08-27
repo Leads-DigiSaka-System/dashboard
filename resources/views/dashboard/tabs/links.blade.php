@@ -127,7 +127,6 @@
     </div>
 </div>
 
-
 <div class="tab-pane fade show" id="content13" style="padding-right: 10px;">
     <div class="row">
         @foreach($webinars as $webinar)
@@ -142,15 +141,26 @@
                             @endif
                         </div>
                         <h3 class="webinar-title">{{ $webinar->title }}</h3>
-                        <div id="fb-root"></div>
-                        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0"></script>
-                        <div class="fb-video" data-href="{{ $webinar->link }}" data-width="500" data-show-text="false"></div>
+                        
+                        <!-- Conditionally display video or photo based on $webinar->type -->
+                        @if($webinar->type == 0)
+                            <!-- Display Facebook Video -->
+                            <div id="fb-root"></div>
+                            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0"></script>
+                            <div class="fb-video" data-href="{{ $webinar->link }}" data-width="500" data-show-text="false"></div>
+                        @elseif($webinar->type == 1)
+                            <!-- Display Photo with Link -->
+                            <a href="{{ $webinar->link }}" target="_blank">
+                                <img src="{{ $webinar->link }}" alt="Webinar Photo" style="width:100%; max-height:300px; object-fit:cover;">
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
 </div>
+
 <style>
     .active-now {
         color: green;
