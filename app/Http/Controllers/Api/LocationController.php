@@ -52,9 +52,9 @@ class LocationController extends Controller
             'data' => $data
         ]);
     }
-    public function searchProvince($region = 0){
+    public function searchProvince($prov_code = 0){
      
-        $data = Province::where('regcode', $region)->limit(20)->get();
+        $data = Province::where('provcode', $prov_code)->limit(20)->get();
         return response()->json([
             'status' => 'success',
             'data' => $data

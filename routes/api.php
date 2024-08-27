@@ -68,7 +68,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 		// Search Location
 		Route::get('/location/search/{search}', 'LocationController@searchLocation')->name('searchLocation');
 		Route::get('/location/search_barangay/{search}/{reg}/{prov}/{muni}', 'LocationController@searchBarangay')->name('searchBarangay');
-		Route::get('/location/province/{region}', 'LocationController@searchProvince')->name('searchProvince');
+		Route::get('/location/province/{prov_code}', 'LocationController@searchProvince')->name('searchProvince');
         // User Login Route
         Route::post('/login', 'AuthController@login')->name('login');
 		Route::post('/resendOtp', 'AuthController@resendOtp')->name('resendOtp');
