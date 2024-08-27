@@ -151,7 +151,7 @@
                         @elseif($webinar->type == 1)
                             <!-- Display Photo with Link -->
                             <a href="{{ $webinar->link }}" target="_blank">
-                                <img src="{{ $webinar->link }}" alt="Webinar Photo" style="width:100%; max-height:300px; object-fit:cover;">
+                                <img src="{{ $webinar->image_source }}" alt="Webinar Photo" style="width:100%; max-height:300px; object-fit:cover;">
                             </a>
                         @endif
                     </div>
