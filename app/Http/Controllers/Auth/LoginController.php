@@ -47,7 +47,6 @@ class LoginController extends Controller
     }
 
     public function login(Request $request){
-
         $rules = array(
             'email' => 'required|email:rfc,dns,filter',
             'password' => 'required',
