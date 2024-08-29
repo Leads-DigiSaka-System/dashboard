@@ -47,8 +47,7 @@
             <div class="card rounded-3 shadow-sm">
                 <div class="card-body">
                     <a href="https://zenodo.org/records/8399173" target="_blank">
-                        <img class="w-100" style="height:800px;" src="{{ asset('images/Zenodo.png') }}"
-                            alt="Zenodo">
+                        <img class="w-100" style="height:800px;" src="{{ asset('images/Zenodo.png') }}" alt="Zenodo">
                     </a>
                 </div>
             </div>
@@ -129,29 +128,44 @@
 
 <div class="tab-pane fade show" id="content13" style="padding-right: 10px;">
     <div class="row">
-        @foreach($webinars as $webinar)
+        @foreach ($webinars as $webinar)
             <div class="col-md-12 col-lg-6" style="height:350px;">
                 <div class="card rounded-3 shadow-sm mb-4">
                     <div class="card-body">
                         <div class="webinar-status">
-                            @if($webinar->status == 1)
-                                <span class="active-now">Active Now</span>
-                            @else
+                            @if ($webinar->status == 2)
+                                @php
+                                    $startDate = strtotime($webinar->start_date);
+                                    $currentDate = time();
+                                @endphp
+                                @if ($startDate > $currentDate)
+                                    <span class="not-started">Not Started</span>
+                                    <br>
+                                    <small>Starts on: {{ date('M d, Y H:i', $startDate) }}</small>
+                                @else
+                                    <span class="active-now">Active</span>
+                                @endif
+                            @elseif ($webinar->status == 1)
+                                <span class="active-now">Active</span>
+                            @elseif ($webinar->status == 0)
                                 <span class="finished">Finished</span>
                             @endif
                         </div>
                         <h3 class="webinar-title">{{ $webinar->title }}</h3>
-                        
+
                         <!-- Conditionally display video or photo based on $webinar->type -->
-                        @if($webinar->type == 0)
+                        @if ($webinar->type == 0)
                             <!-- Display Facebook Video -->
                             <div id="fb-root"></div>
-                            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0"></script>
-                            <div class="fb-video" data-href="{{ $webinar->link }}" data-width="500" data-show-text="false"></div>
+                            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0">
+                            </script>
+                            <div class="fb-video" data-href="{{ $webinar->link }}" data-width="500"
+                                data-show-text="false"></div>
                         @elseif($webinar->type == 1)
                             <!-- Display Photo with Link -->
                             <a href="{{ $webinar->link }}" target="_blank">
-                                <img src="{{ $webinar->image_source }}" alt="Webinar Photo" style="width:100%; max-height:300px; object-fit:cover;">
+                                <img src="{{ $webinar->image_source }}" alt="Webinar Photo"
+                                    style="width:100%; max-height:300px; object-fit:cover;">
                             </a>
                         @endif
                     </div>
@@ -164,6 +178,12 @@
 <style>
     .active-now {
         color: green;
+        font-weight: bold;
+    }
+
+
+    .not-started {
+        color: orange;
         font-weight: bold;
     }
 
