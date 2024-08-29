@@ -53,60 +53,65 @@
                     </form>
                 </div>
             </div>
-
             <!-- Webinars Section -->
-<div class="col-lg-7">
-    <div class="tab-pane fade show" id="content13" style="padding-right: 10px;">
-        <div class="row">
-            @foreach ($webinars as $webinar)
-                <div class="col-md-12 col-lg-6 mb-3">
+            <div class="col-lg-7">
+                <div class="tab-pane fade show" id="content13" style="padding-right: 10px;">
+                    <!-- Card for Webinars Section -->
                     <div class="card rounded-3 shadow-sm">
                         <div class="card-body">
-                            <div class="webinar-status">
-                                @if ($webinar->status == 2)
-                                    @php
-                                        $startDate = strtotime($webinar->start_date);
-                                        $currentDate = time();
-                                    @endphp
-                                    @if ($startDate > $currentDate)
-                                        <span class="not-started">Not Started</span>
-                                        <br>
-                                        <small>Starts on: {{ date('M d, Y H:i', $startDate) }}</small>
-                                    @else
-                                        <span class="active-now">Active</span>
-                                    @endif
-                                @elseif ($webinar->status == 1)
-                                    <span class="active-now">Active</span>
-                                @elseif ($webinar->status == 0)
-                                    <span class="finished">Finished</span>
-                                @endif
-                            </div>
-                            <h3 class="webinar-title">
-                                {{ Str::limit($webinar->title, 20, '...') }}
-                            </h3>
+                            <h2 class="">Webinars</h2>
+                            <div class="row">
+                                @foreach ($webinars as $webinar)
+                                    <div class="col-md-12 col-lg-6 mb-3">
+                                        <div class="card rounded-3 shadow-sm">
+                                            <div class="card-body">
+                                                <div class="webinar-status">
+                                                    @if ($webinar->status == 2)
+                                                        @php
+                                                            $startDate = strtotime($webinar->start_date);
+                                                            $currentDate = time();
+                                                        @endphp
+                                                        @if ($startDate > $currentDate)
+                                                            <span class="not-started">Not Started</span>
+                                                            <br>
+                                                            <small>Starts on: {{ date('M d, Y H:i', $startDate) }}</small>
+                                                        @else
+                                                            <span class="active-now">Active</span>
+                                                        @endif
+                                                    @elseif ($webinar->status == 1)
+                                                        <span class="active-now">Active</span>
+                                                    @elseif ($webinar->status == 0)
+                                                        <span class="finished">Finished</span>
+                                                    @endif
+                                                </div>
+                                                <h3 class="webinar-title">
+                                                    {{ Str::limit($webinar->title, 20, '...') }}
+                                                </h3>
 
-                            <!-- Conditionally display video or photo based on $webinar->type -->
-                            @if ($webinar->type == 0)
-                                <!-- Display Facebook Video -->
-                                <div id="fb-root"></div>
-                                <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0">
-                                </script>
-                                <div class="fb-video" data-href="{{ $webinar->link }}" data-width="250" data-show-text="false"></div>
-                            @elseif($webinar->type == 1)
-                                <!-- Display Photo with Link -->
-                                <a href="{{ $webinar->link }}" target="_blank">
-                                    <img src="{{ $webinar->image_source }}" alt="Webinar Photo"
-                                         style="width:100%; max-height:150px; object-fit:cover;">
-                                </a>
-                            @endif
+                                                <!-- Conditionally display video or photo based on $webinar->type -->
+                                                @if ($webinar->type == 0)
+                                                    <!-- Display Facebook Video -->
+                                                    <div id="fb-root"></div>
+                                                    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0">
+                                                    </script>
+                                                    <div class="fb-video" data-href="{{ $webinar->link }}" data-width="250"
+                                                        data-show-text="false"></div>
+                                                @elseif($webinar->type == 1)
+                                                    <!-- Display Photo with Link -->
+                                                    <a href="{{ $webinar->link }}" target="_blank">
+                                                        <img src="{{ $webinar->image_source }}" alt="Webinar Photo"
+                                                            style="width:100%; max-height:150px; object-fit:cover;">
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>
-            @endforeach
-        </div>
-    </div>
-</div>
-
+            </div>
 
         </div>
     </div>
@@ -116,24 +121,26 @@
             color: green;
             font-weight: bold;
         }
-    
+
         .finished {
             color: red;
             font-weight: bold;
         }
+
         .not-started {
             color: orange;
             font-weight: bold;
         }
+
         .webinar-status {
             margin-bottom: 10px;
         }
-    
+
         .webinar-title {
             font-size: 1.5rem;
             margin: 0;
         }
-    
+
         .card {
             margin-top: 20px;
         }
