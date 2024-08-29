@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\EmployeeMasterList;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Validator;
 use Carbon\Carbon;
@@ -96,6 +97,17 @@ class AuthController extends Controller
         $users = $query->get();
 
         return response()->json($users);
+    }
+    public function searchEmployee($first_name, $last_name)
+    {
+        $query = EmployeeMasterList::select('*')
+            ->where('first_name', 'LIKE', "%{$first_name}%")
+            ->where('last_name', 'LIKE', "%{$last_name}%")
+            ->limit(50);
+
+        $employees = $query->get();
+
+        return response()->json($employees);
     }
 
     

@@ -129,6 +129,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::post('/jas/deleteMonitoringData/{id}','JasController@deleteMonitoringData');
 
 			Route::get('/search/{search}/{role?}','AuthController@searchUser')->name('searchUser');
+			Route::get('/search_employee/{first_name}/{last_name}','AuthController@searchEmployee')->name('searchEmployee');
 		});
     });
 	
