@@ -110,6 +110,17 @@ class AuthController extends Controller
         return response()->json($employees);
     }
 
+    public function searchtps($search = '')
+    {
+        $query = EmployeeMasterList::select('*')
+            ->where('area_coverage', 'LIKE', "%{$search}%")
+            ->where('position', 'LIKE', "Technical and Promo Specialist")
+            ->limit(50);
+
+        $employees = $query->get();
+
+        return response()->json($employees);
+    }
     
     public function register(Request $request, User $user)
     {

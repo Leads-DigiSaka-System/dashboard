@@ -130,6 +130,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 
 			Route::get('/search/{search}/{role?}','AuthController@searchUser')->name('searchUser');
 			Route::get('/search_employee/{first_name}/{last_name}','AuthController@searchEmployee')->name('searchEmployee');
+			Route::get('/search_by_area/{search}','AuthController@searchtps')->name('searchtps');
 		});
     });
 	
