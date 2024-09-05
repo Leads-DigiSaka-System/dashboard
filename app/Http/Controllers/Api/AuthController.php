@@ -127,6 +127,7 @@ class AuthController extends Controller
     	$rules = [
     		'full_name'=>'',
     		'first_name'=>'',
+    		'middle_name'=>'nullable',
     		'last_name'=>'',
             'phone_code'=>'required',
             'email'=>'nullable|email|unique:users,email,NULL,id,deleted_at,NULL',
