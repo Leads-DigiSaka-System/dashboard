@@ -296,6 +296,7 @@
                                 </figure>
                             </div>
                         </div>
+                        @include('dashboard.calendar')
                     </div>
 
                 </div>
@@ -1425,3 +1426,5 @@
         // });
     </script>
 @endpush
+
+

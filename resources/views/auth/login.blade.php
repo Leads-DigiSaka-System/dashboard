@@ -54,7 +54,7 @@
                 </div>
             </div>
             <!-- Webinars Section -->
-            <div class="col-lg-7">
+            {{-- <div class="col-lg-7">
                 <div class="tab-pane fade show" id="content13" style="padding-right: 10px;">
                     <!-- Card for Webinars Section -->
                     <div class="card rounded-3 shadow-sm">
@@ -111,7 +111,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
     </div>

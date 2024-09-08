@@ -30,6 +30,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/theme/themes/bordered-layout.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/theme/themes/semi-dark-layout.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/theme/extensions/sweetalert2.min.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
 
     <!-- END: Theme CSS-->
 
@@ -118,7 +119,9 @@
         <div class="content-wrapper p-0">
             <div class="content-header row">
             </div>
-            <div class="content-body" style="z-index: 99; position: relative;">
+            <div class="content-body" 
+            {{-- style="z-index: 99; position: relative;"   --}}
+            style="position: relative;">
                 @include("include.flashMessage")
                 @yield('content')
             </div>

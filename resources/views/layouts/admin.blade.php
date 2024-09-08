@@ -28,6 +28,7 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('css/theme/charts/apexcharts.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/theme/extensions/toastr.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/theme/forms/select/select2.min.css') }}">
+        
         <!-- END: Vendor CSS-->
 
         <!-- BEGIN: Theme CSS-->

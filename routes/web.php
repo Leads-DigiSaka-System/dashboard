@@ -112,6 +112,11 @@ Route::middleware('prevent-back-history')->group(function (){
     Route::get('/dashboard/getRecommendations', 'DashboardController@getRecommendations');
     Route::get('/dashboard/getAgriProducts','DashboardController@getAgriProducts');
     Route::get('/dashboard/getSurveyV2','DashboardController@getSurveyV2');
+
+    // Calendar Routes
+    Route::get('/events', 'EventController@index');
+    Route::post('/events', 'EventController@store');
+    Route::put('/events/{id}', 'EventController@update');
     
     // Custom for Fetching locations \\
     Route::get('/calibrate/{level}/{code}','CalibrateLocationController@calibrate');
