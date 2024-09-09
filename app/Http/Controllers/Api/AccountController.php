@@ -122,11 +122,11 @@ class AccountController extends Controller
     		return returnSuccessResponse($message, $user->jsonResponse());
 
     }
-    public function updateRole(Request $request){
+    public function updateRole(Request $request, $user_id){
         $rules = [
-        'role' => 'required',
-    ];
-    
+            'role' => 'required',
+
+        ];
         $inputArr = $request->all();
         $validator = Validator::make($inputArr, $rules);
         if ($validator->fails()) {
@@ -134,9 +134,9 @@ class AccountController extends Controller
             throw new HttpResponseException(returnValidationErrorResponse($errorMessages[0]));
         }
 
-        $userObj = $request->user();
+        $userObj = User::find($user_id);
         if (!$userObj) {
-            return returnErrorResponse('Farmer is not authorized');
+            return returnErrorResponse('Farmer is not found');
         }
         $userObj->fill($request->all());
         
