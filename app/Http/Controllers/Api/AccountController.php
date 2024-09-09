@@ -122,7 +122,31 @@ class AccountController extends Controller
     		return returnSuccessResponse($message, $user->jsonResponse());
 
     }
+    public function updateRole(Request $request){
+        $rules = [
+        'role' => 'required',
+    ];
+    
+        $inputArr = $request->all();
+        $validator = Validator::make($inputArr, $rules);
+        if ($validator->fails()) {
+            $errorMessages = $validator->errors()->all();
+            throw new HttpResponseException(returnValidationErrorResponse($errorMessages[0]));
+        }
 
+        $userObj = $request->user();
+        if (!$userObj) {
+            return returnErrorResponse('Farmer is not authorized');
+        }
+        $userObj->fill($request->all());
+        
+        if(!$userObj->save()){
+            return returnErrorResponse('Unable to save data');
+        }
+        
+        $returnArr = $userObj->jsonResponse();
+        return returnSuccessResponse('Profile updated successfully', $returnArr);
+    }
     public function updateProfile(Request $request){
             $rules = [
             'first_name' => 'required',

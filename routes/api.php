@@ -85,6 +85,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::post('/changePassword', 'AccountController@changePassword')->name('changePassword');
 			Route::get('/profile', 'AccountController@getProfile')->name('profile');
 			Route::post('/updateProfile', 'AccountController@updateProfile')->name('updateProfile');
+			Route::post('/updateRole', 'AccountController@updateRole')->name('updateRole');
 			Route::post('/updateProfileAdmin', 'AccountController@updateProfileAdmin')->name('updateProfileAdmin');
 			Route::post('/update_profile_pic','AccountController@updateProfilePic')->name('updateProfilePic');
 			Route::get('/notification', 'AccountController@notification')->name('notification');
