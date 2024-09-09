@@ -145,7 +145,7 @@ class AccountController extends Controller
         }
         
         $returnArr = $userObj->jsonResponse();
-        return returnSuccessResponse('Profile updated successfully', $returnArr);
+        return returnSuccessResponse('Role updated successfully', $returnArr);
     }
     public function updateProfile(Request $request){
             $rules = [
