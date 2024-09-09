@@ -81,6 +81,8 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 		Route::post('/verifySMSotp', 'AuthController@verifySMSOTP')->name('verifyOTP');
 		Route::get('/get-proof/{farmerId}', 'AccountController@getProof')->name('getProof');
 		Route::middleware(['auth:sanctum'])->group(function () {
+			
+			Route::get('/calendar/{month?}', 'AuthController@getCalendar')->name('getCalendar');
 			Route::get('/logout', 'AuthController@logout')->name('logout');
 			Route::post('/changePassword', 'AccountController@changePassword')->name('changePassword');
 			Route::get('/profile', 'AccountController@getProfile')->name('profile');

@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Auth;
 use App\Models\ErrorLog;
+use App\Models\Calendar;
 use App\Models\EmailQueue;
 use App\Models\FarmOwnership;
 use App\Models\Role;
@@ -121,7 +122,18 @@ class AuthController extends Controller
 
         return response()->json($employees);
     }
-    
+    public function getCalendar($month = 0){
+        if($month ==0 ){
+            $calendar = Calendar::get();
+        }
+        else{
+            $calendar = Calendar::where('start_date', 'like', $month.'-%')->get();
+        }
+        if($calendar->isEmpty()){
+            return response()->json(['message' => 'No events found'], 404);
+        }
+        return response()->json($calendar);
+    }
     public function register(Request $request, User $user)
     {
     	$rules = [
