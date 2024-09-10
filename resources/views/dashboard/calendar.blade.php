@@ -35,7 +35,7 @@
                     <label>Activity Type:</label>
                     <select name="activity_type" class="form-control">
                         <option value="Farm">Farm</option>
-                        <option value="Farmer">Farm</option>
+                        <option value="Farmer">Farmer</option>
                         <option value="Meeting">Meeting</option>
                         <option value="Workshop">Workshop</option>
                     </select>
