@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 class AccountController extends Controller
 {
     public function getFarmerByReferer($referer){
-        $farmers = DB::select("select id, first_name, last_name, phone_code, phone_number,verified from users where referer = $referer");
+        $farmers = DB::select("select * from users where referer = $referer");
  
         return response()->json([
             'status' => 'success',
