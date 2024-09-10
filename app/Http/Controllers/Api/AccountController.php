@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
 use App\Models\File;
  
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -16,14 +17,21 @@ use Illuminate\Support\Facades\DB;
 
 class AccountController extends Controller
 {
-    public function getFarmerByReferer($referer){
-        $farmers = DB::select("select * from users where referer = $referer");
- 
+    public function getFarmerByReferer($referer) {
+        $farmers = User::with('role') // eager load the role
+                    ->where('referer', $referer)
+                    ->get(); // get all fields from users table
+    
         return response()->json([
             'status' => 'success',
-            'data' => $farmers
+            'data' => $farmers->map(function($farmer) {
+                $farmerData = $farmer->toArray(); 
+                $farmerData['role_title'] = Role::find($farmer->role)->title; 
+                return $farmerData;
+            })
         ]);
     }
+    
     public function changePassword(Request $request){
 
      	$rules = [
