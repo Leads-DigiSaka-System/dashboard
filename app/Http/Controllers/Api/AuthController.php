@@ -347,8 +347,6 @@ class AuthController extends Controller
             return returnNotFoundResponse('User not found with this email address');
         }
 
-        if(empty($userObj->email_verified_at))
-            return returnNotFoundResponse('Please verify your email.');
 
         $resetPasswordOtp = $userObj->generateEmailVerificationOtp();
         $userObj->email_verification_otp = $resetPasswordOtp;
