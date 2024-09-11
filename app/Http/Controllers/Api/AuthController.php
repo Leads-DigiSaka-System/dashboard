@@ -85,20 +85,23 @@ class AuthController extends Controller
     }
     public function searchUser(Request $request, $search, $role = null)
     {
-        $query = User::select('*')
+        $query = User::select('users.*', 'roles.title as role_title')
+            ->leftJoin('roles', 'users.role', '=', 'roles.id') // Adjust this join based on your table structure
             ->where(function ($query) use ($search) {
                 $query->whereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$search}%"])
                 ->orWhere('phone_number', 'LIKE', "%{$search}%");
-            })->limit(50);
+            })
+            ->limit(50);
 
         if ($role != null && $role != '') {
-            $query->where('role', $role);
+            $query->where('users.role', $role);
         }
 
         $users = $query->get();
 
         return response()->json($users);
     }
+
     public function searchEmployee($first_name, $last_name)
     {
         $query = EmployeeMasterList::select('*')
