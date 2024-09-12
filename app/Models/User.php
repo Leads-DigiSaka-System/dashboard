@@ -256,6 +256,7 @@ class User extends Authenticatable
         $json['id'] = $this->id;
         $json['full_name'] = $this->full_name;
         $json['first_name'] = $this->first_name;
+        $json['middle_name'] = $this->middle_name;
         $json['last_name'] = $this->last_name;
         $json['email'] = $this->email;
         $json['profile_image'] = $this->profile_image;

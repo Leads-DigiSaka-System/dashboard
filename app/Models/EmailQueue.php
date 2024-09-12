@@ -175,7 +175,7 @@ class EmailQueue extends Model
         }); 
     }catch (\Throwable $ex) {
             $flag = false;
-            ErrorLog::saveExceptionResponse($ex);
+            echo json_encode($ex->getMessage());
         }
 
         return $flag;
