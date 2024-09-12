@@ -159,7 +159,7 @@ class AccountController extends Controller
             $rules = [
             'first_name' => 'required',
             'last_name' => 'required',
-            'middle_name' => 'required',
+            'middle_name' => '',
             'profile_image' => '',
             'gender' => 'required',
             'dob' => 'required',
