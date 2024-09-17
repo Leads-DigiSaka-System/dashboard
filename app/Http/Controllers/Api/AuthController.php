@@ -125,6 +125,59 @@ class AuthController extends Controller
 
         return response()->json($employees);
     }
+    public function upsertCalendar(Request $request, int $id = 0)
+    {
+        if ($id > 0) {
+            $calendar = Calendar::find($id);
+            if (!$calendar) {
+                return response()->json(['message' => 'Event not found'], 404);
+            }
+
+            $rules = [
+                'title' => 'required',
+                'activity_type' => 'required',
+                'start_date' => 'required',
+                'end_date' => 'required',
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                $errorMessages = $validator->errors()->all();
+                throw new HttpResponseException(returnValidationErrorResponse($errorMessages[0]));
+            }
+
+            // Manually setting fields not coming from the request
+            $calendar->fill($request->all());
+            $calendar->updated_at = now();
+            $calendar->save();
+
+            return response()->json($calendar);
+        }
+
+        $rules = [
+            'title' => 'required',
+            'activity_type' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $errorMessages = $validator->errors()->all();
+            throw new HttpResponseException(returnValidationErrorResponse($errorMessages[0]));
+        }
+
+        // Creating a new calendar event
+        $calendar = new Calendar($request->all());
+        $calendar->created_by = auth()->user()->id;
+        $calendar->created_at = now();
+        $calendar->updated_at = now();
+        $calendar->save();
+
+        return response()->json($calendar);
+    }
+
     public function getCalendar($month = 0){
         if($month ==0 ){
             $calendar = Calendar::get();
