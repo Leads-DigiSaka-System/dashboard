@@ -8,11 +8,37 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="calendarModalLabel">Calendar</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                
             </div>
             <div class="modal-body">
-                <!-- Button to Show Add Event Modal -->
-                <div class="text-right">
-                    <button id="addEvent" class="btn btn-success mb-3">Add New Event</button>
+                <div class="d-flex justify-content-between mb-3">
+                    <!-- Legend on Left -->
+                    <div class="">
+                        <h6>Event Legend:</h6>
+                        <div class="d-flex justify-content-start align-items-center">
+                            <div class="legend-item d-flex align-items-center me-4">
+                                <div class="legend-color" style="width: 20px; height: 20px; background-color: #0d6efd; margin-right: 5px;"></div>
+                                <span>Farm (Blue)</span>
+                            </div>
+                            <div class="legend-item d-flex align-items-center me-4">
+                                <div class="legend-color" style="width: 20px; height: 20px; background-color: #6c757d; margin-right: 5px;"></div>
+                                <span>Farmer (Gray)</span>
+                            </div>
+                            <div class="legend-item d-flex align-items-center me-4">
+                                <div class="legend-color" style="width: 20px; height: 20px; background-color: #198754; margin-right: 5px;"></div>
+                                <span>Meeting (Green)</span>
+                            </div>
+                            <div class="legend-item d-flex align-items-center">
+                                <div class="legend-color" style="width: 20px; height: 20px; background-color: #ffc107; margin-right: 5px;"></div>
+                                <span>Workshop (Orange)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add New Event Button on Right -->
+                    <div class="text-right">
+                        <button id="addEvent" class="btn btn-success mb-3">Add New Event</button>
+                    </div>
                 </div>
                 <div id="calendar"></div>
             </div>
@@ -87,6 +113,8 @@
                     @method('PUT')
                     <label>Activity Type:</label>
                     <select name="activity_type" class="form-control" id="editActivityType">
+                        <option value="Farm">Farm</option>
+                        <option value="Farmer">Farmer</option>
                         <option value="Meeting">Meeting</option>
                         <option value="Workshop">Workshop</option>
                     </select>
@@ -120,7 +148,38 @@
                             right: 'dayGridMonth,timeGridWeek,timeGridDay'
                         },
                         selectable: true,
-                        events: site_url + '/events', // Fetch events from the server
+                        events: {
+                            url: site_url + '/events',
+                            failure: function() {
+                                alert('There was an error while fetching events!');
+                            },
+                            // Define colors based on the event type
+                            success: function(data) {
+                                return data.map(event => {
+                                    let eventColor;
+                                    switch (event.extendedProps.activity_type) {
+                                        case 'Farm':
+                                            eventColor = '#0d6efd'; 
+                                            break;
+                                        case 'Farmer':
+                                            eventColor = '#6c757d'; 
+                                            break;
+                                        case 'Meeting':
+                                            eventColor = '#198754'; 
+                                            break;
+                                        case 'Workshop':
+                                            eventColor =
+                                            '#ffc107';
+                                            break;
+                                    }
+                                    return {
+                                        ...event,
+                                        backgroundColor: eventColor,
+                                        borderColor: eventColor
+                                    };
+                                });
+                            }
+                        },
                         select: function(info) {
 
 

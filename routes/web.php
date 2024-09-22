@@ -131,5 +131,11 @@ Route::middleware('prevent-back-history')->group(function (){
     // JAS Profile
     Route::resource('jasProfiles', JasProfileController::class);
     Route::get('/jasProfiles/pdf/{id}', 'JasProfileController@viewJasProfilePDF')->name('jasProfiles.pdf');
+
+    // Webinars
+    Route::resource('webinars', WebinarController::class)->except(['update']);
+    Route::post('/webinars/{id}', 'WebinarController@update')->name('webinars.update');
+  
+
     
 });
