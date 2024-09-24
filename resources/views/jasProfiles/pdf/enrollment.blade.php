@@ -248,9 +248,14 @@
             <div class="form-group" style="margin-top: 70px; margin-left: 65%;width: 215px;text-align:center">
                 <div class="underline" style="width: 100%;margin-bottom: 0px;">
                     <div style="width: 100%;position: relative;">
-                        <img src="data:image/svg+xml;base64,{{ base64_encode(file_get_contents(public_path($profile->image))) }}"
-                            alt="Signature"
-                            style="width: 80%; position: absolute; bottom: 220px; margin-left: 10%; z-index: -1">
+                        @if (file_exists(public_path($profile->image)) && is_file(public_path($profile->image)))
+                            <img src="data:image/svg+xml;base64,{{ base64_encode(file_get_contents(public_path($profile->image))) }}"
+                                alt="Signature"
+                                style="width: 100%; position: absolute; top: -40px; left: 0; z-index: -1">
+                        @else
+                            <p>Image not available</p>
+                        @endif
+
                     </div>
 
                 </div><br>
