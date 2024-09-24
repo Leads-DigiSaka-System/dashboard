@@ -53,6 +53,11 @@
                            class="menu-title text-truncate" data-i18n="Kanban">JAS</span></a>
                 </li>
     
+                <li class=" nav-item {{ request()->is('webinars') || request()->is('webinars/*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" style="text-decoration: none;"
+                        href="{{ route('webinars.index') }}"><i data-feather="book"></i><span
+                           class="menu-title text-truncate" data-i18n="Kanban">Webinars</span></a>
+                </li>
                 @if (Auth::user()->role == 1 || Auth::user()->role == 0)
                     <li class=" nav-item {{ request()->is('sales') || request()->is('sales/*') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" style="text-decoration: none;"
