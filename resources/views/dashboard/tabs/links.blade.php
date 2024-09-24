@@ -163,8 +163,15 @@
                                 data-show-text="false"></div>
                         @elseif($webinar->type == 1)
                             <!-- Display Photo with Link -->
+                            @php
+                            if (Str::startsWith($webinar->image_source, ['http://', 'https://'])) {
+                                $imageUrl = $webinar->image_source;
+                            } else {
+                                $imageUrl = Storage::url($webinar->image_source);
+                            }
+                            @endphp
                             <a href="{{ $webinar->link }}" target="_blank">
-                                <img src="{{ $webinar->image_source }}" alt="Webinar Photo"
+                                <img src="{{ $imageUrl }}" alt="Webinar Photo"
                                     style="width:100%; max-height:300px; object-fit:cover;">
                             </a>
                         @endif
