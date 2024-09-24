@@ -14,6 +14,7 @@ use Auth;
 use App\Models\ErrorLog;
 use App\Models\Calendar;
 use App\Models\EmailQueue;
+use App\Models\Event;
 use App\Models\FarmOwnership;
 use App\Models\Role;
 use Illuminate\Support\Facades\DB;
@@ -177,7 +178,16 @@ class AuthController extends Controller
 
         return response()->json($calendar);
     }
+    public function delete(Request $request, $id){
+        $event = Event::find($id);
 
+        if ($event) {
+            $event->delete();
+            return response()->json(['success' => 'Event deleted successfully']);
+        } else {
+            return response()->json(['error' => 'Event not found'], 404);
+        }
+    }
     public function getCalendar($month = 0){
         if($month ==0 ){
             $calendar = Calendar::get();

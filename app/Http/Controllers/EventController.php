@@ -44,19 +44,21 @@ class EventController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    $event = Event::find($id);
+    {
+        $event = Event::find($id);
 
-    if ($event) {
-        $event->title = $request->input('title');
-        $event->start_date = $request->input('start_date');
-        $event->end_date = $request->input('end_date'); // Adjust end date
-        $event->activity_type = $request->input('activity_type');
-        $event->save();
+        if ($event) {
+            $event->title = $request->input('title');
+            $event->start_date = $request->input('start_date');
+            $event->end_date = $request->input('end_date'); // Adjust end date
+            $event->activity_type = $request->input('activity_type');
+            $event->save();
 
-        return response()->json(['success' => 'Event updated successfully']);
-    } else {
-        return response()->json(['error' => 'Event not found'], 404);
+            return response()->json(['success' => 'Event updated successfully']);
+        } else {
+            return response()->json(['error' => 'Event not found'], 404);
+        }
     }
-}
+    
+    
 }

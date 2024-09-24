@@ -84,6 +84,9 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			
 			Route::get('/calendar/{month?}', 'AuthController@getCalendar')->name('getCalendar');
 			Route::post('/calendar_upsert/{id?}', 'AuthController@upsertCalendar')->name('upsertCalendar');
+			Route::post('/calendar_delete/{id}', 'AuthController@delete');
+
+			
 			Route::get('/logout', 'AuthController@logout')->name('logout');
 			Route::post('/changePassword', 'AccountController@changePassword')->name('changePassword');
 			Route::get('/profile', 'AccountController@getProfile')->name('profile');
