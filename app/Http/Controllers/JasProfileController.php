@@ -38,6 +38,10 @@ class JasProfileController extends Controller
 
     public function viewJasProfilePDF($id)
     {
+        // Increase memory limit to avoid memory issues during PDF generation
+        ini_set('memory_limit', '512M');  // You can adjust the limit as needed
+        set_time_limit(300);  // Increase script execution time if needed
+        
         $id = decrypt($id);
 
         $profile = JasProfile::with('technician', 'farmer')->find($id);

@@ -31,6 +31,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/theme/themes/semi-dark-layout.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/theme/extensions/sweetalert2.min.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
 
     <!-- END: Theme CSS-->
 

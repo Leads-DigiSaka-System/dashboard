@@ -86,7 +86,7 @@ $(document).ready(function () {
 
     $('#start_date').flatpickr({
         enableTime: true,
-        dateFormat: "Y-m-d H:i", // Format for date and time
+        dateFormat: "Y-m-d H:i",
         time_24hr: true
     });
 

@@ -117,6 +117,7 @@ Route::middleware('prevent-back-history')->group(function (){
     Route::get('/events', 'EventController@index');
     Route::post('/events', 'EventController@store');
     Route::put('/events/{id}', 'EventController@update');
+    Route::delete('/events/{id}', 'EventController@delete');
     
     // Custom for Fetching locations \\
     Route::get('/calibrate/{level}/{code}','CalibrateLocationController@calibrate');

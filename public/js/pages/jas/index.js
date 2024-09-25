@@ -40,6 +40,7 @@ $(document).ready(function () {
         ...defaultDatatableSettings
     });
 
+    
     $(".buttons-excel").hover(function () {
         $(this).attr('title', 'Export all records');
     });
