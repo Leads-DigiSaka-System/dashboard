@@ -9,9 +9,12 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class JasProfileController extends Controller
 {
+    
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -22,11 +25,29 @@ class JasProfileController extends Controller
                 'jas_profiles.phone',
                 'jas_profiles.year',
                 'jas_profiles.area',
+                'jas_profiles.created_at', 
+                'jas_profiles.modified_at',
                 'users.full_name as technician_name'
             ])
-            ->leftJoin('users', 'jas_profiles.technician', '=', 'users.id');
-    
+                ->leftJoin('users', 'jas_profiles.technician', '=', 'users.id');
+
+                if(Auth::user()->role == 5){
+                    $jasProfiles->where('jas_profiles.technician', auth()->user()->id);
+                }
+               
+                if (!empty($request['technician'])) {
+                    $jasProfiles->where('users.full_name', 'like', '%' . $request['technician'] . '%');
+                }
+
             return DataTables::of($jasProfiles)
+                ->addColumn('created_at', function ($jasProfile) {
+                    // Format the created_at date
+                    return Carbon::parse($jasProfile->created_at)->format('M j, Y g:iA');
+                })
+                ->addColumn('modified_at', function ($jasProfile) {
+                    // Format the created_at date
+                    return Carbon::parse($jasProfile->created_at)->format('M j, Y g:iA');
+                })
                 ->addColumn('action', function ($jasProfile) {
                     return '<a href="' . route('jasProfiles.pdf', encrypt($jasProfile->id)) . '" ><i class="fas fa-eye"></i></a>';
                 })
@@ -41,7 +62,7 @@ class JasProfileController extends Controller
         // Increase memory limit to avoid memory issues during PDF generation
         ini_set('memory_limit', '512M');  // You can adjust the limit as needed
         set_time_limit(300);  // Increase script execution time if needed
-        
+
         $id = decrypt($id);
 
         $profile = JasProfile::with('technician', 'farmer')->find($id);
@@ -50,7 +71,7 @@ class JasProfileController extends Controller
         $monitoring_data = JasMonitoringData::where('jas_profile_id', $profile->id)
             ->with('activity')
             ->get();
-        
+
         $first_activity = JasActivity::where('pdf_table_no', 1)->get();
         $second_activity = JasActivity::where('pdf_table_no', 2)->get();
         // $activities = $monitoring->first()->monitoringData->first()->activity;

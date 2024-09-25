@@ -45,31 +45,33 @@
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
             <li
                 class=" nav-item {{ request()->is('/') || request()->is('production') || request()->is('cutting') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" style="text-decoration: none;" href="{{ route('dashboard.index') }}"><i
-                        data-feather="home"></i><span class="menu-title text-truncate"
-                        data-i18n="Dashboards">Dashboard</span></a>
+                <a class="d-flex align-items-center" style="text-decoration: none;"
+                    href="{{ route('dashboard.index') }}"><i data-feather="home"></i><span
+                        class="menu-title text-truncate" data-i18n="Dashboards">Dashboard</span></a>
             </li>
 
-            <li class=" nav-item {{ request()->is('farmers') || request()->is('farmers/*') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" style="text-decoration: none;"
-                    href="{{ route('farmers.index') }}"><i data-feather="user"></i><span
-                        class="menu-title text-truncate" data-i18n="Users">Farmers</span></a>
-            </li>
-            <li class=" nav-item {{ request()->is('leads') || request()->is('leads/*') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" style="text-decoration: none;" href="/leads"><i
-                        data-feather="user"></i><span class="menu-title text-truncate"
-                        data-i18n="Users">Users</span></a>
-            </li>
-            <li class=" nav-item {{ request()->is('farms') || request()->is('farms/*') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" style="text-decoration: none;"
-                    href="{{ route('farms.index') }}"><i data-feather="grid"></i><span class="menu-title text-truncate"
-                        data-i18n="Kanban">Farms</span></a>
-            </li>
-            <li class=" nav-item {{ request()->is('survey') || request()->is('survey/*') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" style="text-decoration: none;"
-                    href="{{ route('survey.index') }}"><i data-feather="book"></i><span
-                        class="menu-title text-truncate" data-i18n="Kanban">Survey</span></a>
-            </li>
+            @if (Auth::user()->role != 5)
+                <li class=" nav-item {{ request()->is('farmers') || request()->is('farmers/*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" style="text-decoration: none;"
+                        href="{{ route('farmers.index') }}"><i data-feather="user"></i><span
+                            class="menu-title text-truncate" data-i18n="Users">Farmers</span></a>
+                </li>
+                <li class=" nav-item {{ request()->is('leads') || request()->is('leads/*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" style="text-decoration: none;" href="/leads"><i
+                            data-feather="user"></i><span class="menu-title text-truncate"
+                            data-i18n="Users">Users</span></a>
+                </li>
+                <li class=" nav-item {{ request()->is('farms') || request()->is('farms/*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" style="text-decoration: none;"
+                        href="{{ route('farms.index') }}"><i data-feather="grid"></i><span
+                            class="menu-title text-truncate" data-i18n="Kanban">Farms</span></a>
+                </li>
+                <li class=" nav-item {{ request()->is('survey') || request()->is('survey/*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" style="text-decoration: none;"
+                        href="{{ route('survey.index') }}"><i data-feather="book"></i><span
+                            class="menu-title text-truncate" data-i18n="Kanban">Survey</span></a>
+                </li>
+            @endif
             {{-- <li class=" nav-item {{request()->is('questions') || request()->is('questions/*')?'active':''}}">
                 <a class="d-flex align-items-center" href="{{route('questions.index')}}"><i data-feather="book"></i><span class="menu-title text-truncate" data-i18n="Kanban">Questions</span></a>
             </li> 
@@ -79,25 +81,27 @@
             <li class=" nav-item {{request()->is('survey_set') || request()->is('survey_set/*')?'active':''}}">
                 <a class="d-flex align-items-center" href="{{route('survey_set.index')}}"><i data-feather="book"></i><span class="menu-title text-truncate" data-i18n="Kanban">Survey Set</span></a>
             </li>  --}}
+            @if (Auth::user()->role != 5)
+                <li class=" nav-item {{ request()->is('contacts') || request()->is('contacts/*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" style="text-decoration: none;"
+                        href="{{ route('contacts.index') }}"><i data-feather="book"></i><span
+                            class="menu-title text-truncate" data-i18n="Kanban">Contacts</span></a>
+                </li>
+            @endif
 
-            <li class=" nav-item {{ request()->is('contacts') || request()->is('contacts/*') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" style="text-decoration: none;"
-                    href="{{ route('contacts.index') }}"><i data-feather="book"></i><span
-                        class="menu-title text-truncate" data-i18n="Kanban">Contacts</span></a>
-            </li>
-            
             <li class=" nav-item {{ request()->is('JAS') || request()->is('JAS/*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" style="text-decoration: none;"
                     href="{{ route('jasProfiles.index') }}"><i data-feather="book"></i><span
-                       class="menu-title text-truncate" data-i18n="Kanban">JAS</span></a>
+                        class="menu-title text-truncate" data-i18n="Kanban">JAS</span></a>
             </li>
 
-            
-            <li class=" nav-item {{ request()->is('webinars') || request()->is('webinars/*') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" style="text-decoration: none;"
-                    href="{{ route('webinars.index') }}"><i data-feather="book"></i><span
-                       class="menu-title text-truncate" data-i18n="Kanban">Webinars</span></a>
-            </li>
+            @if (Auth::user()->role != 5)
+                <li class=" nav-item {{ request()->is('webinars') || request()->is('webinars/*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" style="text-decoration: none;"
+                        href="{{ route('webinars.index') }}"><i data-feather="book"></i><span
+                            class="menu-title text-truncate" data-i18n="Kanban">Webinars</span></a>
+                </li>
+            @endif
             @if (Auth::user()->role == 1 || Auth::user()->role == 0)
                 <li class=" nav-item {{ request()->is('sales') || request()->is('sales/*') ? 'active' : '' }}">
                     <a class="d-flex align-items-center" style="text-decoration: none;"
@@ -106,7 +110,7 @@
                 </li>
             @endif
 
-            
+
 
 
             <li class="nav-item" style="margin-top:50%;">
@@ -125,8 +129,13 @@
                 </div>
             </li>
         </ul>
+
     </div>
     <!-- Divider above logout button -->
 
+
+</div>
+<div>
+    {{ json_encode($userObj) }}
 </div>
 <!-- END: Main Menu -->

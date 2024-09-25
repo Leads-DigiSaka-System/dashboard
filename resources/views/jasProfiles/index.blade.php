@@ -39,8 +39,10 @@
                                     <th>Last Name</th>
                                     <th>Phone</th>
                                     <th>Year</th>
-                                    <th>Technician</th>
+                                    <th class="{{ (Auth::user()->role == 0 || Auth::user()->role == 1) ?  'filter' : '' }}">Technician</th>
                                     <th>Area</th>
+                                    <th>Created At</th>
+                                    <th>Modified At</th>
                                     <th data-orderable="false">Action</th>
                                 </tr>
                             </thead>

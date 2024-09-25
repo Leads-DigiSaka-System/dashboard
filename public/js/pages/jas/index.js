@@ -5,7 +5,7 @@ $(document).ready(function () {
             data: function (d) {
                 d.filter_column1 = $('input[name=filter_first_name]').val(); // First Name
                 d.filter_column2 = $('input[name=filter_last_name]').val(); // Last Name
-                d.filter_column5 = $('input[name=filter_technician]').val(); // Technician
+                d.technician = $('input[name=filter_technician]').val(); // Technician
             }
         },
         columns: [
@@ -16,6 +16,8 @@ $(document).ready(function () {
             { data: 'year', name: 'year' },
             { data: 'technician_name', name: 'technician_name' },
             { data: 'area', name: 'area' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'modified_at', name: 'modified_at' },
             { data: 'action', name: 'action', orderable: false, searchable: false },
         ],
         // dom: 'Bfrtip',
