@@ -25,6 +25,7 @@ class JasMonitoring extends Model
         'batch',
         'location',
         'duration',
+        'fertilizer',
     ];
 
     public function profile()
