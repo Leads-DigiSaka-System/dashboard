@@ -24,9 +24,12 @@
         <div class="row">
             <div class="col-12">
                 <div class="card data-table">
-                    <div class="card-header">
-                        <div class="heading-text">
+                    <div class="card-header d-flex">
+                        <div class="heading-text me-auto">
                             <h4 class="m-0"><i class="fas fa-users mr-2"></i>&nbsp;{{ __('JAS Profiles') }}</h4>
+                        </div>
+                        <div>
+                            <a class="btn btn-primary" href="{{route('jasProfiles.summary.pdf')}}" role="button">View Summary Report</a>
                         </div>
                     </div>
 
@@ -39,7 +42,8 @@
                                     <th>Last Name</th>
                                     <th>Phone</th>
                                     <th>Year</th>
-                                    <th class="{{ (Auth::user()->role == 0 || Auth::user()->role == 1) ?  'filter' : '' }}">Technician</th>
+                                    <th class="{{ Auth::user()->role == 0 || Auth::user()->role == 1 ? 'filter' : '' }}">
+                                        Technician</th>
                                     <th>Area</th>
                                     <th>Created At</th>
                                     <th>Modified At</th>

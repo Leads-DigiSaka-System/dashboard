@@ -116,6 +116,7 @@ Route::middleware('prevent-back-history')->group(function () {
     // JAS Profile
     Route::resource('jasProfiles', JasProfileController::class);
     Route::get('/jasProfiles/pdf/{id}', 'JasProfileController@viewJasProfilePDF')->name('jasProfiles.pdf');
+    Route::get('/jasProfiles/summary/pdf', 'JasProfileController@viewJasSummaryReportPDF')->name('jasProfiles.summary.pdf');
 
     // Calendar Routes
     Route::get('/events', 'EventController@index');

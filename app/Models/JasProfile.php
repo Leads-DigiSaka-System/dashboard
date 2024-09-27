@@ -52,4 +52,9 @@ class JasProfile extends Model
     {
         return $this->hasOne(User::class, 'id', 'technician');
     }
+
+    public function technician_profile()
+    {
+        return $this->hasOne(User::class, 'id', 'technician');
+    }
 }
