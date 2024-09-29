@@ -92,26 +92,32 @@ class JasProfileController extends Controller
 
     public function viewJasSummaryReportPDF()
     {
-        // Increase memory limit to avoid memory issues during PDF generation
-        ini_set('memory_limit', '512M');  // You can adjust the limit as needed
-        set_time_limit(300);  // Increase script execution time if needed
-
-       
+        // Increase memory limit and execution time if necessary
+        ini_set('memory_limit', '512M');
+        set_time_limit(300);
+    
+        // Fetch the profiles data
         $profiles = JasProfile::with(['monitoring', 'monitoringData', 'farmer', 'technician'])->get();
-
-        // return view('jasProfiles.pdf.summary_report', compact('profiles'));
-
+    
+        // Render the HTML view
         $html = view('jasProfiles.pdf.summary_report', compact('profiles'))->render();
-        // return $html;
-        $options = new Options();
+    
+        // Configure DOMPDF options
+        $options = new \Dompdf\Options();
         $options->set('defaultFont', 'Courier');
-        $options->set('defaultPaperMargins', array(0, 0, 0, 0));
-        $dompdf = new Dompdf($options);
+        
+        // Initialize DOMPDF instance
+        $dompdf = new \Dompdf\Dompdf($options);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $dompdf->stream('document.pdf', ['Attachment' => false]);
+    
+        // Stream the generated PDF back to the browser
+        return response($dompdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'inline; filename="summary_report.pdf"');
     }
+    
 
     public function create()
     {
