@@ -10,6 +10,9 @@ use App\Models\JasMonitoring;
 use App\Models\JasMonitoringData;
 use Illuminate\Support\Str;
 use File, DB;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 class JasController extends Controller
 {
 
@@ -311,38 +314,66 @@ class JasController extends Controller
         return response()->json($data);
     }
 
-    public function getJasProfileData($id)
-    {
-        // Use the ID directly without decryption
+    // public function getJasProfileData($id)
+    // {
+    //     // Use the ID directly without decryption
+    //     $profile = JasProfile::with('technician', 'farmer')->find($id);
+
+    //     if (!$profile) {
+    //         return response()->json(['success' => false, 'message' => 'Profile not found'], 404);
+    //     }
+
+    //     // Fetch related monitoring and monitoring data
+    //     $monitoring = $profile->monitoring;
+    //     $monitoring_data = JasMonitoringData::where('jas_profile_id', $profile->id)
+    //         ->with('activity')
+    //         ->get();
+
+    //     // Fetch the activities for the PDF
+    //     $first_activity = JasActivity::where('pdf_table_no', 1)->get();
+    //     $second_activity = JasActivity::where('pdf_table_no', 2)->get();
+
+    //     // Return the profile data along with monitoring and activities
+    //     return response()->json([
+    //         'success' => true,
+    //         'data' => [
+    //             'profile' => $profile,
+    //             'monitoring' => $monitoring,
+    //             'monitoring_data' => $monitoring_data,
+    //             'first_activity' => $first_activity,
+    //             'second_activity' => $second_activity,
+    //         ]
+    //     ]);
+    // }
+    public function getJasProfileData($id){
+        ini_set('memory_limit', '512M');  // You can adjust the limit as needed
+        set_time_limit(300);  // Increase script execution time if needed
+
         $profile = JasProfile::with('technician', 'farmer')->find($id);
 
         if (!$profile) {
             return response()->json(['success' => false, 'message' => 'Profile not found'], 404);
         }
 
-        // Fetch related monitoring and monitoring data
         $monitoring = $profile->monitoring;
         $monitoring_data = JasMonitoringData::where('jas_profile_id', $profile->id)
             ->with('activity')
             ->get();
 
-        // Fetch the activities for the PDF
         $first_activity = JasActivity::where('pdf_table_no', 1)->get();
         $second_activity = JasActivity::where('pdf_table_no', 2)->get();
 
-        // Return the profile data along with monitoring and activities
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'profile' => $profile,
-                'monitoring' => $monitoring,
-                'monitoring_data' => $monitoring_data,
-                'first_activity' => $first_activity,
-                'second_activity' => $second_activity,
-            ]
-        ]);
+        $html = view('jasProfiles.pdf.enrollment', compact('profile', 'monitoring', 'monitoring_data', 'first_activity', 'second_activity'))->render();
+        // return $html;
+        $options = new Options();
+        $options->set('defaultFont', 'Courier');
+        $options->set('defaultPaperMargins', array(0, 0, 0, 0));
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $dompdf->stream('document.pdf', ['Attachment' => false]);
     }
-
 
 
 }
