@@ -27,6 +27,7 @@ class JasMonitoringData extends Model
         'image2',
         'image3',
         'image4',
+        'others',
     ];
 
     public function profile()
