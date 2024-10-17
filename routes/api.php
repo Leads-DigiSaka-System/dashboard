@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\Image;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -140,6 +141,31 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::get('/search/{search}/{role?}', 'AuthController@searchUser')->name('searchUser');
 			Route::get('/search_employee/{first_name}/{last_name}', 'AuthController@searchEmployee')->name('searchEmployee');
 			Route::get('/search_by_area/{search}', 'AuthController@searchtps')->name('searchtps');
+
+
+			Route::post('/image/upsert/{id?}', function (Request $request, $id = null) {
+				$data = $request->all(); 
+				
+				$image = Image::updateOrCreate(
+					['id' => $id], 
+					$data
+				);
+			
+				return response()->json($image);
+			});
+
+			Route::get('/image/get/{id?}', function ($id = null) {
+				if ($id > 0) {
+					$image = Image::find($id);
+					if (!$image) {
+						return response()->json(['message' => 'Record not found'], 404);
+					}
+					return response()->json($image);
+				}
+			
+				return response()->json(Image::all());
+			});
+			
 		});
 	});
 
