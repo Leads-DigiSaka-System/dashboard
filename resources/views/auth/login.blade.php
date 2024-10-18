@@ -90,7 +90,6 @@
                                                 </span>
                                                 @if ($isNotStarted)
                                                     <br>
-                                                    <small>Starts on: {{ date('M d, Y H:i', $startDate) }}</small>
                                                 @endif
                                             </td>
                                             <td>{{ Str::limit($webinar->title, 20, '...') }}</td>
