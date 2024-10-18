@@ -98,17 +98,15 @@
                                             <td>Webinar</td>
                                             <td class="text-center">
                                                 @if ($webinar->type == 0)
-                                                    <!-- Facebook Video -->
                                                     <div id="fb-root"></div>
                                                     <script async defer crossorigin="anonymous"
                                                         src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0"></script>
-                                                    <div class="fb-video" data-href="{{ $webinar->link }}" data-width="200"
+                                                    <div class="fb-video" data-href="{{ $webinar->link }}" data-width="300"
                                                         data-show-text="false"></div>
                                                 @elseif($webinar->type == 1)
-                                                    <!-- Larger Image with Link -->
                                                     <a href="{{ $webinar->link }}" target="_blank">
                                                         <img src="{{ $imageUrl }}" alt="Webinar Photo"
-                                                            style="width: 150px; height: auto; object-fit:cover;">
+                                                            style="width: 250px; height: auto; object-fit: cover;">
                                                     </a>
                                                 @endif
                                             </td>
