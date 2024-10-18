@@ -10,7 +10,7 @@
     <div class="login_bg d-flex justify-content-center align-items-center">
         <div class="row col-lg-8 align-items-center auth-bg px-2 p-lg-5">
             <!-- Login Section -->
-            <div class="col-lg-5 px-4">
+            <div class="col-lg-5 px-4" style="margin-top: -600px;">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto px-4">
                     <h2 class="card-title fw-bold mb-1">Welcome to {{ config('app.name') }}</h2>
                     <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
