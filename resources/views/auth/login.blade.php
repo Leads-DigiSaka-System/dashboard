@@ -56,69 +56,71 @@
             <!-- Webinars Section -->
             <div class="col-lg-7">
                 <div class="tab-pane fade show" id="content13" style="padding-right: 10px;">
-                    <!-- Card for Webinars Section -->
+                    <!-- Table for Webinars Section -->
                     <div class="card rounded-3 shadow-sm">
                         <div class="card-body">
-                            <h2 class="">Webinars</h2>
-                            <div class="row">
-                                @foreach ($webinars as $webinar)
-                                    <div class="col-md-12 col-lg-6 mb-3">
-                                        <div class="card rounded-3 shadow-sm">
-                                            <div class="card-body">
-                                                <div class="webinar-status">
-                                                    @if ($webinar->status == 2)
-                                                        @php
-                                                            $startDate = strtotime($webinar->start_date);
-                                                            $currentDate = time();
-                                                        @endphp
-                                                        @if ($startDate > $currentDate)
-                                                            <span class="not-started">Not Started</span>
-                                                            <br>
-                                                            <small>Starts on: {{ date('M d, Y H:i', $startDate) }}</small>
-                                                        @else
-                                                            <span class="active-now">Active</span>
-                                                        @endif
-                                                    @elseif ($webinar->status == 1)
-                                                        <span class="active-now">Active</span>
-                                                    @elseif ($webinar->status == 0)
-                                                        <span class="finished">Finished</span>
-                                                    @endif
-                                                </div>
-                                                <h3 class="webinar-title">
-                                                    {{ Str::limit($webinar->title, 20, '...') }}
-                                                </h3>
-
-                                                <!-- Conditionally display video or photo based on $webinar->type -->
+                            <h2>Webinars</h2>
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th>Title</th>
+                                        <th>Starts On</th>
+                                        <th>Type</th>
+                                        <th>Preview</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($webinars as $webinar)
+                                        @php
+                                            $startDate = strtotime($webinar->start_date);
+                                            $currentDate = time();
+                                            $isNotStarted = $webinar->status == 2 && $startDate > $currentDate;
+                                            $isActive = $webinar->status == 1 || ($webinar->status == 2 && !$isNotStarted);
+                                            $isFinished = $webinar->status == 0;
+                                            $statusLabel = $isNotStarted ? 'Not Started' : ($isActive ? 'Active' : 'Finished');
+                                            $imageUrl = Str::startsWith($webinar->image_source, ['http://', 'https://'])
+                                                        ? $webinar->image_source
+                                                        : Storage::url($webinar->image_source);
+                                        @endphp
+                                        <tr>
+                                            <td>
+                                                <span class="{{ $isNotStarted ? 'text-warning' : ($isActive ? 'text-success' : 'text-muted') }}">
+                                                    {{ $statusLabel }}
+                                                </span>
+                                                @if ($isNotStarted)
+                                                    <br>
+                                                    <small>Starts on: {{ date('M d, Y H:i', $startDate) }}</small>
+                                                @endif
+                                            </td>
+                                            <td>{{ Str::limit($webinar->title, 20, '...') }}</td>
+                                            <td>{{ $isNotStarted ? date('M d, Y H:i', $startDate) : '-' }}</td>
+                                            <td>{{ $webinar->type == 0 ? 'Video' : 'Photo' }}</td>
+                                            <td class="text-center">
                                                 @if ($webinar->type == 0)
-                                                    <!-- Display Facebook Video -->
+                                                    <!-- Facebook Video -->
                                                     <div id="fb-root"></div>
-                                                    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0">
-                                                    </script>
-                                                    <div class="fb-video" data-href="{{ $webinar->link }}" data-width="250"
+                                                    <script async defer crossorigin="anonymous"
+                                                        src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0"></script>
+                                                    <div class="fb-video" data-href="{{ $webinar->link }}" data-width="120"
                                                         data-show-text="false"></div>
                                                 @elseif($webinar->type == 1)
-                                                    <!-- Display Photo with Link -->
-                                                    @php
-                                                    if (Str::startsWith($webinar->image_source, ['http://', 'https://'])) {
-                                                        $imageUrl = $webinar->image_source;
-                                                    } else {
-                                                        $imageUrl = Storage::url($webinar->image_source);
-                                                    }
-                                                    @endphp
+                                                    <!-- Small Image with Link -->
                                                     <a href="{{ $webinar->link }}" target="_blank">
                                                         <img src="{{ $imageUrl }}" alt="Webinar Photo"
-                                                            style="width:100%; max-height:300px; object-fit:cover;">
+                                                            style="width: 100px; height: 50px; object-fit:cover;">
                                                     </a>
                                                 @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
+            
 
         </div>
     </div>
