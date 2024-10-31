@@ -1,5 +1,5 @@
 $(document).on('click', '.delete-datatable-record', function(e){
-    let url  = site_url + "/leads/" + $(this).attr('data-id');
+    let url  = site_url + "/farmers/" + $(this).attr('data-id');
     let tableId = 'farmersTable';
     deleteDataTableRecord(url, tableId);
 });
