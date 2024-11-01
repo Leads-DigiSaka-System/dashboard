@@ -14,9 +14,9 @@
 	                <ol class="breadcrumb">
 	                    <li class="breadcrumb-item"><a href="{{route('user.home')}}">Home</a>
 	                    </li>
-	                    <li class="breadcrumb-item"><a href="{{route('questions.index')}}">Questionnaires</a>
+	                    <li class="breadcrumb-item"><a href="{{route('survey.index')}}">Survey</a>
 	                    </li>
-	                    <li class="breadcrumb-item active">Create New Questionnaire
+	                    <li class="breadcrumb-item active">Edit Questionnaire
 	                    </li>
 	                </ol>
 	            </div>
@@ -33,7 +33,7 @@
 					<div class="card data-table">
 						<div class="card-header">
 						  <div class="heading-text">
-						    <h4 class="m-0"><i class="fas fa-plus mr-2"></i>&nbsp;{{ __('Create New Questionnaire') }}</h4>
+						    <h4 class="m-0"><i class="fas fa-plus mr-2"></i>&nbsp;{{ __('Edit Questionnaire') }}</h4>
 						  </div>
 						</div>
 						<!-- /.card-header -->
