@@ -131,7 +131,7 @@
 									</div>
 								</div>
 
-								@@if(isset($survey_set['questionnaire_data']->questionnaire_ids) && is_array($survey_set['questionnaire_data']->questionnaire_ids))
+								@if(isset($survey_set['questionnaire_data']->questionnaire_ids) && is_array($survey_set['questionnaire_data']->questionnaire_ids))
 								@foreach($survey_set['questionnaire_data']->questionnaire_ids as $questionnaire_id)
 									<div class="row mb-1 {{ !$loop->first ? 'additional_option' : '' }}">
 										<div class="col-sm-12">
