@@ -265,7 +265,7 @@ class SurveySetController extends Controller
 
             $survey_version = SurveyVersion::where('survey_set_id',$decrypt_id)->orderBy('version','DESC')->first();
 
-            $saved_questionnaire_data = json_decode($survey_version->questionnaire_data);
+            $saved_questionnaire_data = $survey_version ? json_decode($survey_version->questionnaire_data) : null;
 
             if(count($saved_questionnaire_data->questionnaire_ids) != count($questionnaires)) {
                 SurveyVersion::create([
