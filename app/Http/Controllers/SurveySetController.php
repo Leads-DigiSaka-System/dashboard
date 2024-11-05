@@ -267,7 +267,7 @@ class SurveySetController extends Controller
 
             $saved_questionnaire_data = $survey_version ? json_decode($survey_version->questionnaire_data) : null;
 
-            if(count($saved_questionnaire_data->questionnaire_ids) != count($questionnaires)) {
+            if ($saved_questionnaire_data && is_array($saved_questionnaire_data->questionnaire_ids) && count($saved_questionnaire_data->questionnaire_ids) != count($questionnaires)) {
                 SurveyVersion::create([
                     'survey_set_id' => $decrypt_id,
                     'questionnaire_data' => json_encode(['questionnaire_ids' => $questionnaires]),
