@@ -159,7 +159,7 @@ class SurveySetController extends Controller
         $data = [
             'title' => $survey_set->title,
             'description' => $survey_set->description,
-            'questionnaire_data' => json_decode($survey_set->questionnaire_data),
+            'questionnaire_data' => json_decode($survey_set->questionnaire_data) ?? [],
             'status' => $survey_set->status,
             'farm_categ' => $survey_set->farm_categ,
             'expiry_date' => $survey_set->expiry_date
