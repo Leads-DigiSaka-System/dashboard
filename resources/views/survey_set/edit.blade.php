@@ -131,41 +131,45 @@
 									</div>
 								</div>
 
-								@foreach($survey_set['questionnaire_data']->questionnaire_ids as  $questionnaire_id)
-									<div class="row mb-1 {{ !$loop->first ? 'additional_option' :'' }}">
+								@@if(isset($survey_set['questionnaire_data']->questionnaire_ids) && is_array($survey_set['questionnaire_data']->questionnaire_ids))
+								@foreach($survey_set['questionnaire_data']->questionnaire_ids as $questionnaire_id)
+									<div class="row mb-1 {{ !$loop->first ? 'additional_option' : '' }}">
 										<div class="col-sm-12">
 											<div class="form-group">
-												<label 
-												for="questionnaires" 
-												class="fs-5 fw-bold ">
+												<label for="questionnaires" class="fs-5 fw-bold ">
 													Question *
 												</label>
 												@if(!$loop->first)
 													<i class="float-end fas fa-times mr-2 remove_btn text-danger fs-3"></i>
 												@endif
 												<select 
-												class="form-select rounded-0 {{ $errors->has('questionnaires') ? ' is-invalid' : '' }}" 
-												name="questionnaires[]" 
-												id="questionnaires" 
-												aria-label="Default select example">
+													class="form-select rounded-0 {{ $errors->has('questionnaires') ? ' is-invalid' : '' }}" 
+													name="questionnaires[]" 
+													id="questionnaires" 
+													aria-label="Default select example">
 													<option selected disabled>Select Questionnaire</option>
 													@foreach($questionnaires as $questionnaire)
-														<option value="{{ $questionnaire['id'] }}" {{ $questionnaire['id'] == $questionnaire_id ? 'selected' :'' }}>{{ $questionnaire['title'] }}</option>
+														<option value="{{ $questionnaire['id'] }}" {{ $questionnaire['id'] == $questionnaire_id ? 'selected' : '' }}>
+															{{ $questionnaire['title'] }}
+														</option>
 													@endforeach
 												</select>
-
+							
 												@if($loop->first)
 													@if ($errors->has('questions'))
-				                                        <span class="invalid-feedback" role="alert">
-				                                            <strong>{{ $errors->first('questions') }}</strong>
-				                                        </span>
-				                                    @endif
-				                                @endif
+														<span class="invalid-feedback" role="alert">
+															<strong>{{ $errors->first('questions') }}</strong>
+														</span>
+													@endif
+												@endif
 											</div>
-										    
 										</div>
 									</div>
 								@endforeach
+							@else
+								<p>No questionnaires available.</p>
+							@endif
+							
 								
 							
 						</div>
