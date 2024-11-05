@@ -14,7 +14,7 @@
 	                <ol class="breadcrumb">
 	                    <li class="breadcrumb-item"><a href="{{route('user.home')}}">Home</a>
 	                    </li>
-	                    <li class="breadcrumb-item"><a href="{{route('survey_set.index')}}">Survey Set</a>
+	                    <li class="breadcrumb-item"><a href="{{route('survey.index')}}">Survey</a>
 	                    </li>
 	                </ol>
 	            </div>

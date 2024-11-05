@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Auth;
 
 use App\Models\SurveySet;
+use App\Models\SurveyVersion;
 use App\Models\Questionnaire;
 use App\Models\Question;
 class SurveyController extends Controller
@@ -201,12 +202,14 @@ class SurveyController extends Controller
 		
         $decrypt_id = decrypt($id);
 
-        $survey_set = SurveySet::find($decrypt_id);
+        $survey_set = SurveySet::where('id',$decrypt_id)->where('is_deleted',0)->first();
         
         $survey = array();
+        
 
         if(!empty($survey_set)) {
-        	$decoded_questionnare_ids = json_decode($survey_set->questionnaire_data);
+        	$survey_version = SurveyVersion::where('survey_set_id',$decrypt_id)->orderBy('version','DESC')->first();
+        	$decoded_questionnare_ids = json_decode($survey_version->questionnaire_data);
         	$questionnaires = array();
         	foreach($decoded_questionnare_ids->questionnaire_ids as $questionnaire_id) {
         		$questionnaire = Questionnaire::find($questionnaire_id);
@@ -301,13 +304,15 @@ class SurveyController extends Controller
 
     public function getSurveySetByCateg($id) {
 
-    	$survey_sets = SurveySet::where('farm_categ',$id)->get();
+    	$survey_sets = SurveySet::where('farm_categ',$id)->where('is_deleted',0)->get();
 
     	$surveys = array();
+    	
     	if(!$survey_sets->isEmpty()) {
+    		$survey_version = SurveyVersion::where('survey_set_id',$id)->orderBy('version','DESC')->first();
     		foreach($survey_sets as $survey_set) {
 
-	        	$decoded_questionnare_ids = json_decode($survey_set->questionnaire_data);
+	        	$decoded_questionnare_ids = json_decode($survey_version->questionnaire_data);
 	        	$questionnaires = array();
 	        	foreach($decoded_questionnare_ids->questionnaire_ids as $questionnaire_id) {
 	        		$questionnaire = Questionnaire::find($questionnaire_id);

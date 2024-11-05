@@ -45,7 +45,7 @@ class SurveyController extends Controller
     public function index(Request $request, Survey $survey)
     {
         if ($request->ajax()) {
-            $surveys = $survey->getAllSurvey($request);
+            $surveys = $survey->getAllSurvey($request, false, 1);
             $search = $request['search']['value'];
 
             $totalSurvey = Survey::count();
@@ -53,7 +53,7 @@ class SurveyController extends Controller
             $setFilteredRecords = $totalSurvey;
 
             if (! empty($search)) {
-                $setFilteredRecords = $survey->getAllSurvey($request, true);
+                $setFilteredRecords = $survey->getAllSurvey($request, true, 1);
                 if(empty($setFilteredRecords))
                     $totalSurvey = 0;
             }
@@ -116,7 +116,8 @@ class SurveyController extends Controller
             $survey_data=json_decode($surveyObj->survey_data);
             if(!empty($survey_data))
             {
-            $questions=json_decode($survey_data->surveyResponse);
+             $questions = json_decode($survey_data->surveyResponse);
+            //  $questions = $survey_data;
            
             }
             
@@ -128,6 +129,7 @@ class SurveyController extends Controller
                 return redirect()->back()->with('error', "Invalid-request");
             }
             return redirect()->back()->with('error', "Something went wrong. Please try again later.");
+            // die($ex);
         }
     }
 

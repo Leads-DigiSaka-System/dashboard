@@ -55,7 +55,7 @@ class SurveySet extends Model
         if(empty($column)){
             $column = 'id';
         }
-        $query = self::orderBy($column, $order);
+        $query = self::where('is_deleted',0)->orderBy($column, $order);
 
         if(!empty($request)){
 

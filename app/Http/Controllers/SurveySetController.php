@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\Questionnaire;
 use App\Models\SurveySet;
+use App\Models\SurveyVersion;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -117,7 +118,7 @@ class SurveySetController extends Controller
     {
         //dd($request->all());
         $validated = $request->validate([
-            'title' => 'required|string|unique:survey_set',
+            'title' => 'required|string',
             'description' => 'required|string',
             'questionnaires' => 'required|array',
             'farm_categ' => 'required',
@@ -131,15 +132,32 @@ class SurveySetController extends Controller
 
         DB::beginTransaction();
         try{
-            SurveySet::create([
-                'title' => $request->title,
-                'slug' => Str::slug($request->title,'-'),
-                'description' => $request->description,
+            $survey_set = new SurveySet;
+            $survey_set->title = $request->title;
+            $survey_set->slug = Str::slug($request->title,'-');
+            $survey_set->description = $request->description;
+            //$survey_set->questionnaire_data = json_encode(['questionnaire_ids' => $questionnaires]);
+            $survey_set->farm_categ = $request->farm_categ;
+            $survey_set->expiry_date = !empty($request->expiry_date) ? $request->expiry_date : Carbon::now()->addMonth();
+            $survey_set->status = 1;
+            $survey_set->save();
+            $survey_set_id = $survey_set->id;
+
+            SurveyVersion::create([
+                'survey_set_id' => $survey_set_id,
                 'questionnaire_data' => json_encode(['questionnaire_ids' => $questionnaires]),
-                'farm_categ' => $request->farm_categ,
-                'expiry_date' => !empty($request->expiry_date) ? $request->expiry_date : Carbon::now()->addMonth(),
-                'status' => 1
+                'version' => 1,
             ]);
+
+            // SurveySet::create([
+            //     'title' => $request->title,
+            //     'slug' => Str::slug($request->title,'-'),
+            //     'description' => $request->description,
+            //     'questionnaire_data' => json_encode(['questionnaire_ids' => $questionnaires]),
+            //     'farm_categ' => $request->farm_categ,
+            //     'expiry_date' => !empty($request->expiry_date) ? $request->expiry_date : Carbon::now()->addMonth(),
+            //     'status' => 1
+            // ]);
 
             DB::commit();
             return redirect()->route("survey.index")->with('success', 'Survey Set created successfully.');
@@ -153,13 +171,15 @@ class SurveySetController extends Controller
     {
         $decrypt_id = decrypt($id);
 
+        $survey_version = SurveyVersion::where('survey_set_id',$decrypt_id)->orderBy('version','DESC')->first();
+
         $survey_set = SurveySet::find($decrypt_id);
 
         
         $data = [
             'title' => $survey_set->title,
             'description' => $survey_set->description,
-            'questionnaire_data' => json_decode($survey_set->questionnaire_data) ?? [],
+            'questionnaire_data' => json_decode($survey_version->questionnaire_data),
             'status' => $survey_set->status,
             'farm_categ' => $survey_set->farm_categ,
             'expiry_date' => $survey_set->expiry_date
@@ -233,13 +253,26 @@ class SurveySetController extends Controller
             $survey_set->title = $request->title;
             $survey_set->slug = Str::slug($request->title,'-');
             $survey_set->description = $request->description;
-            $survey_set->questionnaire_data = json_encode(['questionnaire_ids' => $questionnaires]);
+            //$survey_set->questionnaire_data = json_encode(['questionnaire_ids' => $questionnaires]);
             if(!empty($request->expiry_date)) {
                 $survey_set->expiry_date = $request->expiry_date;
             }
             $survey_set->farm_categ = $request->farm_categ;
             $survey_set->status = 1;
             $survey_set->save();
+
+
+            $survey_version = SurveyVersion::where('survey_set_id',$decrypt_id)->orderBy('version','DESC')->first();
+
+            $saved_questionnaire_data = json_decode($survey_version->questionnaire_data);
+
+            if(count($saved_questionnaire_data->questionnaire_ids) != count($questionnaires)) {
+                SurveyVersion::create([
+                    'survey_set_id' => $decrypt_id,
+                    'questionnaire_data' => json_encode(['questionnaire_ids' => $questionnaires]),
+                    'version' => $survey_version->version + 1,
+                ]);
+            }
 
             DB::commit();
             return redirect()->route("survey.index")->with('success', 'Survey Set updated successfully.');
@@ -259,7 +292,9 @@ class SurveySetController extends Controller
             return returnNotFoundResponse('This Survey Set does not exist');
         }
 
-        $hasDeleted = $survey_set->delete();
+        $survey_set->is_deleted = 1;
+        $hasDeleted = $survey_set->save();
+
         if ($hasDeleted) {
             return returnSuccessResponse('Survey Set deleted successfully');
         }
