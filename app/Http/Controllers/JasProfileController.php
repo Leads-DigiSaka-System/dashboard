@@ -72,20 +72,20 @@ class JasProfileController extends Controller
             ->with('activity')
             ->get();
 
-        $first_activity = JasActivity::where('pdf_table_no', 1)->get();
+        $first_activity = JasActivity::where('pdf_table_no', 1)->where('active',1)->get();
         $second_activity = JasActivity::where('pdf_table_no', 2)->get();
         // $activities = $monitoring->first()->monitoringData->first()->activity;
 
-        // return $profile;
 
-        $html = view('jasProfiles.pdf.enrollment', compact('profile', 'monitoring', 'monitoring_data', 'first_activity', 'second_activity'))->render();
+        // return $profile;
+        $html = view('jasProfiles.pdf.monitoring_new', compact('profile', 'monitoring', 'monitoring_data', 'first_activity', 'second_activity'))->render();
         // return $html;
         $options = new Options();
         $options->set('defaultFont', 'Courier');
         $options->set('defaultPaperMargins', array(0, 0, 0, 0));
         $dompdf = new Dompdf($options);
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
         $dompdf->stream('document.pdf', ['Attachment' => false]);
     }

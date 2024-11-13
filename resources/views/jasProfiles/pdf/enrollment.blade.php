@@ -147,7 +147,7 @@
         }
 
         .form-info {
-            width: 85%;
+            width: 90%;
         }
 
         table.form-activity tbody>tr>td:first-child {
@@ -325,20 +325,32 @@
                 <thead style="font-size: 12px;font-weight: bold;">
                     <tr>
                         <th>PRODUCT</th>
-                        <th>PEST/DESEASE</th>
+                        <th>PEST/DISEASE</th>
                         <th>RATE 16LI/WATER</th>
+                        <th>FERTILIZER</th>
                         <th>TIMING OF APPLICATION</th>
                     </tr>
                 </thead>
                 <tbody class="small-padding">
-                    @foreach ($monitoring as $m)
+                    @if($monitoring->isEmpty())
                         <tr>
-                            <td>{{ $m->product }}</td>
-                            <td>{{ $m->pest_disease }}</td>
-                            <td>{{ $m->rate_water }}</td>
-                            <td>{{ $m->timing }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($monitoring as $m)
+                            <tr>
+                                <td>{{ $m->product }}</td>
+                                <td>{{ $m->pest_disease }}</td>
+                                <td>{{ $m->rate_water }}</td>
+                                <td>{{ $m->fertilizer }}</td>
+                                <td>{{ $m->timing }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -399,8 +411,12 @@
                 <td>{{ $profile->location }}</td>
             </tr>
             <tr>
-                <th>Date Duration:</th>
+                <th>Duration:</th>
                 <td>{{ $profile->duration }}</td>
+            </tr>
+            <tr>
+                <th>Jackpot Batch No.:</th>
+                <td>{{ $profile->batch }}</td>
             </tr>
         </table>
 
@@ -408,6 +424,7 @@
             <thead>
                 <tr>
                     <th>Activity</th>
+                    <th>Date</th>
                     <th>Timing</th>
                     <th>Remarks</th>
                     <th>Observation</th>
@@ -421,6 +438,7 @@
                     @endphp
                     <tr>
                         <td>{{ $a->title }}</td>
+                        <td>{{ $activity->timing ?? '' }}</td>
                         <td>{{ $activity->timing ?? '' }}</td>
                         <td>{{ $activity->remarks ?? '' }}</td>
                         <td>{{ $activity->observation ?? '' }}</td>
