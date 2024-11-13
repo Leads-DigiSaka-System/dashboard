@@ -216,7 +216,10 @@ class AuthController extends Controller
             'password' => 'required',
             'fcm_token' => 'nullable',
             'via_app' => 'nullable',
-            'referer' => ''
+            'referer' => '',
+            'varieties_planted' => 'nullable',
+            'method' => 'nullable',
+            'association' => 'nullable',
         ];
 
         $validator = Validator::make($request->all(), $rules);
