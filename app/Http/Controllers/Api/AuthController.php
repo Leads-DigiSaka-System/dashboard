@@ -333,7 +333,8 @@ class AuthController extends Controller
             'phone_code' => 'required',
             'phone_number'=>'required',
             'password' => 'required',
-            'fcm_token' => 'required'
+            'fcm_token' => 'required',
+            'email' => 'nullable'
 
         ];
 
@@ -344,10 +345,14 @@ class AuthController extends Controller
         }
 
         $inputArr = $request->all();
-
-        $userObj = User::where('phone_code',$inputArr['phone_code'])
-                    ->where('phone_number',$inputArr['phone_number'])
+        if(isset($inputArr['email'])){
+            $userObj = User::where('email',$inputArr['email'])
                     ->first();
+        }else{
+            $userObj = User::where('phone_code',$inputArr['phone_code'])
+                        ->where('phone_number',$inputArr['phone_number'])
+                        ->first();
+        }
         if(empty($userObj))
             return returnNotFoundResponse('Farmer Not found.');
 
