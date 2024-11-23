@@ -79,6 +79,13 @@
                 </li>
             @endif
 
+            @if (Auth::user()->role == 1 || Auth::user()->role == 0)
+                <li class=" nav-item {{ request()->is('analytics') || request()->is('analytics/*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" style="text-decoration: none;"
+                        href="{{ route('analytics.index') }}"><i data-feather="bar-chart"></i><span
+                            class="menu-title text-truncate" data-i18n="Kanban">Analytics</span></a>
+                </li>
+            @endif
         </ul>
     </div>
 </div>

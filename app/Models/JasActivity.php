@@ -12,5 +12,8 @@ class JasActivity extends Model
 
     public $timestamps = false;
 
-    
+    public function monitoringData()
+    {
+        return $this->hasMany(JasMonitoringData::class, 'activity_id','activity_id');
+    }
 }

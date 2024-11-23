@@ -54,7 +54,7 @@
         <!-- BEGIN: Custom CSS-->
         <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css?v=1.1') }}">
         <!-- END: Custom CSS-->
-
+        @yield('header_scripts')
     </head>
     <!-- END: Head-->
 
