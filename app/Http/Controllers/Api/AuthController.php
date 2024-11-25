@@ -461,12 +461,18 @@ class AuthController extends Controller
 
         $userObj = EmailOtp::where('email', $inputArr['email'])
                         ->first();
+
+                        
+        $resetPasswordOtp = $userObj->generateEmailVerificationOtp();
+        
         if (!$userObj) {
-            return returnNotFoundResponse('User not found with this email address');
+            $userObj = new EmailOtp();
+            $userObj->email = $inputArr['email'];
+            $userObj->otp = $resetPasswordOtp;
+
         }
 
 
-        $resetPasswordOtp = $userObj->generateEmailVerificationOtp();
         $userObj->otp = $resetPasswordOtp;
         $userObj->save();
 
