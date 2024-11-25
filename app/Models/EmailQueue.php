@@ -169,7 +169,7 @@ class EmailQueue extends Model
         $flag = false;
         try {
             Mail::send($viewName, $param, function ($m) use ($toEmail,$subject) {
-            $m->from(env('MAIL_FROM_ADDRESS','test52352@gmail.com'), env('MAIL_FROM_NAME','Safe Exam'));
+            $m->from(env('MAIL_FROM_ADDRESS','test52352@gmail.com'), env('MAIL_FROM_NAME','DigiSaka'));
             $m->to($toEmail)->subject($subject);
             $flag = true;
         }); 
