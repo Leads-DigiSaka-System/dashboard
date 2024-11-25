@@ -463,8 +463,8 @@ class AuthController extends Controller
                         ->first();
 
                         
-        $resetPasswordOtp = $userObj->generateEmailVerificationOtp();
-        
+        $resetPasswordOtp = User::generateEmailVerificationOtp();
+
         if (!$userObj) {
             $userObj = new EmailOtp();
             $userObj->email = $inputArr['email'];
