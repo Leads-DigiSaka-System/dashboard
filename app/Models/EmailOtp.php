@@ -9,6 +9,9 @@ class EmailOtp extends Model
 {
     protected $table = 'email_otp';
     use HasFactory;
-
+    protected $fillable = [
+        'email',  
+        'otp',
+    ];
     public $timestamps = false;
 }
