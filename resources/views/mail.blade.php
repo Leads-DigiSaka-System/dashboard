@@ -1,5 +1,5 @@
 Hello <b>{{ $name }}</b>,
 <p>{{$body}}</p>
 
-Thanks
+Thanks,
 DigiSaka
