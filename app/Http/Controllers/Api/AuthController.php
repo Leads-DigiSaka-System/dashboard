@@ -506,7 +506,7 @@ class AuthController extends Controller
         $userObj->verified = 1;
         $userObj->save();
 
-        return returnSuccessResponse('Otp verified successfully', $userObj->jsonResponse());
+        return returnSuccessResponse('Otp verified successfully');
     }
     public function resetPassword(Request $request, User $user)
     {
