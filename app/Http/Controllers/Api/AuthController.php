@@ -478,8 +478,7 @@ class AuthController extends Controller
                 'body' => "Your Email OTP is: $otp",
             ],
         ]);
-
-        return returnSuccessResponse('Reset password OTP sent successfully', $userObj->jsonResponse());
+        return returnSuccessResponse('Reset password OTP sent successfully', ['otp' => $otp]);
     }
 
 
