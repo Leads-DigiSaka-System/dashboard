@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\EmailOtp;
 use App\Models\EmployeeMasterList;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Validator;
@@ -441,7 +442,74 @@ class AuthController extends Controller
         return returnSuccessResponse('Reset password OTP sent successfully', $userObj->jsonResponse());
     }
 
+    public function emailOtp(Request $request, User $user)
+    {
+        $rules = [
+            'email' => 'required',
+        ];
 
+        $messages = [
+            'email.required' => 'Please enter email address.'
+        ];
+
+        $inputArr = $request->all();
+        $validator = Validator::make($inputArr, $rules, $messages);
+        if ($validator->fails()) {
+            $errorMessages = $validator->errors()->all();
+            throw new HttpResponseException(returnValidationErrorResponse($errorMessages[0]));
+        }
+
+        $userObj = EmailOtp::where('email', $inputArr['email'])
+                        ->first();
+        if (!$userObj) {
+            return returnNotFoundResponse('User not found with this email address');
+        }
+
+
+        $resetPasswordOtp = $userObj->generateEmailVerificationOtp();
+        $userObj->otp = $resetPasswordOtp;
+        $userObj->save();
+
+          EmailQueue::add([
+            'to' => $inputArr['email'],
+            'subject' => "SignUp OTP",
+            'view' => 'mail',
+            'type'=>0,
+            'viewArgs' => [
+                'name' => $userObj->full_name,
+                'body' => "Your Email OTP is: ".$userObj->email_verification_otp
+            ]
+        ]);
+
+        return returnSuccessResponse('Reset password OTP sent successfully', $userObj->jsonResponse());
+    }
+
+    public function verifyEmailOtp(Request $request)
+    {
+        $rules = [
+            'email' => 'required',
+            'otp' => 'required'
+        ];
+
+        $inputArr = $request->all();
+        $validator = Validator::make($inputArr, $rules);
+        if ($validator->fails()) {
+            $errorMessages = $validator->errors()->all();
+            throw new HttpResponseException(returnValidationErrorResponse($errorMessages[0]));
+        }
+
+        $userObj = EmailOtp::where('email', $inputArr['email'])
+                        ->where('otp', $inputArr['otp'])
+                        ->first();
+        if (!$userObj) {
+            return returnNotFoundResponse('Invalid OTP');
+        }
+
+        $userObj->verified = 1;
+        $userObj->save();
+
+        return returnSuccessResponse('Otp verified successfully', $userObj->jsonResponse());
+    }
     public function resetPassword(Request $request, User $user)
     {
 
