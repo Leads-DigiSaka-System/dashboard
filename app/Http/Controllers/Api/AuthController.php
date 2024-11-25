@@ -12,6 +12,7 @@ use Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Auth;
+use Illuminate\Support\Str;
 use App\Models\ErrorLog;
 use App\Models\Calendar;
 use App\Models\EmailQueue;
@@ -445,50 +446,42 @@ class AuthController extends Controller
     public function emailOtp(Request $request, User $user)
     {
         $rules = [
-            'email' => 'required',
+            'email' => 'required|email',
         ];
 
         $messages = [
-            'email.required' => 'Please enter email address.'
+            'email.required' => 'Please enter an email address.',
+            'email.email' => 'Please enter a valid email address.',
         ];
 
-        $inputArr = $request->all();
-        $validator = Validator::make($inputArr, $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
+
         if ($validator->fails()) {
             $errorMessages = $validator->errors()->all();
             throw new HttpResponseException(returnValidationErrorResponse($errorMessages[0]));
         }
 
-        $userObj = EmailOtp::where('email', $inputArr['email'])
-                        ->first();
+        $email = $request->input('email');
+        $otp = Str::random(6);
 
-                        
-        $resetPasswordOtp = User::generateEmailVerificationOtp();
-
-        if (!$userObj) {
-            $userObj = new EmailOtp();
-            $userObj->email = $inputArr['email'];
-            $userObj->otp = $resetPasswordOtp;
-
-        }
-
-
-        $userObj->otp = $resetPasswordOtp;
+        $userObj = EmailOtp::firstOrNew(['email' => $email]);
+        $userObj->otp = $otp;
         $userObj->save();
 
-          EmailQueue::add([
-            'to' => $inputArr['email'],
+        EmailQueue::add([
+            'to' => $email,
             'subject' => "SignUp OTP",
             'view' => 'mail',
-            'type'=>0,
+            'type' => 0,
             'viewArgs' => [
-                'name' => $userObj->full_name,
-                'body' => "Your Email OTP is: ".$userObj->email_verification_otp
-            ]
+                'name' => $userObj->full_name ?? 'User', // Ensure a fallback if full_name is not set
+                'body' => "Your Email OTP is: $otp",
+            ],
         ]);
 
         return returnSuccessResponse('Reset password OTP sent successfully', $userObj->jsonResponse());
     }
+
 
     public function verifyEmailOtp(Request $request)
     {
