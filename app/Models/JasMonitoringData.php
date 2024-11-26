@@ -37,7 +37,7 @@ class JasMonitoringData extends Model
 
     public function activity()
     {
-        return $this->hasOne(JasActivity::class, 'activity_id');
+        return $this->hasOne(JasActivity::class, 'activity_id','activity_id');
     }
 
 }

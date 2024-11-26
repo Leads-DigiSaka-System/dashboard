@@ -60,10 +60,9 @@
         </div>
     </section>
 
-
+    @include('jasProfiles.modal')
     @push('page_script')
         @include('include.dataTableScripts')
-
         <script src="{{ asset('js/pages/jas/index.js') }}"></script>
     @endpush
 @endsection

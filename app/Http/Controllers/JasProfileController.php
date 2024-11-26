@@ -49,7 +49,16 @@ class JasProfileController extends Controller
                     return Carbon::parse($jasProfile->created_at)->format('M j, Y g:iA');
                 })
                 ->addColumn('action', function ($jasProfile) {
-                    return '<a href="' . route('jasProfiles.pdf', encrypt($jasProfile->id)) . '" ><i class="fas fa-eye"></i></a>';
+                    $buttons = "";
+                    $buttons .=  '<a href="' . route('jasProfiles.pdf', encrypt($jasProfile->id)) . '" ><i class="fas fa-eye"></i></a>';
+
+                    if(!$jasProfile->monitoringData->isEmpty()) {
+                        $buttons .=' | 
+                        <a data-bs-toggle="modal" data-bs-target="#exampleModal" data-id="'.encrypt($jasProfile->id).'" class="viewImageBtn">
+                        <i class="fas fa-images"></i></a>
+                        ';
+                    }
+                    return $buttons;
                 })
                 ->addIndexColumn()
                 ->make(true);
@@ -118,7 +127,30 @@ class JasProfileController extends Controller
             ->header('Content-Disposition', 'inline; filename="summary_report.pdf"');
     }
     
+    public function getMonitoringImages(Request $request) {
+        $id = decrypt($request->id);
 
+        $array = JasMonitoringData::where('jas_profile_id',$id)->with('activity')->get();
+
+        $data = array();
+        foreach($array as $arr) {
+            $images = array();
+
+            for($i = 1; $i <= 3; $i++) {
+                $img_column = "image{$i}";
+                if($arr[$img_column] && !empty($arr[$img_column])) {
+                    $images[] = $arr[$img_column];
+                }
+            }
+
+            $data = array(
+                'activity' => $arr->activity->title,
+                'images' => $images
+            );
+        }
+
+        return response()->json($data);
+    }
     public function create()
     {
         return view('jasProfiles.create');
