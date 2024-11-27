@@ -63,6 +63,7 @@ $(document).ready(function () {
         const id = $(this).data('id');
         const token = $('meta[name="csrf-token"]').attr('content')
 
+        $('#appendCarousel').html("");
         const response = await fetch('jasProfiles/images', {
             method: 'POST',
             headers: {
@@ -81,7 +82,7 @@ $(document).ready(function () {
     })
 
     const populateModal = function (content) {
-        const base_url = window.location.origin;
+        const base_url = window.location.origin; //"https://digisaka.info" 
         let html = "";
 
         let carousel_content = "";
@@ -98,11 +99,15 @@ $(document).ready(function () {
                 carousel_inner += `
                     <div class="carousel-item ${i == 0 ? 'active' : ''}">
                       <img src="${base_url}/${images}" class="d-block w-100" height="600" width="400" title="${content.activity}" alt="...">
+                      <div class="carousel-caption d-none d-md-block" style="bottom:0 !important; top: 0rem">
+                        <h2 class="fw-bolder text-white">${content.activity}</h2>
+                      </div>
                     </div>
                 `
             }
 
             carousel_content += `
+
                 <div class="carousel-indicators">
                     ${carousel_indicator}
                 </div>
@@ -127,6 +132,9 @@ $(document).ready(function () {
             <div class="carousel-inner">
                 <div class="carousel-item active">
                   <img src="${url}" class="d-block w-100" height="600" width="400" title="${content.activity}" alt="...">
+                  <div class="carousel-caption d-none d-md-block" style="bottom:0 !important; top: 0rem">
+                    <h2 class="fw-bolder text-white">${content.activity}</h2>
+                  </div>
                 </div>
             </div>
             `
