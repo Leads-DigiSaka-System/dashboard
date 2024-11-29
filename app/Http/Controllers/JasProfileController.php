@@ -143,7 +143,7 @@ class JasProfileController extends Controller
                 }
             }
 
-            $data = array(
+            $data[] = array(
                 'activity' => $arr->activity->title,
                 'images' => $images
             );

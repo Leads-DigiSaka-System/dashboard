@@ -81,14 +81,73 @@ $(document).ready(function () {
         
     })
 
-    const populateModal = function (content) {
-        const base_url = window.location.origin; //"https://digisaka.info" 
+    const populateModal = function (contents) {
+        const base_url = "https://digisaka.info"  //window.location.origin; 
         let html = "";
 
         let carousel_content = "";
         let carousel_indicator = "";
         let carousel_inner = "";
-        if(content.images.length > 1) {
+
+        let image_counter = 0;
+        for(let x = 0; x < contents.length; x++) {
+            const content = contents[x]
+            const images = content.images
+
+            if(images.length !== 0) {
+                for(const image of images) {
+                    carousel_indicator += `
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${image_counter}" class="active" aria-current="true" aria-label="Slide ${image_counter + 1}"></button>
+                    `
+                    carousel_inner += `
+                        <div class="carousel-item ${image_counter == 0 ? 'active' : ''}">
+                          <img src="${base_url}/${image}" class="d-block w-100" height="600" width="400" title="${content.activity}" alt="...">
+                          <div class="carousel-caption d-none d-md-block" style="bottom:0 !important; top: 0rem">
+                            <h2 class="fw-bolder text-white">${content.activity}</h2>
+                          </div>
+                        </div>
+                    `
+                    image_counter++;
+                }
+            } else {
+                carousel_inner += `
+                    <div class="carousel-item active">
+                      <img src="https://dummyimage.com/600x400/000/fff&text=No+image+available" class="d-block w-100" height="600" width="400" title="${content.activity}" alt="...">
+                      <div class="carousel-caption d-none d-md-block" style="bottom:0 !important; top: 0rem">
+                        <h2 class="fw-bolder text-white">${content.activity}</h2>
+                      </div>
+                    </div>
+                `
+            }
+        }
+
+        carousel_content += `
+            <div class="carousel-indicators">
+                ${carousel_indicator}
+            </div>
+            <div class="carousel-inner">
+                ${carousel_inner}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        `
+
+        html += `
+            <div id="carouselExampleIndicators" class="carousel slide">
+
+              ${carousel_content}
+            </div>
+        `
+
+        $('#appendCarousel').html(html);
+
+        /*if(content.images.length > 1) {
             for(let i = 0; i < content.images.length; i++) {
                 const images = content.images[i]
 
@@ -148,7 +207,7 @@ $(document).ready(function () {
             </div>
         `
 
-        $('#appendCarousel').html(html);
+        $('#appendCarousel').html(html);*/
         /*html = `
         <div id="carouselExampleIndicators" class="carousel slide">
           <div class="carousel-indicators">
