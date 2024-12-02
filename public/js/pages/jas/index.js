@@ -82,7 +82,7 @@ $(document).ready(function () {
     })
 
     const populateModal = function (contents) {
-        const base_url = "https://digisaka.info"  //window.location.origin; 
+        const base_url = window.location.origin; //"https://digisaka.info"  // 
         let html = "";
 
         let carousel_content = "";
@@ -97,7 +97,7 @@ $(document).ready(function () {
             if(images.length !== 0) {
                 for(const image of images) {
                     carousel_indicator += `
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${image_counter}" class="active" aria-current="true" aria-label="Slide ${image_counter + 1}"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${image_counter}" class="${image_counter == 0 ? 'active' : ''}" aria-current="true" aria-label="Slide ${image_counter + 1}"></button>
                     `
                     carousel_inner += `
                         <div class="carousel-item ${image_counter == 0 ? 'active' : ''}">
@@ -110,8 +110,12 @@ $(document).ready(function () {
                     image_counter++;
                 }
             } else {
+                carousel_indicator += `
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${image_counter}" class="${image_counter == 0 ? 'active' : ''}" aria-current="true" aria-label="Slide ${image_counter + 1}"></button>
+                    `
+
                 carousel_inner += `
-                    <div class="carousel-item active">
+                    <div class="carousel-item ${image_counter == 0 ? 'active' : ''}">
                       <img src="https://dummyimage.com/600x400/000/fff&text=No+image+available" class="d-block w-100" height="600" width="400" title="${content.activity}" alt="...">
                       <div class="carousel-caption d-none d-md-block" style="bottom:0 !important; top: 0rem">
                         <h2 class="fw-bolder text-white">${content.activity}</h2>
