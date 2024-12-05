@@ -164,21 +164,21 @@ table.purchase-order-item-details tbody tr td{
 }
 
 .btn-primary {
-    border-color: #7367f0 !important;
-    background-color: #7367f0 !important;
+    /* border-color: #7367f0 !important;
+    background-color: #7367f0 !important; */
     transition: .3s all ease;
     color: #fff ;
 }
 a#tool-btn-manage {
-    border-color: #7367f0 ;
-    background-color: #7367f0 ;
+    /* border-color: #7367f0 ;
+    background-color: #7367f0 ; */
     color: #fff!important;
     padding: 10px 48px;
     transition: .3s all ease;
     border-radius: 5px;
 }
 .btn-primary:hover, a#tool-btn-manage:hover{
-  background: #5d53ce!important;
+  /* background: #5d53ce!important; */
 }
 .main-menu.menu-light .navigation > li.active svg, .main-menu.menu-light .navigation > li.active span {
     color: #fff;

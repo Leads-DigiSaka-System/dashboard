@@ -14,6 +14,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'RAMONE 1.0'),
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -231,5 +232,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
+
+    'map_key' => env('MAP_KEY'),
+
 
 ];

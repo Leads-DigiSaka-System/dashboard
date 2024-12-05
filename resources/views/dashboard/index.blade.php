@@ -833,7 +833,7 @@
 
 @section('footer_scripts')
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script async src="https://maps.googleapis.com/maps/api/js?key={{ env('MAP_KEY') }}&loading=async&&libraries=geometry">
+    <script async src="https://maps.googleapis.com/maps/api/js?key={{ config('app.map_key') }}&loading=async&&libraries=geometry">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
