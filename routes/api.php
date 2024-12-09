@@ -133,6 +133,9 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::post('/jas/deleteMonitoring/{id}', 'JasController@deleteMonitoring');
 
 
+			//jas summaries
+			Route::get('/jas/getSummaries', 'JasController@getSummaries');
+
 			//jas-monitoring data
 			Route::post('/jas/upsertMonitoringData/{id?}', 'JasController@upsertMonitoringData');
 			Route::get('/jas/getMonitoringData/{id?}', 'JasController@getMonitoringData');
