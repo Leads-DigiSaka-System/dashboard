@@ -257,45 +257,72 @@ class JasController extends Controller
 
     }
 
-    public function getSummaries(){
-        $data = [
-            'total_registered' => JasProfile::count(),
-            'total_farms' => JasProfile::where('farm_id', '!=', null)->count(),
-            'total_location' => JasProfile::whereNotNull('area')
-                ->select('area', DB::raw('COUNT(*) as total'))
-                ->groupBy('area')
-                ->get()
-                ->pluck('total', 'area'),
-            'total_activities' => JasMonitoringData::join('jas_activities', 'jas_monitoring_data.activity_id', '=', 'jas_activities.activity_id')
-                ->select('jas_activities.title', DB::raw('COUNT(jas_monitoring_data.data_id) as total'))
-                ->groupBy('jas_activities.title')
-                ->get()
-                ->pluck('total', 'title'),
-            'product_usage' => JasMonitoring::whereNotNull('product')
-                ->select('product', DB::raw('COUNT(*) as total'))
-                ->groupBy('product')
-                ->get()
-                ->pluck('total', 'product'),
-            'fertilizer_usage' => JasMonitoring::whereNotNull('fertilizer')
-                ->select('fertilizer', DB::raw('COUNT(*) as total'))
-                ->groupBy('fertilizer')
-                ->get()
-                ->pluck('total', 'fertilizer'),
-            'harvest_details' => JasMonitoringData::join('jas_activities', 'jas_monitoring_data.activity_id', '=', 'jas_activities.activity_id')
-                    ->where('jas_activities.title', 'LIKE', '%HARVESTING%')
-                    ->whereNotNull('jas_monitoring_data.timing')
-                    ->whereNotNull('jas_monitoring_data.observation')
-                    ->select('jas_monitoring_data.timing', 'jas_monitoring_data.observation', 'jas_monitoring_data.remarks')
-                    ->get(),
-            'pest_usage' => JasMonitoring::whereNotNull('pest_disease')
-                ->select('pest_disease', DB::raw('COUNT(*) as total'))
-                ->groupBy('pest_disease')
-                ->get()
-                ->pluck('total', 'pest_disease'),
-        ];
+    public function getSummaries(?string $level = '')
+{
+    $jasProfilesQuery = JasProfile::query();
 
-        return response()->json($data);
+    if (!empty($level)) {
+        $jasProfilesQuery->where('jas_profiles.level', $level);
     }
+
+    $data = [
+        'total_registered' => $jasProfilesQuery->count(),
+        'total_farms' => $jasProfilesQuery->where('farm_id', '!=', null)->count(),
+        'total_location' => $jasProfilesQuery->whereNotNull('area')
+            ->select('area', DB::raw('COUNT(*) as total'))
+            ->groupBy('area')
+            ->get()
+            ->pluck('total', 'area'),
+        'total_activities' => JasMonitoringData::join('jas_activities', 'jas_monitoring_data.activity_id', '=', 'jas_activities.activity_id')
+            ->join('jas_profiles', 'jas_profiles.id', '=', 'jas_monitoring_data.jas_profile_id')
+            ->when($level, function ($query) use ($level) {
+                $query->where('jas_profiles.level', $level);
+            })
+            ->select('jas_activities.title', DB::raw('COUNT(jas_monitoring_data.data_id) as total'))
+            ->groupBy('jas_activities.title')
+            ->get()
+            ->pluck('total', 'title'),
+        'product_usage' => JasMonitoring::join('jas_profiles', 'jas_profiles.id', '=', 'jas_monitoring.jas_profile_id')
+            ->when($level, function ($query) use ($level) {
+                $query->where('jas_profiles.level', $level);
+            })
+            ->whereNotNull('product')
+            ->select('product', DB::raw('COUNT(*) as total'))
+            ->groupBy('product')
+            ->get()
+            ->pluck('total', 'product'),
+        'fertilizer_usage' => JasMonitoring::join('jas_profiles', 'jas_profiles.id', '=', 'jas_monitoring.jas_profile_id')
+            ->when($level, function ($query) use ($level) {
+                $query->where('jas_profiles.level', $level);
+            })
+            ->whereNotNull('fertilizer')
+            ->select('fertilizer', DB::raw('COUNT(*) as total'))
+            ->groupBy('fertilizer')
+            ->get()
+            ->pluck('total', 'fertilizer'),
+        'harvest_details' => JasMonitoringData::join('jas_activities', 'jas_monitoring_data.activity_id', '=', 'jas_activities.activity_id')
+            ->join('jas_profiles', 'jas_profiles.id', '=', 'jas_monitoring_data.jas_profile_id')
+            ->when($level, function ($query) use ($level) {
+                $query->where('jas_profiles.level', $level);
+            })
+            ->where('jas_activities.title', 'LIKE', '%HARVESTING%')
+            ->whereNotNull('jas_monitoring_data.timing')
+            ->whereNotNull('jas_monitoring_data.observation')
+            ->select('jas_monitoring_data.timing', 'jas_monitoring_data.observation', 'jas_monitoring_data.remarks')
+            ->get(),
+        'pest_usage' => JasMonitoring::join('jas_profiles', 'jas_profiles.id', '=', 'jas_monitoring.jas_profile_id')
+            ->when($level, function ($query) use ($level) {
+                $query->where('jas_profiles.level', $level);
+            })
+            ->whereNotNull('pest_disease')
+            ->select('pest_disease', DB::raw('COUNT(*) as total'))
+            ->groupBy('pest_disease')
+            ->get()
+            ->pluck('total', 'pest_disease'),
+    ];
+
+    return response()->json($data);
+}
 
     public function delete(int $id)
     {
