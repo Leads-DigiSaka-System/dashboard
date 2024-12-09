@@ -30,7 +30,8 @@ class JasProfile extends Model
         'batch',
         'location',
         'duration' ,
-        'farm_id' 
+        'farm_id' ,
+        'level' 
     ];
 
     public function monitoring()
