@@ -88,12 +88,12 @@
                             class="menu-title text-truncate" data-i18n="Kanban">Contacts</span></a>
                 </li>
             @endif
-
+{{-- 
             <li class=" nav-item {{ request()->is('JAS') || request()->is('JAS/*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" style="text-decoration: none;"
                     href="{{ route('jasProfiles.index') }}"><i data-feather="book"></i><span
                         class="menu-title text-truncate" data-i18n="Kanban">JAS</span></a>
-            </li>
+            </li> --}}
             
 
             @if (Auth::user()->role != 5)
@@ -110,13 +110,13 @@
                             class="menu-title text-truncate" data-i18n="Kanban">Sales Team</span></a>
                 </li>
             @endif
-            @if (Auth::user()->role == 1 || Auth::user()->role == 0)
+            {{-- @if (Auth::user()->role == 1 || Auth::user()->role == 0)
                 <li class=" nav-item {{ request()->is('analytics') || request()->is('analytics/*') ? 'active' : '' }}">
                     <a class="d-flex align-items-center" style="text-decoration: none;"
                         href="{{ route('analytics.index') }}"><i data-feather="bar-chart"></i><span
                             class="menu-title text-truncate" data-i18n="Kanban">Analytics</span></a>
                 </li>
-            @endif
+            @endif --}}
 
 
 
