@@ -3,87 +3,107 @@
 
     function chartScript(response) {
 
-    return {
-        chart: {
-            type: 'bar'
-        },
-        title: {
-            text: response.data.question,
-            align: 'left'
-        },
-        subtitle: {
-            text: 'Answered: ' + response.data.answered + '  Skipped: ' + response.data.skipped,
-            align: 'left'
-        },
-        xAxis: {
-            categories: response.data.categories,
-        },
-        yAxis: {
-            title: {
-                text: ''
+        return {
+            chart: {
+                type: 'bar'
             },
-            min: 0,
-            max: 100,
-            tickInterval: 10,
-            labels: {
-                format: '{value}%'
-            }
-        },
-        credits: {
-            enabled: false
-        },
-        legend: {
-            enabled: false
-        },
-        tooltip: {
-            enabled: false
-        },
-        plotOptions: {
-            bar: {
-                colorByPoint: true,
-                colors: colorChart
-            }
-        },
-        series: [{
-            data: response.data.data
-        }]
-    };
-}
+            title: {
+                text: response.data.question,
+                align: 'left'
+            },
+            subtitle: {
+                text: 'Answered: ' + response.data.answered + '  Skipped: ' + response.data.skipped,
+                align: 'left'
+            },
+            xAxis: {
+                categories: response.data.categories,
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                },
+                min: 0,
+                max: 100,
+                tickInterval: 10,
+                labels: {
+                    format: '{value}%'
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                enabled: false
+            },
+            plotOptions: {
+                bar: {
+                    colorByPoint: true,
+                    colors: colorChart
+                }
+            },
+            series: [{
+                data: response.data.data
+            }]
+        };
+    }
+
     function getRecommendations(year) {
         axios.get(`/dashboard/getRecommendations?year=${year}`).then(response => {
             const data = response.data;
             let xaxis = [];
             let yaxis = [];
 
-            
-            for (const [x,y] of Object.entries(data)) {
-                xaxis.push(x)
-                yaxis.push(y)
+            for (const [x, y] of Object.entries(data)) {
+                xaxis.push(x);
+                yaxis.push(y);
             }
 
             // Use Highcharts to create a column chart
             Highcharts.chart('recommendations', { // Use 'recommendations' as the ID
                 chart: {
                     type: 'column',
-                    height:'300'
+                    height: '300'
                 },
                 title: {
                     text: 'Number of Sample Data',
-                    align: 'left'
+                    align: 'left',
+                    style: {
+                        fontSize: '18px', // Increase title font size
+                        fontWeight: 'bold'
+                    }
                 },
                 xAxis: {
                     categories: xaxis,
                     title: {
-                        text: 'Month of the year'
+                        text: 'Month of the year',
+                        style: {
+                            fontSize: '16px' // Increase x-axis title font size
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '14px' // Increase x-axis labels font size
+                        }
                     }
                 },
                 yAxis: {
                     title: {
-                        text: 'Number of Recommendations'
+                        text: 'Number of Recommendations',
+                        style: {
+                            fontSize: '16px' // Increase y-axis title font size
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '14px' // Increase y-axis labels font size
+                        }
                     }
                 },
                 legend: {
-                    enabled:false
+                    enabled: false
                 },
                 series: [{
                     name: 'Recommendations',
@@ -94,38 +114,61 @@
                         colorByPoint: true,
                         colors: colorChart
                     }
-                },
+                }
             });
-        })   
+        });
     }
 
+
     Highcharts.chart('reco_sum', {
-            chart: {
-                height:300
-            },
+        chart: {
+            height: 300
+        },
         title: {
             text: 'Recommendations / Alerts provided to farmers',
-            align: 'left'
-        },
-
-        yAxis: {
-            title: {
-                text: 'No. of Alerts Provided'
+            align: 'left',
+            style: {
+                fontSize: '18px' // Larger font size
             }
         },
-
+        yAxis: {
+            title: {
+                text: 'No. of Alerts Provided',
+                style: {
+                    fontSize: '16px' // Larger font size
+                }
+            },
+            labels: {
+                style: {
+                    fontSize: '14px' // Axis labels font size
+                }
+            }
+        },
         xAxis: {
             accessibility: {
                 rangeDescription: 'Range: 2010 to 2020'
+            },
+            labels: {
+                style: {
+                    fontSize: '14px' // Axis labels font size
+                }
             }
         },
-
         legend: {
             layout: 'vertical',
             align: 'right',
-            verticalAlign: 'middle'
+            verticalAlign: 'middle',
+            itemStyle: {
+                fontSize: '14px' // Legend font size
+            }
         },
-
+        tooltip: {
+            shared: true,
+            borderColor: '#666',
+            style: {
+                fontSize: '16px' // Tooltip font size
+            }
+        },
         plotOptions: {
             series: {
                 label: {
@@ -134,7 +177,6 @@
                 pointStart: 2010
             }
         },
-
         series: [{
             name: 'Rice',
             data: [
@@ -160,7 +202,6 @@
                 null, 11164, 11218, 10077
             ]
         }],
-
         responsive: {
             rules: [{
                 condition: {
@@ -170,39 +211,67 @@
                     legend: {
                         layout: 'horizontal',
                         align: 'center',
-                        verticalAlign: 'bottom'
+                        verticalAlign: 'bottom',
+                        itemStyle: {
+                            fontSize: '10px' // Smaller font size for mobile
+                        }
+                    },
+                    title: {
+                        style: {
+                            fontSize: '16px' // Smaller title for mobile
+                        }
                     }
                 }
             }]
-    }
-
+        }
     });
 
-     Highcharts.chart('surveys_conducted', {
-            chart: {
-                height:300
-            },
+
+    Highcharts.chart('surveys_conducted', {
+        chart: {
+            height: 300
+        },
         title: {
             text: 'Surveys Conducted',
-            align: 'left'
+            align: 'left',
+            style: {
+                fontSize: '18px', // Increase title font size
+                fontWeight: 'bold'
+            }
         },
 
         yAxis: {
             title: {
-                text: 'Number of Surveys Conducted'
+                text: 'Number of Surveys Conducted',
+                style: {
+                    fontSize: '16px' // Increase Y-axis title font size
+                }
+            },
+            labels: {
+                style: {
+                    fontSize: '14px' // Increase Y-axis labels font size
+                }
             }
         },
 
         xAxis: {
             accessibility: {
                 rangeDescription: 'Range: 2010 to 2020'
+            },
+            labels: {
+                style: {
+                    fontSize: '14px' // Increase X-axis labels font size
+                }
             }
         },
 
         legend: {
             layout: 'vertical',
             align: 'right',
-            verticalAlign: 'middle'
+            verticalAlign: 'middle',
+            itemStyle: {
+                fontSize: '14px' // Increase legend font size
+            }
         },
 
         plotOptions: {
@@ -255,31 +324,33 @@
                     legend: {
                         layout: 'horizontal',
                         align: 'center',
-                        verticalAlign: 'bottom'
+                        verticalAlign: 'bottom',
+                        itemStyle: {
+                            fontSize: '10px' // Adjust font size for smaller screens
+                        }
                     }
                 }
             }]
-    }
-
+        }
     });
+
 
     //Total Number of Farmers Registered Chart
     Highcharts.chart('registered_farmers', {
-            chart: {
-                type: 'pie'
-            },
-            title: {
-                text: ''
-            },
-            credits: {
-                enabled: false
-            },
-            series: [{
-                name: 'Registered Farmers',
-                data: [
-                {
+        chart: {
+            type: 'pie'
+        },
+        title: {
+            text: ''
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: 'Registered Farmers',
+            data: [{
                     name: 'Region I',
-                    y : 300
+                    y: 300
                 },
                 {
                     name: 'Region II',
@@ -288,27 +359,36 @@
                 {
                     name: 'Region III',
                     y: 500
-                }],
-            }]
-        });
+                }
+            ],
+            dataLabels: {
+                enabled: true,
+                style: {
+                    fontSize: '16px', // Adjust the font size as needed
+                    fontWeight: 'bold',
+                    color: '#000'
+                },
+                format: '{point.name}: {point.y}' // Format of the label
+            }
+        }]
+    });
 
     //Total Number of Farmers with ID Card Chart
     Highcharts.chart('farmers_id', {
-            chart: {
-                type: 'pie'
-            },
-            title: {
-                text: ''
-            },
-            credits: {
-                enabled: false
-            },
-            series: [{
-                name: 'Registered Farmers',
-                data: [
-                {
+        chart: {
+            type: 'pie'
+        },
+        title: {
+            text: ''
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: 'Registered Farmers',
+            data: [{
                     name: 'Region I',
-                    y : 151
+                    y: 151
                 },
                 {
                     name: 'Region II',
@@ -317,9 +397,19 @@
                 {
                     name: 'Region III',
                     y: 243
-                }],
-            }]
-        });
+                }
+            ],
+            dataLabels: {
+                enabled: true,
+                style: {
+                    fontSize: '16px', // Adjust the font size as needed
+                    fontWeight: 'bold',
+                    color: '#000'
+                },
+                format: '{point.name}: {point.y}' // Format of the label
+            }
+        }]
+    });
 
     /*axios.get('/dashboard/getAgeChartData').then(response => {
         const ageChart = Highcharts.chart('age', chartScript(response));
@@ -405,14 +495,14 @@
         const data = response.data; // Assuming the data is present in the 'data' property of the response
 
         // Create the Highcharts pie chart with dynamic data
-        demoAreaPlanted('area_planted',data);
-        demoAreaPlanted('area_planted1',data);
-        demoAreaPlanted('commercial_area_planted',data);
-        demoAreaPlanted('corporate_area_planted',data);
-        demoAreaPlanted('financing_area_planted',data);
-        demoAreaPlanted('provincial_area_planted',data);
-        demoAreaPlanted('recipient_area_planted',data);
-        demoAreaPlanted('progress_area_planted',data);
+        demoAreaPlanted('area_planted', data);
+        demoAreaPlanted('area_planted1', data);
+        demoAreaPlanted('commercial_area_planted', data);
+        demoAreaPlanted('corporate_area_planted', data);
+        demoAreaPlanted('financing_area_planted', data);
+        demoAreaPlanted('provincial_area_planted', data);
+        demoAreaPlanted('recipient_area_planted', data);
+        demoAreaPlanted('progress_area_planted', data);
         /*Highcharts.chart('area_planted', {
             chart: {
                 type: 'pie'
@@ -456,67 +546,67 @@
             }]
         });*/
 
-        
+
     });
 
 
 
     axios.get('/dashboard/getVarietyPlantedPerRegion').then(response => {
-        const data = response.data;
-        var categories = data.categories;
-        var inputData = data.series;
+            const data = response.data;
+            var categories = data.categories;
+            var inputData = data.series;
 
-        // Transform the data
-        const seriesData = inputData.reduce((result, dataPoint) => {
-            Object.entries(dataPoint).forEach(([name, value], index) => {
-                if (!result[index]) {
-                    result[index] = {
-                        name: name,
-                        data: []
-                    };
-                }
-                result[index].data.push(value);
-            });
-            return result;
-        }, []);
+            // Transform the data
+            const seriesData = inputData.reduce((result, dataPoint) => {
+                Object.entries(dataPoint).forEach(([name, value], index) => {
+                    if (!result[index]) {
+                        result[index] = {
+                            name: name,
+                            data: []
+                        };
+                    }
+                    result[index].data.push(value);
+                });
+                return result;
+            }, []);
 
-        const stringCategories = data.categories.map(category => category.toString());
+            const stringCategories = data.categories.map(category => category.toString());
 
-        // Use Highcharts to create a column chart
-        // Highcharts.chart('variety_planted', { // Use 'variety_planted' as the ID
-        //     chart: {
-        //         type: 'column'
-        //     },
-        //     title: {
-        //         text: 'Variety Planted per Region'
-        //     },
-        //     xAxis: {
-        //         "categories": categories
-        //     },
-        //     credits: {
-        //         enabled: false
-        //     },
-        //     yAxis: {
-        //         title: {
-        //             text: 'Total Area (ha)'
-        //         }
-        //     },
-        //     "series": seriesData,
-        // });
-        demoVarietyPlanted('variety_planted', categories, seriesData);
-        demoVarietyPlanted('variety_planted1', categories, seriesData);
-        demoVarietyPlanted('commercial_variety_planted', categories, seriesData);
-        demoVarietyPlanted('corporate_variety_planted', categories, seriesData);
-        demoVarietyPlanted('financing_variety_planted', categories, seriesData);
-        demoVarietyPlanted('provincial_variety_planted', categories, seriesData);
-        demoVarietyPlanted('recipient_variety_planted', categories, seriesData);
-        demoVarietyPlanted('progress_variety_planted', categories, seriesData);
-    })
-    .catch(error => {
-        console.error('Error fetching data:', error);
-    });
+            // Use Highcharts to create a column chart
+            // Highcharts.chart('variety_planted', { // Use 'variety_planted' as the ID
+            //     chart: {
+            //         type: 'column'
+            //     },
+            //     title: {
+            //         text: 'Variety Planted per Region'
+            //     },
+            //     xAxis: {
+            //         "categories": categories
+            //     },
+            //     credits: {
+            //         enabled: false
+            //     },
+            //     yAxis: {
+            //         title: {
+            //             text: 'Total Area (ha)'
+            //         }
+            //     },
+            //     "series": seriesData,
+            // });
+            demoVarietyPlanted('variety_planted', categories, seriesData);
+            demoVarietyPlanted('variety_planted1', categories, seriesData);
+            demoVarietyPlanted('commercial_variety_planted', categories, seriesData);
+            demoVarietyPlanted('corporate_variety_planted', categories, seriesData);
+            demoVarietyPlanted('financing_variety_planted', categories, seriesData);
+            demoVarietyPlanted('provincial_variety_planted', categories, seriesData);
+            demoVarietyPlanted('recipient_variety_planted', categories, seriesData);
+            demoVarietyPlanted('progress_variety_planted', categories, seriesData);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
 
-    function demoAreaPlanted (element, data) {
+    function demoAreaPlanted(element, data) {
         Highcharts.chart(element, {
             chart: {
                 type: 'pie'
@@ -561,7 +651,7 @@
         });
     }
 
-    function demoVarietyPlanted (element, categories, seriesData) {
+    function demoVarietyPlanted(element, categories, seriesData) {
         Highcharts.chart(element, { // Use 'variety_planted' as the ID
             chart: {
                 type: 'column'
@@ -583,15 +673,14 @@
             "series": seriesData,
         });
     }
-$("#recom_year").on('change', function() {
-    const value = $(this).val();
-    getRecommendations(value);
-})
+    $("#recom_year").on('change', function() {
+        const value = $(this).val();
+        getRecommendations(value);
+    })
 
-$(document).ready(function() {
-    const recom_year = $('#recom_year').val();
+    $(document).ready(function() {
+        const recom_year = $('#recom_year').val();
 
-    getRecommendations(recom_year);
-})
-
+        getRecommendations(recom_year);
+    })
 </script>

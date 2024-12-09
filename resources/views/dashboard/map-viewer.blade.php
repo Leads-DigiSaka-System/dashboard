@@ -47,7 +47,7 @@
             const map = new google.maps.Map(document.getElementById('farm_image'), {
                 center: {
                     lat: 12.8797,
-                    lng: 121.7740
+                    lng: 121.7740,
                 },
                 zoom: 6,
             });
@@ -96,7 +96,7 @@
                             '<a href="{{ asset('') }}{{ $image }}" target="_blank"><img src="{{ asset('') }}{{ $image }}" alt="Farm Image" width="150px" style="padding: 5px;"></a>';
                     @endforeach
 
-                    // Optional: Add an info window for each marker to display additional information
+                    // Add an info window for the marker
                     var infoWindow{{ $key }} = new google.maps.InfoWindow({
                         content: '<table>' +
                             '<tr><td>Farm ID:</td><td>{{ $value->farm_id }}</td></tr>' +
@@ -106,24 +106,17 @@
                             '</table>' +
                             '<hr />' +
                             '<div class="map_image">' + myVar{{ $key }} + '</div>',
-                        maxWidth: 1200, // Set the maximum width
-                        minHeight: 150, // Set the minimum height
+                        maxWidth: 1200,
+                        minHeight: 150,
                     });
 
                     // Add click event listener to the marker
                     marker{{ $key }}.addListener('click', function() {
                         // Close the currently open infoWindow, if any
                         if (currentInfoWindow) {
-                            //currentInfoWindow.close();
+                            currentInfoWindow.close();
                         }
 
-                        // const params = {
-                        //     farm_id : "{{ $value->farm_id }}",
-                        //     images: myVar{{ $key }}
-
-                        // }
-
-                        // highlightedFarmer(params)
                         // Open the infoWindow for the clicked marker
                         infoWindow{{ $key }}.open(map, marker{{ $key }});
 
@@ -134,6 +127,7 @@
             @endforeach
         }
 
+
         // const highlightedFarmer = function (params) {
         //     let html = "";
 
@@ -143,38 +137,38 @@
 
         //     if(no_of_cards <= 4) {
         //         html += `
-        //             <div class="card hl_farmer${counter}">
-        //                 <div class="card-body">
-        //                     <div class="row">
-        //                         <div class="col-md-5 d-flex justify-content-center align-items-center">
-        //                             <div class="row row-cols-1 ">
-        //                                 <div class="col text-center h2">
-        //                                     Farm Unique ID
-        //                                 </div>
-        //                                 <div class="col text-center h1 text-danger">
-        //                                     ${params.farm_id}
-        //                                 </div>
-        //                             </div>
-                                    
-        //                         </div>
-        //                         <div class="col-md-5 d-flex justify-content-center align-items-center">
-        //                             ${params.images}
-        //                         </div>
-        //                         <div class="col-md-2 d-flex align-items-center">
-        //                             <a href="javascript:void(0)" role="button"  class="remove_highlighted_farmer" data-key="${counter}">
-        //                                 <i class="fa fa-trash text-danger" style="font-size:24px;"></i>
-        //                             </a>
-        //                         </div>
-        //                     </div>
-                            
-        //                 </div>
-        //             </div>
-        //         `;
+    //             <div class="card hl_farmer${counter}">
+    //                 <div class="card-body">
+    //                     <div class="row">
+    //                         <div class="col-md-5 d-flex justify-content-center align-items-center">
+    //                             <div class="row row-cols-1 ">
+    //                                 <div class="col text-center h2">
+    //                                     Farm Unique ID
+    //                                 </div>
+    //                                 <div class="col text-center h1 text-danger">
+    //                                     ${params.farm_id}
+    //                                 </div>
+    //                             </div>
+
+    //                         </div>
+    //                         <div class="col-md-5 d-flex justify-content-center align-items-center">
+    //                             ${params.images}
+    //                         </div>
+    //                         <div class="col-md-2 d-flex align-items-center">
+    //                             <a href="javascript:void(0)" role="button"  class="remove_highlighted_farmer" data-key="${counter}">
+    //                                 <i class="fa fa-trash text-danger" style="font-size:24px;"></i>
+    //                             </a>
+    //                         </div>
+    //                     </div>
+
+    //                 </div>
+    //             </div>
+    //         `;
 
         //         highlighted_farmer.innerHTML += html
         //         counter++
         //     }
-            
+
         // }
 
         // const removeHighlightedFarmer = function(key) {

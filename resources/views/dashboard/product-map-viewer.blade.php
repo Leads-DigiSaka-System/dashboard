@@ -11,6 +11,7 @@
             initMapProduct(document.getElementById('provincial_map'));
             initMapProduct(document.getElementById('recipient_map'));
             initMapProduct(document.getElementById('progress_map'));
+            initMapProduct(document.getElementById('product_trials_map'));
         });
 
         function initMapProduct(element) {

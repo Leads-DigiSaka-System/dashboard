@@ -34,19 +34,20 @@ class JasProfileController extends Controller
                 if(Auth::user()->role == 5){
                     $jasProfiles->where('jas_profiles.technician', auth()->user()->id);
                 }
-               
-                if (!empty($request['technician'])) {
-                    $jasProfiles->where('users.full_name', 'like', '%' . $request['technician'] . '%');
+
+                $technician_searchValue = $request->input('columns.0.search.value');
+                if ($technician_searchValue) {
+                    $jasProfiles->where('users.full_name', 'like', '%' . $technician_searchValue . '%');
                 }
 
             return DataTables::of($jasProfiles)
-                ->addColumn('created_at', function ($jasProfile) {
+                ->addColumn('formatted_created_at', function ($jasProfile) {
                     // Format the created_at date
                     return Carbon::parse($jasProfile->created_at)->format('M j, Y g:iA');
                 })
-                ->addColumn('modified_at', function ($jasProfile) {
+                ->addColumn('formatted_modified_at', function ($jasProfile) {
                     // Format the created_at date
-                    return Carbon::parse($jasProfile->created_at)->format('M j, Y g:iA');
+                    return Carbon::parse($jasProfile->modified_at)->format('M j, Y g:iA');
                 })
                 ->addColumn('action', function ($jasProfile) {
                     $buttons = "";
@@ -60,6 +61,7 @@ class JasProfileController extends Controller
                     }
                     return $buttons;
                 })
+                ->rawColumns(['formatted_created_at', 'formatted_modified_at', 'action'  ])
                 ->addIndexColumn()
                 ->make(true);
         }

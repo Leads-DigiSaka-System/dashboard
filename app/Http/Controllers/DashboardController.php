@@ -89,6 +89,13 @@ class DashboardController extends Controller
             ->orderByDesc('user_count')
             ->take(5)
             ->get();
+
+        $registeredFarmers = User::where('role', 2)
+            ->where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
         $farms = Farms::where(function($query) use ($restriction) {
             $query->where('region', 'like', $restriction);
             if($restriction == "%%"){
@@ -125,7 +132,7 @@ class DashboardController extends Controller
             'regions' => $distinctFilters->pluck('region')->unique()->values()
         ];
 
-        return view('dashboard.index', compact("webinars","filters", "users", "farms", "survey", "latest_farmers", "latest_farms", "allFarms", "farmerPercent", "farmPercent", "surveyPercent", "allRegion", "top_performers", "randomFarms"));
+        return view('dashboard.index', compact("webinars","filters", "users", "farms", "survey", "latest_farmers", "latest_farms", "allFarms", "farmerPercent", "farmPercent", "surveyPercent", "allRegion", "top_performers", "randomFarms", "registeredFarmers"));
     }
 
     public function getDistinctFilters(Request $request)

@@ -1,5 +1,7 @@
 <!-- Button to Show Modal -->
-<button id="showCalendar" class="btn btn-primary">View Calendar</button>
+<div id="showCalendar" class="rounded-3"></div>
+<div id="thumbnail-calendar" style="width: 100%;height:300px"></div>
+
 
 <!-- Bootstrap Modal for Calendar -->
 <div class="modal fade" id="calendarModal" tabindex="-1" aria-labelledby="calendarModalLabel" aria-hidden="true">
@@ -225,7 +227,7 @@
                             $('#eventStartDate').text(startDate);
                             $('#eventEndDate').text(endDate);
                             $('#viewEventModal').modal('show');
-                           
+
                             // Show the edit event modal with event details
                             $('#editTitle').val(info.event.title);
                             $('#editActivityType').val(info.event.extendedProps.activity_type);
@@ -253,18 +255,25 @@
                             });
 
                             $('#deleteEvent').on('click', function() {
-                                if (confirm('Are you sure you want to delete this event?')) {
+                                if (confirm(
+                                        'Are you sure you want to delete this event?'
+                                    )) {
                                     // User clicked "OK", proceed with AJAX request
                                     $.ajax({
                                         url: `${site_url}/events/${info.event.id}`,
                                         method: 'DELETE',
                                         headers: {
-                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
+                                            'X-CSRF-TOKEN': $(
+                                                    'meta[name="csrf-token"]')
+                                                .attr('content')
                                         },
                                         success: function(response) {
-                                            $('#viewEventModal').modal('hide');
+                                            $('#viewEventModal').modal(
+                                                'hide');
                                             calendar.refetchEvents();
-                                            toastr.success('Event deleted successfully!','Success!', toastCofig);
+                                            toastr.success(
+                                                'Event deleted successfully!',
+                                                'Success!', toastCofig);
 
                                         },
                                         error: function(xhr, status, error) {
@@ -320,6 +329,54 @@
                 $('#editEventModal').modal('show');
             });
 
+
+        });
+
+        $(document).ready(function() {
+
+            var calendarThumb = new FullCalendar.Calendar(document.getElementById(
+                'thumbnail-calendar'), {
+                headerToolbar: {
+                    left: '', // No navigation for the thumbnail calendar
+                    center: 'title',
+                    right: ''
+                },
+                initialView: 'dayGridMonth', // Month view for the thumbnail
+                height: 400, // Set height to match the provided style
+                contentHeight: 'auto',
+                events: {
+                    url: site_url + '/events', // Fetch events from your API
+                    failure: function() {
+                        alert('There was an error while fetching events!');
+                    },
+                    success: function(data) {
+                        return data.map(event => {
+                            let eventColor;
+                            switch (event.extendedProps.activity_type) {
+                                case 'Farm':
+                                    eventColor = '#0d6efd';
+                                    break;
+                                case 'Farmer':
+                                    eventColor = '#6c757d';
+                                    break;
+                                case 'Meeting':
+                                    eventColor = '#198754';
+                                    break;
+                                case 'Workshop':
+                                    eventColor = '#ffc107';
+                                    break;
+                            }
+                            return {
+                                ...event,
+                                backgroundColor: eventColor,
+                                borderColor: eventColor
+                            };
+                        });
+                    }
+                }
+            });
+
+            calendarThumb.render();
 
         });
     </script>

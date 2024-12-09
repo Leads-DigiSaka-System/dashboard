@@ -94,6 +94,7 @@
                     href="{{ route('jasProfiles.index') }}"><i data-feather="book"></i><span
                         class="menu-title text-truncate" data-i18n="Kanban">JAS</span></a>
             </li>
+            
 
             @if (Auth::user()->role != 5)
                 <li class=" nav-item {{ request()->is('webinars') || request()->is('webinars/*') ? 'active' : '' }}">
@@ -143,6 +144,6 @@
 
 </div>
 <div>
-    {{ json_encode($userObj) }}
+   
 </div>
 <!-- END: Main Menu -->

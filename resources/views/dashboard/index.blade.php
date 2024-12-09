@@ -10,32 +10,74 @@
         }
 
         /*#content9 {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-auto-rows: 10px; 
-    gap: 10px;
-}*/
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-auto-rows: 10px;
+            gap: 10px;
+        }*/
 
-.grid-item {
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 20px;
-    box-sizing: border-box;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin:5px;
-}
+        .grid-item {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px;
+        }
 
-.grid-item:nth-child(1) { grid-row: span 15; }
-.grid-item:nth-child(2) { grid-row: span 20; }
-.grid-item:nth-child(3) { grid-row: span 25; }
-.grid-item:nth-child(4) { grid-row: span 18; }
-.grid-item:nth-child(5) { grid-row: span 12; }
-.grid-item:nth-child(6) { grid-row: span 15; }
-.grid-item:nth-child(7) { grid-row: span 13; }
-.grid-item:nth-child(8) { grid-row: span 14; }
-.grid-item:nth-child(9) { grid-row: span 10; }
+        .grid-item:nth-child(1) {
+            grid-row: span 15;
+        }
 
+        .grid-item:nth-child(2) {
+            grid-row: span 20;
+        }
+
+        .grid-item:nth-child(3) {
+            grid-row: span 25;
+        }
+
+        .grid-item:nth-child(4) {
+            grid-row: span 18;
+        }
+
+        .grid-item:nth-child(5) {
+            grid-row: span 12;
+        }
+
+        .grid-item:nth-child(6) {
+            grid-row: span 15;
+        }
+
+        .grid-item:nth-child(7) {
+            grid-row: span 13;
+        }
+
+        .grid-item:nth-child(8) {
+            grid-row: span 14;
+        }
+
+        .grid-item:nth-child(9) {
+            grid-row: span 10;
+        }
+
+        #showCalendar {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            transition: background-color 0.3s ease;
+            /* Add a transition for smooth fading */
+        }
+
+        #showCalendar:hover {
+            background-color: rgba(156, 156, 156, 0.13);
+            /* Change background color on hover */
+        }
     </style>
 @endsection
 @section('header_scripts')
@@ -45,97 +87,113 @@
 @endsection
 
 @section('content')
-    <div class="row">
-        <!-- Button trigger modal -->
-        <ul class="nav nav-tabs" id="myTabs" style="background: #fff; margin-top: -1rem;">
-            {{-- <li class="nav-item dropdown">
-                <a class="nav-link navs active" data-bs-toggle="dropdown" href="#" role="button"
-                    aria-expanded="false">
-                    Home
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content1">Data and Maps</a></li>
-                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content5">Summary</a></li>
-                </ul>
-            </li> --}}
-            <li class="nav-item">
-                <a class="nav-link navs active" id="tab5" data-toggle="tab" href="#content1">Home</a>
-            </li>
-            
-            <li class="nav-item">
-                <a class="nav-link navs" id="tab5" data-toggle="tab" href="#content5">Data Summary</a>
-            </li>
-            
-            <li class="nav-item">
-                <a class="nav-link navs" id="tab5" data-toggle="tab" href="#content6">Map Explorers</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link navs" id="tab9" data-toggle="tab" href="#content9">Geospatial AI Solutions</a>
-            </li>
-            {{-- <li class="nav-item">
-                <a class="nav-link navs" id="tab1" data-toggle="tab" href="#content1">Summary</a>
-            </li> --}}
-            <li class="nav-item dropdown">
-                <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
-                    aria-expanded="false">
-                    Techno-Demo
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item navs" id="tab4" data-bs-toggle="tab" href="#demo1">Agri-Products</a></li>
-                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo2">Rice Derby</a></li>
-                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo3">Financing Program</a></li>
-                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo4">Commercial Demo</a></li>
-                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo5">Corporate Farming</a></li>
-                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo6">Provincial Rice Techno Forum</a></li>
-                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo7">Recipient / Beneficiary</a></li>
-                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo8">Progress and Results</a></li>
-                </ul>
-            </li>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <!-- Button trigger modal -->
+                <ul class="nav nav-tabs" id="myTabs" style="background: #fff;">
+                    {{-- <li class="nav-item dropdown">
+                        <a class="nav-link navs active" data-bs-toggle="dropdown" href="#" role="button"
+                            aria-expanded="false">
+                            Home
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content1">Data and Maps</a></li>
+                            <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content5">Summary</a></li>
+                        </ul>
+                    </li> --}}
+                    <li class="nav-item">
+                        <a class="nav-link navs active" id="tab5" data-toggle="tab" href="#content1">Home</a>
+                    </li>
 
-            <li class="nav-item">
-                
-                <a class="nav-link navs" data-toggle="tab" id="tab10" href="#content8"
-                    aria-expanded="false">
-                    Other Field Activities
-                </a>
-                <ul class="dropdown-menu">
-                    {{-- <li><a class="dropdown-item navs" id="tab4" data-bs-toggle="tab" href="#content8">Field Tour</a></li>
-                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Farmer's day</a></li>
-                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Harvest Festival</a></li>
-                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Sibuyas Festival</a></li>
-                    <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Lakbay Palay</a></li> --}}
+                    <li class="nav-item">
+                        <a class="nav-link navs" id="tab5" data-toggle="tab" href="#content5">Data Summary</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link navs" id="tab5" data-toggle="tab" href="#content6">Map Explorers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link navs" id="tab9" data-toggle="tab" href="#content9">Geospatial AI
+                            Solutions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link navs" id="tab-techno" data-toggle="tab" href="#content-techno">Techno-Demo</a>
+                    </li>
+                    {{-- <li class="nav-item">
+                        <a class="nav-link navs" id="tab1" data-toggle="tab" href="#content1">Summary</a>
+                    </li> --}}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
+                            aria-expanded="false">
+                            Activities
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item navs" id="tab4" data-bs-toggle="tab"
+                                    href="#demo1">Agri-Products</a></li>
+                            <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo2">Rice Derby</a></li>
+                            <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo3">Financing Program</a></li>
+                            <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo4">Commercial Demo</a></li>
+                            <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo5">Corporate Farming</a></li>
+                            <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo6">Provincial Rice Techno
+                                    Forum</a></li>
+                            <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo7">Recipient /
+                                    Beneficiary</a></li>
+                            <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo8">Progress and Results</a>
+                            </li>
+                            <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo9">JAS</a></li>
+                            <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo10">Product Trials</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link navs" data-toggle="tab" id="tab10" href="#content8" aria-expanded="false">
+                            Other Field Activities
+                        </a>
+                        <ul class="dropdown-menu">
+                            {{-- <li><a class="dropdown-item navs" id="tab4" data-bs-toggle="tab" href="#content8">Field Tour</a></li>
+                            <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Farmer's day</a></li>
+                            <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Harvest Festival</a></li>
+                            <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Sibuyas Festival</a></li>
+                            <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#content8">Lakbay Palay</a></li> --}}
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
+                            aria-expanded="false">
+                            Agri Data PH
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content11">Reports</a></li>
+                            <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content12">Infographics</a>
+                            </li>
+                            <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content13">Webinars</a>
+                            </li>
+                        </ul>
+                    </li>
+                    {{-- <li class="nav-item dropdown">
+                        <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
+                            aria-expanded="false">
+                            Survey Results
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link navs" id="tab2" data-toggle="tab" href="#content2">Version 1</a></li>
+                            <li><a class="nav-link navs" id="tab2" data-toggle="tab" href="#content10">Version 2</a></li>
+                        </ul>
+                    </li> --}}
+                    {{-- <li class="nav-item">
+                        <a class="nav-link navs" id="tab3" data-toggle="tab" href="#content3">Rice Derby</a>
+                    </li> --}}
                 </ul>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
-                    aria-expanded="false">
-                    Agri Data PH
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content11">Reports</a></li>
-                    <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content12">Infographics</a></li>
-                    <li><a class="nav-link navs" id="tab5" data-toggle="tab" href="#content13">Webinars</a></li>
-                </ul>
-            </li>
-            {{-- <li class="nav-item dropdown">
-                <a class="nav-link navs" data-bs-toggle="dropdown" href="#" role="button"
-                    aria-expanded="false">
-                    Survey Results
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="nav-link navs" id="tab2" data-toggle="tab" href="#content2">Version 1</a></li>
-                    <li><a class="nav-link navs" id="tab2" data-toggle="tab" href="#content10">Version 2</a></li>
-                </ul>
-            </li> --}}
-            {{-- <li class="nav-item">
-                <a class="nav-link navs" id="tab3" data-toggle="tab" href="#content3">Rice Derby</a>
-            </li> --}}
-        </ul>
+            </div>
+        </div>
     </div>
     <div class="tab-content">
         @include('dashboard.tabs.home')
         @include('dashboard.tabs.links')
         @include('dashboard.tabs.other_activities')
+        @include('dashboard.tabs.techno-demo')
         <div class="tab-pane fade active show" id="content1">
             <div class="container-fluid px-6 pt-6">
                 <div class="row">
@@ -148,8 +206,10 @@
                                             <a style="text-decoration: none;" href="{{ route('farmers.index') }}">
                                                 <div class="d-flex py-2 px-2">
                                                     <div class="me-2">
-                                                        <div class="p-2 rounded-circle" style="background-color: #28c76f;">
-                                                            <i data-feather="user" style="width: 30px; height: 30px; color:white;"></i>
+                                                        <div class="p-2 rounded-circle"
+                                                            style="background-color: #28c76f;">
+                                                            <i data-feather="user"
+                                                                style="width: 30px; height: 30px; color:white;"></i>
                                                         </div>
                                                     </div>
                                                     <div class="my-auto text-left">
@@ -161,7 +221,8 @@
                                         </div>
                                     </div>
                                     <div class="card-footer p-1 text-center">
-                                        <p class="m-0"><span class="font-weight-bold" style="color: #28c76f;">{{ $farmerPercent . '%' }}</span>
+                                        <p class="m-0"><span class="font-weight-bold"
+                                                style="color: #28c76f;">{{ $farmerPercent . '%' }}</span>
                                             than
                                             last
                                             week</p>
@@ -174,22 +235,25 @@
                                     <div class="card-body p-1">
                                         <div class="card m-0">
                                             <a style="text-decoration: none;" href="{{ route('farms.index') }}">
-                                        <div class="d-flex py-2 px-2">
-                                            <div class="me-2">
-                                                <div class="p-2 rounded-circle" style="background-color: #ffc107;">
-                                                    <i data-feather="grid" style="width: 30px; height: 30px; color:white;"></i>
+                                                <div class="d-flex py-2 px-2">
+                                                    <div class="me-2">
+                                                        <div class="p-2 rounded-circle"
+                                                            style="background-color: #ffc107;">
+                                                            <i data-feather="grid"
+                                                                style="width: 30px; height: 30px; color:white;"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="my-auto text-left">
+                                                        <p class="mb-0" style="font-size: 17px;">Farms Digitized</p>
+                                                        <h1 class="fw-bolder mb-0">{{ $farms }}</h1>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="my-auto text-left">
-                                                <p class="mb-0" style="font-size: 17px;">Farms Digitized</p>
-                                                <h1 class="fw-bolder mb-0">{{ $farms }}</h1>
-                                            </div>
-                                        </div>
-                                    </a>
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="card-footer p-1 text-center">
-                                        <p class="m-0"><span class="font-weight-bold" style="color: #28c76f;">{{ $farmPercent . '%' }}</span>
+                                        <p class="m-0"><span class="font-weight-bold"
+                                                style="color: #28c76f;">{{ $farmPercent . '%' }}</span>
                                             than
                                             last
                                             week</p>
@@ -204,12 +268,15 @@
                                             <a style="text-decoration: none;" href="{{ route('survey.index') }}">
                                                 <div class="d-flex py-2 px-2">
                                                     <div class="me-2">
-                                                        <div class="p-2 rounded-circle" style="background-color: #4bc79d;">
-                                                            <i data-feather="pie-chart" style="width: 30px; height: 30px; color:white;"></i>
+                                                        <div class="p-2 rounded-circle"
+                                                            style="background-color: #4bc79d;">
+                                                            <i data-feather="pie-chart"
+                                                                style="width: 30px; height: 30px; color:white;"></i>
                                                         </div>
                                                     </div>
                                                     <div class="my-auto text-left">
-                                                        <p class="mb-0" style="font-size: 17px;">Surveyed for farm practices</p>
+                                                        <p class="mb-0" style="font-size: 17px;">Surveyed for farm
+                                                            practices</p>
                                                         <h1 class="fw-bolder mb-0">{{ $survey }}</h1>
                                                     </div>
                                                 </div>
@@ -225,7 +292,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col h-auto">
                                 <div class="card rounded-3 shadow-sm">
                                     <div class="card-body p-1">
@@ -235,11 +302,13 @@
 
                                                 <div class="me-2">
                                                     <div class="">
-                                                        <i data-feather="map-pin" style="width: 30px; height: 30px; color:white;"></i>
+                                                        <i data-feather="map-pin"
+                                                            style="width: 30px; height: 30px; color:white;"></i>
                                                     </div>
                                                 </div>
                                                 <div class="my-auto text-left">
-                                                    <p class="mb-0 fw-bolder fs-2 text-white" style="font-size: 20px;">266,504.53</p>
+                                                    <p class="mb-0 fw-bolder fs-2 text-white" style="font-size: 20px;">
+                                                        266,504.53</p>
                                                     <h1 class="fw-bolder mb-0" style="font-size: 3rem;"></h1>
                                                 </div>
                                             </div>
@@ -266,11 +335,13 @@
 
                                                 <div class="me-2">
                                                     <div class="">
-                                                        <i data-feather="mail" style="width: 30px; height: 30px; color:white;"></i>
+                                                        <i data-feather="mail"
+                                                            style="width: 30px; height: 30px; color:white;"></i>
                                                     </div>
                                                 </div>
                                                 <div class="my-auto text-left">
-                                                    <p class="mb-0 fw-bolder fs-2 text-white" style="font-size: 20px;">266,504</p>
+                                                    <p class="mb-0 fw-bolder fs-2 text-white" style="font-size: 20px;">
+                                                        266,504</p>
                                                     <h1 class="fw-bolder mb-0" style="font-size: 3rem;"></h1>
                                                 </div>
                                             </div>
@@ -285,7 +356,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-lg-4">
                         <div class="card rounded-3 shadow-sm">
                             <div class="card-body">
@@ -296,7 +367,6 @@
                                 </figure>
                             </div>
                         </div>
-                        @include('dashboard.calendar')
                     </div>
 
                 </div>
@@ -379,10 +449,16 @@
 
                     </div>
                     <div class="col-md-6 col-lg-4">
+
                         <div class="card rounded-3 shadow-sm">
                             <div class="p-2">
+                                @include('dashboard.calendar')
+                            </div>
+                        </div>
+                        {{-- <div class="card rounded-3 shadow-sm">
+                            <div class="p-2">
                                 <h4 class="">Top Performing Technician</h4>
-                                @foreach($top_performers as $performer)
+                                @foreach ($top_performers as $performer)
                                 <div class="d-flex flex-row w-100 pt-2 justify-content-between align-items-center">
                                     
                                     <div class="d-flex align-items-center">
@@ -396,6 +472,27 @@
                                     </div>
 
                                 </div>
+                                @endforeach
+                            </div>
+                        </div> --}}
+                        <div class="card rounded-3 shadow-sm">
+                            <div class="p-2">
+                                <h4 class="">Registered farmers</h4>
+                                @foreach ($registeredFarmers as $farmer)
+                                    <div class="d-flex flex-row w-100 pt-2 justify-content-between align-items-center">
+
+                                        <div class="d-flex align-items-center">
+                                            <div class="h-3 w-3 bg-success rounded-circle" style="padding:5px;"></div>
+                                            <div style="width: 5px;"></div>
+                                            <span>{{ $farmer->first_name . ' ' . $farmer->last_name }}</span>
+                                        </div>
+                                        {{-- <div class="align-items-left">
+                                            @php
+                                                $crop = explode(',', json_encode(json_decode($farmer->crops)));
+                                            @endphp
+                                            <span class="font-weight-bold">{{ implode(', ', $crop) }}</span>
+                                        </div> --}}
+                                    </div>
                                 @endforeach
                             </div>
                         </div>
@@ -657,14 +754,14 @@
                         </div>
                     </div>
                     <!-- <div class="col-md-6">
-                        <div class="card rounded-3 shadow-sm">
-                            <div class="card-body">
-                                <figure class="highcharts-figure">
-                                    <div id="crop_stand"></div>
-                                </figure>
-                            </div>
-                        </div>
-                    </div> -->
+                                <div class="card rounded-3 shadow-sm">
+                                    <div class="card-body">
+                                        <figure class="highcharts-figure">
+                                            <div id="crop_stand"></div>
+                                        </figure>
+                                    </div>
+                                </div>
+                            </div> -->
                 </div>
             </div>
         </div>
@@ -742,7 +839,7 @@
                     </div>
                 </div>
             </div>
-                
+
             {{-- <div class="grid-item">
                 <strong>1. Extent maps and production area</strong>
                 <ul>
@@ -822,30 +919,38 @@
         @include('dashboard.demos.provincial')
         @include('dashboard.demos.recipient')
         @include('dashboard.demos.progress')
+
+        @include('jasProfiles.index')
+        @include('dashboard.demos.product-trials')
         {{-- @include('dashboard.tabs.survey_v2') --}}
 
-        
+        @include('jasProfiles.modal')
 
-        
+
+
     </div>
 
 @endsection
 
 @section('footer_scripts')
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script async src="https://maps.googleapis.com/maps/api/js?key={{ config('app.map_key') }}&loading=async&&libraries=geometry">
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ config('app.map_key') }}&libraries=geometry" async defer>
     </script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 @endsection
 @push('scripts')
+    @include('include.dataTableScripts')
+    <script src="{{ asset('js/pages/jas/index.js') }}?v={{ time() }}"></script>
+
     @include('dashboard.chartScript')
     @include('dashboard.chart_v2_script')
     <script>
-        window.onload = function() {
+         window.onload = function() {
             // fetchDistinctFilters();
             fetchProvinceFilters();
             setDropdownEventListeners();
@@ -1037,7 +1142,7 @@
             // When #tab4 is clicked, trigger a click on #filter
             $('#tab4').on('click', function() {
                 console.log('test');
-               
+
                 $('#filter').click();
             });
 
@@ -1077,53 +1182,54 @@
             var farm_location = '';
             var legendContent = '<div class="legend-title">Legend</div>';
             axios.get('/dashboard/getAgriProducts').then(response => {
-                    var points = response.data.points;
-                    // Add markers to the map
-                    $('#demoPerformed').text(response.data.demo_performed);
-                    $('#sampleUsed').text(response.data.sample_used);
-                    points.forEach(point => {
-                        // Ensure that latitude and longitude are valid numbers
-                        var latitude = parseFloat(point.image_latitude);
-                        var longitude = parseFloat(point.image_longitude);
+                var points = response.data.points;
+                // Add markers to the map
+                $('#demoPerformed').text(response.data.demo_performed);
+                $('#sampleUsed').text(response.data.sample_used);
+                points.forEach(point => {
+                    // Ensure that latitude and longitude are valid numbers
+                    var latitude = parseFloat(point.image_latitude);
+                    var longitude = parseFloat(point.image_longitude);
 
-                        if (!isNaN(latitude) && !isNaN(longitude)) {
-                            var markerColor;
+                    if (!isNaN(latitude) && !isNaN(longitude)) {
+                        var markerColor;
 
-                            
-                            var marker = new google.maps.Marker({
-                                position: {
-                                    lat: latitude,
-                                    lng: longitude
-                                },
-                                map: map,
-                                title: point.farm_id,
-                                icon: {
-                                    url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx0y1Ensv9-dF8rpNkXhfAEfQnyWF4kXMoE_OyWbI8GQ&s',//'http://maps.google.com/mapfiles/ms/icons/purple-dot.png', // URL to the purple marker icon
-                                    scaledSize: new google.maps.Size(40,40), // Adjust the size if needed
-                                    origin: new google.maps.Point(0,0), // origin
-                                    anchor: new google.maps.Point(0, 0) // anchor
-                                },
-                            });
 
-                            // Create farm images HTML
-                            var farmImagesHTML = '';
-                            point.farm_image.split(',').forEach(function(image) {
-                                
-                                farmImagesHTML += '<a href="' + image +
-                                    '" target="_blank"><img src="https://digisaka.info/' +
-                                    image +
-                                    '" alt="Farm Image" width="150px" style="padding: 5px;"></a>';
-                            });
-                            var demoDate = new Date(point.created_at);
-                            var formattedDate = demoDate.toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                            });
-                            // Optional: Add an info window for each marker to display additional information
-                            var infoWindow = new google.maps.InfoWindow({
+                        var marker = new google.maps.Marker({
+                            position: {
+                                lat: latitude,
+                                lng: longitude
+                            },
+                            map: map,
+                            title: point.farm_id,
+                            icon: {
+                                url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx0y1Ensv9-dF8rpNkXhfAEfQnyWF4kXMoE_OyWbI8GQ&s', //'http://maps.google.com/mapfiles/ms/icons/purple-dot.png', // URL to the purple marker icon
+                                scaledSize: new google.maps.Size(40,
+                                    40), // Adjust the size if needed
+                                origin: new google.maps.Point(0, 0), // origin
+                                anchor: new google.maps.Point(0, 0) // anchor
+                            },
+                        });
 
-                                content: `
+                        // Create farm images HTML
+                        var farmImagesHTML = '';
+                        point.farm_image.split(',').forEach(function(image) {
+
+                            farmImagesHTML += '<a href="' + image +
+                                '" target="_blank"><img src="https://digisaka.info/' +
+                                image +
+                                '" alt="Farm Image" width="150px" style="padding: 5px;"></a>';
+                        });
+                        var demoDate = new Date(point.created_at);
+                        var formattedDate = demoDate.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        // Optional: Add an info window for each marker to display additional information
+                        var infoWindow = new google.maps.InfoWindow({
+
+                            content: `
                                 <table width="100%">
                                     <tr>
                                         <td class="fw-bold fs-5" style="width:20%;"> Farm ID:</td>
@@ -1178,33 +1284,33 @@
                                 </table>
                                 
                             `,
-                                // <div class="map_image" style="text-align: center;">
+                            // <div class="map_image" style="text-align: center;">
 
-                                //     </div>
-                                maxWidth: 800, // Set the maximum width
-                                minHeight: 300, // Set the minimum height
-                            });
+                            //     </div>
+                            maxWidth: 800, // Set the maximum width
+                            minHeight: 300, // Set the minimum height
+                        });
 
-                            // Attach click event to marker to open info window
-                            marker.addListener('click', function() {
-                                // Close the current infoWindow if exists
-                                if (currentInfoWindow) {
-                                    currentInfoWindow.close();
-                                }
+                        // Attach click event to marker to open info window
+                        marker.addListener('click', function() {
+                            // Close the current infoWindow if exists
+                            if (currentInfoWindow) {
+                                currentInfoWindow.close();
+                            }
 
-                                // Open the new infoWindow
-                                infoWindow.open(map, marker);
+                            // Open the new infoWindow
+                            infoWindow.open(map, marker);
 
-                                // Update the currently open infoWindow
-                                currentInfoWindow = infoWindow;
-                            });
+                            // Update the currently open infoWindow
+                            currentInfoWindow = infoWindow;
+                        });
 
-                        } else {
-                            console.error('Invalid latitude or longitude:', point);
-                        }
-                    });
-                    document.getElementById('legend').innerHTML = legendContent;
+                    } else {
+                        console.error('Invalid latitude or longitude:', point);
+                    }
                 });
+                document.getElementById('legend').innerHTML = legendContent;
+            });
 
             /*axios.get('/dashboard/getLegend/').then(response => {
                 var legends = response.data;
@@ -1263,60 +1369,60 @@
                             var infoWindow = new google.maps.InfoWindow({
 
                                 content: `
-                                <table width="100%">
-                                    <tr>
-                                        <td class="fw-bold fs-5" style="width:20%;"> Farm ID:</td>
-                                        <td class="fw-bold fs-5"> ${point.farm_id}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold fs-5"> Farm Address:</td>
-                                        <td class="fw-bold fs-5"> ${point.farm_location}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold fs-5"> Area:</td>
-                                        <td class="fw-bold fs-5"> ${(point.area == null) ? '-': point.area}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold fs-5"> Leads Farmer:</td>
-                                        <td class="fw-bold fs-5"> ${point.full_name}</td>
-                                    </tr>
-                                    
-                                    <tr>
-                                        <td class="fw-bold fs-5">Demo Date:</td>
-                                        <td class="fw-bold fs-5"> ${formattedDate}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold fs-5 d-flex">Feedback:</td>
-                                        <td class="fw-bold fs-5"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. .</td>
-                                    </tr>
-                                </table>
-                                <hr/>
-                                <table width="100%">
-                                    <tr>
-                                        <td class="text-center fw-bold fs-5">Before</td>
-                                        <td class="text-center fw-bold fs-5">During</td>
-                                        <td class="text-center fw-bold fs-5">After</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">
-                                            <a href="https://dummyimage.com/200x300/000/fff&text=No+image+available" target="_blank">
-                                                <img src="https://dummyimage.com/200x300/000/fff&text=No+image+available" alt="Farm Image" width="150px" style="padding:5px;"></a>
-                                            </a>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href="https://dummyimage.com/200x300/000/fff&text=No+image+available" target="_blank">
-                                                <img src="https://dummyimage.com/200x300/000/fff&text=No+image+available" alt="Farm Image" width="150px" style="padding:5px;"></a>
-                                            </a>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href="https://dummyimage.com/200x300/000/fff&text=No+image+available" target="_blank">
-                                                <img src="https://dummyimage.com/200x300/000/fff&text=No+image+available" alt="Farm Image" width="150px" style="padding:5px;"></a>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </table>
-                                
-                            `,
+                        <table width="100%">
+                            <tr>
+                                <td class="fw-bold fs-5" style="width:20%;"> Farm ID:</td>
+                                <td class="fw-bold fs-5"> ${point.farm_id}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold fs-5"> Farm Address:</td>
+                                <td class="fw-bold fs-5"> ${point.farm_location}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold fs-5"> Area:</td>
+                                <td class="fw-bold fs-5"> ${(point.area == null) ? '-': point.area}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold fs-5"> Leads Farmer:</td>
+                                <td class="fw-bold fs-5"> ${point.full_name}</td>
+                            </tr>
+                            
+                            <tr>
+                                <td class="fw-bold fs-5">Demo Date:</td>
+                                <td class="fw-bold fs-5"> ${formattedDate}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold fs-5 d-flex">Feedback:</td>
+                                <td class="fw-bold fs-5"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. .</td>
+                            </tr>
+                        </table>
+                        <hr/>
+                        <table width="100%">
+                            <tr>
+                                <td class="text-center fw-bold fs-5">Before</td>
+                                <td class="text-center fw-bold fs-5">During</td>
+                                <td class="text-center fw-bold fs-5">After</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">
+                                    <a href="https://dummyimage.com/200x300/000/fff&text=No+image+available" target="_blank">
+                                        <img src="https://dummyimage.com/200x300/000/fff&text=No+image+available" alt="Farm Image" width="150px" style="padding:5px;"></a>
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <a href="https://dummyimage.com/200x300/000/fff&text=No+image+available" target="_blank">
+                                        <img src="https://dummyimage.com/200x300/000/fff&text=No+image+available" alt="Farm Image" width="150px" style="padding:5px;"></a>
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <a href="https://dummyimage.com/200x300/000/fff&text=No+image+available" target="_blank">
+                                        <img src="https://dummyimage.com/200x300/000/fff&text=No+image+available" alt="Farm Image" width="150px" style="padding:5px;"></a>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                    `,
                                 // <div class="map_image" style="text-align: center;">
 
                                 //     </div>
@@ -1426,5 +1532,3 @@
         // });
     </script>
 @endpush
-
-

@@ -1,13 +1,13 @@
-@extends('layouts.admin')
+{{-- @extends('layouts.admin')
 
 @section('title')
     JAS Profile
 @endsection
 
-@section('content')
-    <!-- Main content -->
-    <section>
-        <div class="content-header-left col-md-9 col-12 mb-2">
+@section('content') --}}
+<div class="tab-pane fade" id="demo9" style="padding-right: 10px;">
+    {{-- <section> --}}
+        {{-- <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
                     <div class="breadcrumb-wrapper">
@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <div class="row">
             <div class="col-12">
@@ -58,11 +58,11 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    @include('jasProfiles.modal')
+    {{-- </section> --}}
+</div>
+    {{-- @include('jasProfiles.modal')
     @push('page_script')
         @include('include.dataTableScripts')
         <script src="{{ asset('js/pages/jas/index.js') }}"></script>
-    @endpush
-@endsection
+    @endpush --}}
+{{-- @endsection --}}
