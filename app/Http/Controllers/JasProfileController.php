@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\JasActivity;
 use App\Models\JasProfile;
 use App\Models\JasMonitoringData;
@@ -27,7 +27,7 @@ class JasProfileController extends Controller
                 'jas_profiles.area',
                 'jas_profiles.created_at', 
                 'jas_profiles.modified_at',
-                'users.full_name as technician_name'
+                DB::raw("CONCAT(users.full_name, ' (', users.email, ')') as technician_name"),
             ])
                 ->leftJoin('users', 'jas_profiles.technician', '=', 'users.id');
 

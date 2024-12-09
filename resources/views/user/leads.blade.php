@@ -50,6 +50,7 @@
                   <tr>
                     <th>S.No</th>
                     <th class="filter">Full Name</th>
+                    <th class="">Email</th>
                     <th class="filter">Phone Number</th>
                     <th>Role</th>
                     <th class="filter">Status</th>
@@ -76,7 +77,7 @@
 
       @include('include.dataTableScripts')   
 
-      <script src="{{ asset('js/pages/farmers/index2.js') }}"></script>
+      <script src="{{ asset('js/pages/farmers/index2.js?14312') }}"></script>
 
   @endpush
 

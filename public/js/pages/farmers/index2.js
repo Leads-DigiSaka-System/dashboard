@@ -19,6 +19,7 @@ $(document).ready(function() {
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'full_name', name: 'full_name'},
+            {data: 'email', name: 'email'},
             {data: 'phone_number', name: 'phone_number'},
             {data: 'role', name: 'role'},
             {data: 'status', name: 'status'},

@@ -320,6 +320,9 @@ class UserController extends Controller
                     ->addColumn('role', function ($user) {
                         return $user->role_title ? $user->role_title : 'N/A';
                     })
+                    ->addColumn('email', function ($user) {
+                        return $user->email ? $user->email : 'N/A';
+                    })
                     ->addColumn('via_app', function ($user) {
                         return $user->via_app == 1 ? "YES" : 'NO';
                     })
