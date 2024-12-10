@@ -120,6 +120,11 @@
                     <li class="nav-item">
                         <a class="nav-link navs" id="tab-techno" data-toggle="tab" href="#content-techno">Techno-Demo</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link navs" id="tab-techno" data-toggle="tab" href="#demo9">
+                            JAS <img src="/images/jasLogo.png" style="width:50px;    margin-left: 5px;" />
+                        </a>
+                    </li>
                     {{-- <li class="nav-item">
                         <a class="nav-link navs" id="tab1" data-toggle="tab" href="#content1">Summary</a>
                     </li> --}}
@@ -141,7 +146,6 @@
                                     Beneficiary</a></li>
                             <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo8">Progress and Results</a>
                             </li>
-                            <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo9">JAS</a></li>
                             <li><a class="dropdown-item navs" data-bs-toggle="tab" href="#demo10">Product Trials</a></li>
                         </ul>
                     </li>
