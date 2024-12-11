@@ -146,4 +146,5 @@ Route::middleware('prevent-back-history')->group(function () {
 
 
     Route::get('/analytics','AnalyticsController@index')->name('analytics.index');
+    Route::post('/analytics/getAnalytics','AnalyticsController@generate')->name('analytics.generate');
 });

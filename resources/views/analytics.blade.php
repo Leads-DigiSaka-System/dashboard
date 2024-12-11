@@ -11,8 +11,57 @@
 @section('content')
 	
 	<div class="col-md-12">
-		<div class="row">
-			@foreach($data as $arr)
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group">
+							<select class="form-select" id="activity">
+								<option disabled selected>Select Activity</option>
+								<option value="all">All</option>
+								@if(!$activities->isEmpty())
+									@foreach($activities as $activity)
+										<option value="{{ $activity->activity_id }}">{{ $activity->title }}</option>
+									@endforeach
+								@endif
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="form-group">
+							<select class="form-select" id="area">
+								<option disabled selected>Select Area</option>
+								<option value="all">All</option>
+								@if(!$jas_area->isEmpty())
+									@foreach($jas_area as $area)
+										<option value="{{ $area }}">{{ $area }}</option>
+									@endforeach
+								@endif
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="form-group">
+							<select class="form-select" id="product">
+								<option disabled selected>Select Product used</option>
+								<option value="all">All</option>
+								@if(!$jas_product->isEmpty())
+									@foreach($jas_product as $product)
+										<option value="{{ $product }}">{{ $product }}</option>
+									@endforeach
+								@endif
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div class="row" id="append_analytics">
+			{{-- @foreach($data as $arr)
         		<div class="col-md-6">
         			<div class="card">
         				<div class="card-body">
@@ -36,82 +85,11 @@
         				</div>
         			</div>
         		</div>
-        	@endforeach
+        	@endforeach --}}
 		</div>
     </div>
-
-    <script type="text/javascript">
-
-    	const sample = {!! json_encode($data) !!};
-
-    	for(arr of sample) {
-
-    		if(arr.timing.length !== 0) {
-    			Highcharts.chart(`${arr.div_id}_timing`, {
-		            chart: {
-		                type: 'pie'
-		            },
-		            title: {
-		                text: 'Timing',
-		            },
-		            plotOptions: {
-		            	series: {
-		            		allowPointSelect: true,
-							cursor: 'pointer',
-							dataLabels: [{
-							enabled: true,
-							distance: 20
-						},{
-							enabled: true,
-					        distance: -40,
-					        format: '{point.y:.0f}',
-						}]
-		            	}
-		            },
-		            credits: {
-		                enabled: false
-		            },
-		            series: [{
-		                name: 'Timing',
-		                colorByPoint:true,
-		                data: arr.timing,
-		            }]
-		        });
-    		}
-    		
-    		if(arr.observation.length !== 0) {
-    			Highcharts.chart(`${arr.div_id}_observation`, {
-		            chart: {
-		                type: 'pie'
-		            },
-		            title: {
-		                text: 'Observation',
-		            },
-		            plotOptions: {
-		            	series: {
-		            		allowPointSelect: true,
-							cursor: 'pointer',
-							dataLabels: [{
-							enabled: true,
-							distance: 20
-						},{
-							enabled: true,
-					        distance: -40,
-					        format: '{point.y:.0f}',
-						}]
-		            	}
-		            },
-		            credits: {
-		                enabled: false
-		            },
-		            series: [{
-		                name: 'Observation',
-		                colorByPoint:true,
-		                data: arr.observation,
-		            }]
-		        });
-    		}
-    	}
-	    
-    </script>
 @endsection
+
+@push('page_script')
+	<script src="{{ asset('js/analytics.js') }}"></script>
+@endpush
