@@ -147,4 +147,7 @@ Route::middleware('prevent-back-history')->group(function () {
 
     Route::get('/analytics','AnalyticsController@index')->name('analytics.index');
     Route::post('/analytics/getAnalytics','AnalyticsController@generate')->name('analytics.generate');
+
+    Route::get('/jasActivities','JasActivityController@index')->name('jasActivities.index');
+    Route::get('/getJasActivities/{id}','JasActivityController@getJasActivities')->name('jasActivities.getJasActivities');
 });

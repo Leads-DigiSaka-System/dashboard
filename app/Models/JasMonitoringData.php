@@ -32,7 +32,7 @@ class JasMonitoringData extends Model
 
     public function profile()
     {
-        return $this->belongsTo(JasProfile::class, 'jas_profile_id');
+        return $this->belongsTo(JasProfile::class, 'jas_profile_id','id');
     }
 
     public function activity()

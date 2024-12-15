@@ -29,6 +29,9 @@
                             <h4 class="m-0"><i class="fas fa-users mr-2"></i>&nbsp;{{ __('JAS Profiles') }}</h4>
                         </div>
                         <div>
+                        <a class="btn btn-info" style="margin-right: 10px;" href="{{route('jasActivities.index')}}" role="button">JAS Activities</a>
+                        </div>
+                        <div>
                             <a class="btn btn-warning" style="margin-right: 10px;" href="{{route('analytics.index')}}" role="button">Analytics</a>
                         </div>
                         <div>

@@ -1,5 +1,26 @@
 'use strict'
 
+// Make monochrome colors
+const timing_colors = Highcharts.getOptions().colors.map((c, i) =>
+    // Start out with a darkened base color (negative brighten), and end
+    // up with a much brighter color
+    Highcharts.color(Highcharts.getOptions().colors[0])
+        .brighten((i - 3) / 7)
+        .get()
+);
+
+// Make observation monochrome colors
+const observation_colors = Highcharts.getOptions().colors.map((c, i) =>
+
+	//console.log(Highcharts.getOptions().colors)
+    // Start out with a darkened base color (negative brighten), and end
+    // up with a much brighter color
+    Highcharts.color(Highcharts.getOptions().colors[6])
+        .brighten((i - 3) / 7)
+        .get()
+);
+
+
 const timingChartScript = function(arr) {
 	return {
         chart: {
@@ -9,6 +30,9 @@ const timingChartScript = function(arr) {
             text: 'Timing',
         },
         plotOptions: {
+        	pie: {
+        		colors:timing_colors
+        	},
         	series: {
         		allowPointSelect: true,
 				cursor: 'pointer',
@@ -42,6 +66,9 @@ const observationChartScript = function(arr) {
             text: 'Observation',
         },
         plotOptions: {
+        	pie: {
+        		colors:observation_colors
+        	},
         	series: {
         		allowPointSelect: true,
 				cursor: 'pointer',
@@ -152,3 +179,6 @@ const getAnalytics = async function () {
 $('#activity').on('change', getAnalytics)
 $('#area').on('change', getAnalytics)
 $('#product').on('change', getAnalytics)
+
+
+getAnalytics()
