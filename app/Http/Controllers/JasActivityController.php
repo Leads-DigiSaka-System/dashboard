@@ -38,12 +38,17 @@ class JasActivityController extends Controller
             ->get();
         $data = array();
 
+
         if(!$monitoring_data->isEmpty()) {
             foreach($monitoring_data as $monitoring) {
+                $first_name = empty($monitoring->profile) ? "-" : $monitoring->profile->first_name;
+                $last_name = empty($monitoring->profile) ? "-" : $monitoring->profile->last_name;
+                $full_name = $first_name !== "-" && $last_name !== "-" ? $first_name.' '.$last_name : "Deleted User";
+
                 $data[] = array(
                     'timing' => $monitoring->timing,
                     'observation' => $monitoring->observation,
-                    'fullname' => $monitoring->profile->first_name.' '.$monitoring->profile->last_name,
+                    'fullname' => $full_name,
                 );
             }
         }
