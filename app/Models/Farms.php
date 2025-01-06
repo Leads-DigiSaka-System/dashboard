@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-
+use Intervention\Image\ImageManagerStatic as Image;
 class Farms extends Model
 {
     use HasFactory;
@@ -146,18 +146,57 @@ class Farms extends Model
     }
 
     public static function getRandomFarmWthFarmerDetails($restriction = NULL) {
-        return self::whereHas('farmerDetails', function ($query) {
-            $query->where('via_app',1);
+        $farms = self::whereHas('farmerDetails', function ($query) {
+            $query->where('via_app', 1);
         })
         ->with('farmerDetails')
         ->where(function($query) use ($restriction) {
             $query->where('region', 'like', $restriction);
-            if($restriction == "%%"){
+            if ($restriction == "%%") {
                 $query->orWhereNull('region');
             }
         })
         ->inRandomOrder()
         ->limit(5)
         ->get();
+    
+        // Filter farms to exclude pure black images
+        foreach ($farms as $farm) {
+            if (!empty($farm->farm_image)) {
+                $images = explode(',', $farm->farm_image);
+                $filteredImages = [];
+                foreach ($images as $image) {
+                    $imagePath = public_path($image);
+                    if (file_exists($imagePath) && !self::isPureBlack($imagePath)) {
+                        $filteredImages[] = $image;
+                    }
+                }
+                // Update farm_image with only valid images
+                $farm->farm_image = implode(',', $filteredImages);
+            }
+        }
+    
+        return $farms;
+    }
+    
+    private static function isPureBlack($imagePath) {
+        $img = imagecreatefromstring(file_get_contents($imagePath));
+        $width = imagesx($img);
+        $height = imagesy($img);
+    
+        for ($x = 0; $x < $width; $x++) {
+            for ($y = 0; $y < $height; $y++) {
+                $rgb = imagecolorat($img, $x, $y);
+                $colors = imagecolorsforindex($img, $rgb);
+    
+                if ($colors['red'] !== 0 || $colors['green'] !== 0 || $colors['blue'] !== 0) {
+                    imagedestroy($img);
+                    return false;
+                }
+            }
+        }
+    
+        imagedestroy($img);
+        return true; // Image is pure black
     }
 }
