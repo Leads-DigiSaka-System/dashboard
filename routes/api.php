@@ -100,6 +100,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::get('/notification', 'AccountController@notification')->name('notification');
 			Route::post('/contactUs', 'HomeController@contactUs')->name('contactUs');
 			Route::get('/farm-list', 'FarmController@index')->name('farm_list');
+			Route::get('/farm-list-for-pyweb', 'FarmController@detailForPyweb')->name('farm_list_pyweb');
 			Route::post('/farm-store', 'FarmController@store')->name('farm_store');
 			Route::get('/getPoints/{farmer_id}', 'HomeController@getPoints')->name('getPoints');
 			Route::get('/farm-detail', 'FarmController@detail')->name('farm_detail');

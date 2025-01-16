@@ -35,7 +35,10 @@
                             <a class="btn btn-warning" style="margin-right: 10px;" href="{{route('analytics.index')}}" role="button">Analytics</a>
                         </div>
                         <div>
-                            <a class="btn btn-primary" href="{{route('jasProfiles.summary.pdf')}}" role="button">View Summary Report</a>
+                            <a class="btn btn-primary" style="margin-right: 10px;" href="{{route('jasProfiles.summary.pdf')}}" role="button">View Summary Report</a>
+                        </div>
+                        <div>
+                            <a class="btn btn-secondary" href="{{route('downloadParticipants.summary.excel')}}" role="button">Export Participants Report</a>
                         </div>
                     </div>
 

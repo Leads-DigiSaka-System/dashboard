@@ -72,6 +72,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if (!empty($webinars))
                                 @foreach ($webinars as $webinar)
                                     @php
                                         $startDate = strtotime($webinar->start_date);
@@ -112,6 +113,7 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>

@@ -129,6 +129,59 @@
 <div class="tab-pane fade show" id="content13" style="padding-right: 10px;">
     <div class="row">
         @foreach ($webinars as $webinar)
+            @if ($webinar->status == 1 || ($webinar->status == 2 && strtotime($webinar->start_date) > time()))
+                <div class="col-md-12 col-lg-6" style="height:350px;">
+                    <div class="card rounded-3 shadow-sm mb-4">
+                        <div class="card-body">
+                            <div class="webinar-status">
+                                @if ($webinar->status == 2)
+                                    @php
+                                        $startDate = strtotime($webinar->start_date);
+                                    @endphp
+                                    @if ($startDate > time())
+                                        <span class="not-started">Not Started</span>
+                                        <br>
+                                        <small>Starts on: {{ date('M d, Y H:i', $startDate) }}</small>
+                                    @endif
+                                @elseif ($webinar->status == 1)
+                                    <span class="active-now">Active</span>
+                                @endif
+                            </div>
+                            <h3 class="webinar-title">{{ $webinar->title }}</h3>
+
+                            <!-- Conditionally display video or photo based on $webinar->type -->
+                            @if ($webinar->type == 0)
+                                <!-- Display Facebook Video -->
+                                <div id="fb-root"></div>
+                                <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0">
+                                </script>
+                                <div class="fb-video" data-href="{{ $webinar->link }}" data-width="500"
+                                    data-show-text="false"></div>
+                            @elseif($webinar->type == 1)
+                                <!-- Display Photo with Link -->
+                                @php
+                                if (Str::startsWith($webinar->image_source, ['http://', 'https://'])) {
+                                    $imageUrl = $webinar->image_source;
+                                } else {
+                                    $imageUrl = Storage::url($webinar->image_source);
+                                }
+                                @endphp
+                                <a href="{{ $webinar->link }}" target="_blank">
+                                    <img src="{{ $imageUrl }}" alt="Webinar Photo"
+                                        style="width:100%; max-height:300px; object-fit:cover;">
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endif
+        @endforeach
+    </div>
+</div>
+
+<!-- <div class="tab-pane fade show" id="content13" style="padding-right: 10px;">
+    <div class="row">
+        @foreach ($webinars as $webinar)
             <div class="col-md-12 col-lg-6" style="height:350px;">
                 <div class="card rounded-3 shadow-sm mb-4">
                     <div class="card-body">
@@ -153,16 +206,13 @@
                         </div>
                         <h3 class="webinar-title">{{ $webinar->title }}</h3>
 
-                        <!-- Conditionally display video or photo based on $webinar->type -->
                         @if ($webinar->type == 0)
-                            <!-- Display Facebook Video -->
                             <div id="fb-root"></div>
                             <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0">
                             </script>
                             <div class="fb-video" data-href="{{ $webinar->link }}" data-width="500"
                                 data-show-text="false"></div>
                         @elseif($webinar->type == 1)
-                            <!-- Display Photo with Link -->
                             @php
                             if (Str::startsWith($webinar->image_source, ['http://', 'https://'])) {
                                 $imageUrl = $webinar->image_source;
@@ -180,7 +230,7 @@
             </div>
         @endforeach
     </div>
-</div>
+</div> -->
 
 <style>
     .active-now {

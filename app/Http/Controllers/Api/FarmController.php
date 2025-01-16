@@ -123,6 +123,21 @@ class FarmController extends Controller
          return returnNotFoundResponse('farm not found with this farm id');
      }
 
+
+     public function detailForPyweb(Request $request, Farms $farms)
+        {
+            $farmList = $farms->getAllFarms();
+
+            if (!empty($farmList)) {
+                foreach ($farmList as &$farm) {
+                    $farm['farm_image'] = explode(",", $farm['farm_image']);
+                }
+                return returnSuccessResponse('All farms retrieved successfully', $farmList);
+            }
+
+            return returnNotFoundResponse('No farms found');
+        }
+
     public function update(Request $request)
     {
 
