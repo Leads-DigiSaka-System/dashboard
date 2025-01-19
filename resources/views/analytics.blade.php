@@ -88,6 +88,8 @@
         	@endforeach --}}
 		</div>
     </div>
+
+	@include('analytics.modal.modal')
 @endsection
 
 @push('page_script')

@@ -119,6 +119,9 @@ Route::middleware('prevent-back-history')->group(function () {
     Route::get('/jasProfiles/summary/pdf', 'JasProfileController@viewJasSummaryReportPDF')->name('jasProfiles.summary.pdf');
     Route::get('/jasProfiles/downloadParticipants/excel', 'JasProfileController@viewJasDownloadParticipantsExcel')->name('downloadParticipants.summary.excel');
     Route::post('/jasProfiles/images','JasProfileController@getMonitoringImages');
+    Route::get('/getActivityDetails', 'JasDetailsController@getActivityDetails');
+
+
 
     // Calendar Routes
     Route::get('/events', 'EventController@index');
