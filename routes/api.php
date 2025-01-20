@@ -150,6 +150,11 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::get('/search_by_area/{search}', 'AuthController@searchtps')->name('searchtps');
 
 
+            //Diseases
+			Route::post('/diseases/insert', 'DiseaseController@insertDisease')->name('insertDisease');
+
+
+
 			Route::post('/image/upsert/{id?}', function (Request $request, $id = null) {
 				$data = $request->all(); 
 				
