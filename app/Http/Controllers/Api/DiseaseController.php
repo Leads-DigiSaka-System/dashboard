@@ -72,4 +72,27 @@ class DiseaseController extends Controller
             ], 500);
         }
     }
+    public function getAllDiseases()
+    {
+        try {
+            $diseases = Disease::all();
+            $diseases->transform(function ($disease) {
+                $disease->image = json_decode($disease->image, true);
+                return $disease;
+            });
+
+            return response()->json([
+                'message' => 'Diseases retrieved successfully.',
+                'data' => $diseases,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function showDiseaseDetails(Request $id)
+    {
+        
+    }
 }
