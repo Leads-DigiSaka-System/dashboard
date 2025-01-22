@@ -15,74 +15,82 @@ class DiseaseController extends Controller
         DB::beginTransaction();
 
         try {
-            // Validate input data
             $validatedData = $request->validate([
                 'name' => 'required|string|unique:diseases',
                 'score' => 'nullable|string',
                 'description' => 'nullable|string',
                 'create_by' => 'required|string',
-                'image' => 'nullable|array', // Expect an array of images
-                'image.*' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048', // Validate image files
+                'image' => 'nullable|array',
+                'image.*' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048', 
             ]);
 
-            // Initialize an array to store image paths
             $imagePaths = [];
 
-            // If image files are present in the request
             if ($request->hasFile('image')) {
-                // Loop through the files and process each one
                 foreach ($request->file('image') as $file) {
                     $name = Str::uuid() . '_' . time() . '_' . $file->getClientOriginalName();
-                    $path = 'upload/images'; // Directory to store the images
-                    $file->move(public_path($path), $name); // Move the image to the directory
-                    $imagePaths[] = asset($path . '/' . $name); // Save the image URL
+                    $path = 'upload/images'; 
+                    $file->move(public_path($path), $name); 
+                    $imagePaths[] = asset($path . '/' . $name); 
                 }
             }
 
-            // Create the Disease record in the database
             $disease = Disease::create([
                 'name' => $validatedData['name'],
                 'score' => $validatedData['score'],
                 'description' => $validatedData['description'],
-                'image' => json_encode($imagePaths), // Store image paths as JSON
+                'image' => json_encode($imagePaths), 
                 'create_by' => $validatedData['create_by'],
             ]);
 
             DB::commit();
 
-            // Return success response with the created disease
             return response()->json([
                 'message' => 'Disease created successfully!',
                 'data' => $disease,
             ], 201);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
-            // Return validation errors if validation fails
             return response()->json([
                 'error' => 'Validation failed.',
                 'details' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
-            // Rollback the transaction if any exception occurs
             DB::rollback();
 
-            // Return generic error response
             return response()->json([
                 'error' => 'An error occurred: ' . $e->getMessage(),
             ], 500);
         }
     }
-    public function getAllDiseases()
+    // public function getAllDiseases()
+    // {
+    //     try {
+    //         $diseases = Disease::all();
+    //         $diseases->transform(function ($disease) {
+    //             $disease->image = json_decode($disease->image, true);
+    //             return $disease;
+    //         });
+
+    //         return response()->json([
+    //             'message' => 'Diseases retrieved successfully.',
+    //             'data' => $diseases,
+    //         ], 200);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'error' => 'An error occurred: ' . $e->getMessage(),
+    //         ], 500);
+    //     }
+    // }
+
+    public function getDiseasesSummary()
     {
         try {
-            $diseases = Disease::all();
-            $diseases->transform(function ($disease) {
-                $disease->image = json_decode($disease->image, true);
-                return $disease;
-            });
+            // Retrieve only id, name, and score fields
+            $diseases = Disease::select('id', 'name', 'score')->get();
 
             return response()->json([
-                'message' => 'Diseases retrieved successfully.',
+                'message' => 'Disease summaries retrieved successfully.',
                 'data' => $diseases,
             ], 200);
         } catch (\Exception $e) {
@@ -91,8 +99,41 @@ class DiseaseController extends Controller
             ], 500);
         }
     }
-    public function showDiseaseDetails(Request $id)
+
+    public function getDiseaseById(Request $request)
     {
-        
+        try {
+            $validatedData = $request->validate([
+                'id' => 'required|integer|exists:diseases,id',
+            ]);
+    
+            $disease = Disease::find($validatedData['id']);
+    
+            if (!$disease) {
+                return response()->json([
+                    'error' => 'Disease not found.',
+                ], 404);
+            }
+    
+            $disease->image = json_decode($disease->image, true);
+    
+            return response()->json([
+                'message' => 'Disease retrieved successfully.',
+                'data' => $disease,
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'error' => 'Validation failed.',
+                'details' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred: ' . $e->getMessage(),
+            ], 500);
+        }
     }
+    
+
+    
+    
 }

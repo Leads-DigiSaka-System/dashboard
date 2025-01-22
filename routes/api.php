@@ -152,7 +152,8 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 
             //Diseases
 			Route::post('/diseases/insert', 'DiseaseController@insertDisease')->name('insertDisease');
-			Route::get('/diseases/load', 'DiseaseController@getAllDiseases')->name('getAllDiseases');
+			Route::get('/diseases/load', 'DiseaseController@getDiseasesSummary')->name('getDiseasesSummary');
+			Route::post('/diseases/loadperid', 'DiseaseController@getDiseaseById');
 
 
 
