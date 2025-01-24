@@ -33,9 +33,9 @@
 							<select class="form-select" id="area">
 								<option disabled selected>Select Area</option>
 								<option value="all">All</option>
-								@if(!$jas_area->isEmpty())
-									@foreach($jas_area as $area)
-										<option value="{{ $area }}">{{ $area }}</option>
+								@if(!$jas_provinces->isEmpty())
+									@foreach($jas_provinces as $province)
+										<option value="{{ $province }}">{{ $province }}</option>
 									@endforeach
 								@endif
 							</select>

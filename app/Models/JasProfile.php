@@ -29,6 +29,7 @@ class JasProfile extends Model
         'farmer_id',
         'batch',
         'location',
+        'province_id',
         'duration' ,
         'farm_id' ,
         'level' 

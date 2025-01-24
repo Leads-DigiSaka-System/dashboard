@@ -35,6 +35,19 @@ class LocationController extends Controller
         ]);
     }
 
+
+    public function getAllProvinces() {
+        // Fetch all provinces from the Province model
+        $provinces = Province::all();
+    
+        // Return the response as JSON
+        return response()->json([
+            'status' => 'success',
+            'data' => $provinces
+        ]);
+    }
+    
+
     //Function to get all municipalities based on provinceCode and return as json
     public function getMunicipalities($regionCode, $provinceCode){
         $municipalities = Municipality::getMunicipalities($provinceCode);

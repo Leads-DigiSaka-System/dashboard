@@ -38,6 +38,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 
 		// Province data fetching
 		Route::get('/regions/{regionCode}/provinces', 'LocationController@getProvinces')->name('getProvinces');
+		Route::get('/provinces/all', 'LocationController@getAllProvinces')->name('getAllProvinces');
 
 		// Municipality data fetching
 		Route::get('/regions/{regionCode}/provinces/{provinceCode}/municipalities', 'LocationController@getMunicipalities')->name('getMunicipalities');
@@ -156,6 +157,9 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::post('/diseases/loadperid', 'DiseaseController@getDiseaseById');
 
 
+			//Harvest
+			Route::post('/harvest/insert', 'HarvestController@insertHarvest')->name('insertHarvest');
+			Route::post('/harvest/getbyjasid', 'HarvestController@getHarvestsByJasId')->name('getHarvestsByJasId');
 
 
 			Route::post('/image/upsert/{id?}', function (Request $request, $id = null) {

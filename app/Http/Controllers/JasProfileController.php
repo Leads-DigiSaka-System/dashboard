@@ -150,121 +150,11 @@ class JasProfileController extends Controller
             ->header('Content-Disposition', 'inline; filename="summary_report.pdf"');
     }
 
-    // public function viewJasDownloadParticipantsExcel()
-    // {
-    //     $profiles = JasExportParticipants::with('farm')
-    //         ->select(
-    //             'id',
-    //             'first_name',
-    //             'last_name',
-    //             'middle',
-    //             'birthdate',
-    //             'phone',
-    //             'variety_used_wet',
-    //             'variety_used_dry',
-    //             'average_yield_wet',
-    //             'average_yield_dry',
-    //             'dealers',
-    //             'year',
-    //             'active',
-    //             'farmer_id',
-    //             'batch',
-    //             'area',
-    //             'location',
-    //             'duration',
-    //             'address',
-    //             'farm_id',
-    //             'level'
-    //         )
-    //         ->get()
-    //         ->map(function ($profile) {
-    //             return [
-    //                 'ID' => $profile->id,
-    //                 'First Name' => $profile->first_name,
-    //                 'Last Name' => $profile->last_name,
-    //                 'Middle' => $profile->middle,
-    //                 'Birthdate' => $profile->birthdate,
-    //                 'Phone' => $profile->phone,
-    //                 'Variety Used Wet' => $profile->variety_used_wet,
-    //                 'Variety Used Dry' => $profile->variety_used_dry,
-    //                 'Average Yield Wet' => $profile->average_yield_wet,
-    //                 'Average Yield Dry' => $profile->average_yield_dry,
-    //                 'Dealers' => $profile->dealers,
-    //                 'Year' => $profile->year,
-    //                 'Batch' => $profile->batch,
-    //                 'Area' => $profile->area,
-    //                 'Location' => $profile->location,
-    //                 'Duration' => $profile->duration,
-    //                 'Address' => $profile->address,
-    //                 'Farm Name' => optional($profile->farm)->name, 
-    //                 'Farm Region' => optional($profile->farm)->region, 
-    //                 'Level' => $profile->level,
-    //             ];
-    //         });
-
-    //     // Generate Excel using Maatwebsite\Excel with styles
-    //     return Excel::download(new class($profiles) implements FromCollection, WithHeadings, WithStyles, ShouldAutoSize {
-    //         private $data;
-
-    //         public function __construct($data)
-    //         {
-    //             $this->data = $data;
-    //         }
-
-    //         public function collection()
-    //         {
-    //             return collect($this->data);
-    //         }
-
-    //         public function headings(): array
-    //         {
-    //             return [
-    //                 'ID',
-    //                 'First Name',
-    //                 'Last Name',
-    //                 'Middle',
-    //                 'Birthdate',
-    //                 'Phone',
-    //                 'Variety Used Wet',
-    //                 'Variety Used Dry',
-    //                 'Average Yield Wet',
-    //                 'Average Yield Dry',
-    //                 'Dealers',
-    //                 'Year',
-    //                 'Batch',
-    //                 'Area',
-    //                 'Location',
-    //                 'Duration',
-    //                 'Address',
-    //                 'Farm Name',
-    //                 'Farm Region',
-    //                 'Level',
-    //             ];
-    //         }
-
-    //         public function styles(Worksheet $sheet)
-    //         {
-    //             // Bold the header
-    //             $sheet->getStyle('A1:T1')->getFont()->setBold(true);
-
-    //             // Center all data
-    //             $sheet->getStyle('A1:T' . $sheet->getHighestRow())
-    //                 ->getAlignment()
-    //                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER)
-    //                 ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-
-    //             // Add borders to the cells
-    //             $sheet->getStyle('A1:T' . $sheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-
-    //             return [];
-    //         }
-    //     }, 'participants.xlsx');
-    // }
-
     public function viewJasDownloadParticipantsExcel()
     {
         $profiles = JasExportParticipants::with('farm')
             ->join('users', 'jas_profiles.technician', '=', 'users.id')
+            ->leftJoin('provinces', 'jas_profiles.province_id', '=', 'provinces.id') // Use leftJoin to include all rows
             ->select(
                 'jas_profiles.id',
                 'jas_profiles.first_name',
@@ -282,6 +172,7 @@ class JasProfileController extends Controller
                 'jas_profiles.batch',
                 // 'jas_profiles.area',
                 'jas_profiles.location',
+                'provinces.name as province_name', // Select the province name
                 'jas_profiles.duration',
                 'jas_profiles.address',
                 'jas_profiles.farm_id',
@@ -305,7 +196,7 @@ class JasProfileController extends Controller
                     'Year' => $profile->year,
                     'Batch' => $profile->batch,
                     // 'Area' => $profile->area,
-                    'Location' => $profile->location,
+                    'Location' => $profile->province_name ?? '', 
                     'Duration' => $profile->duration,
                     'Address' => $profile->address,
                     'Farm Name' => optional($profile->farm)->name,
@@ -313,21 +204,20 @@ class JasProfileController extends Controller
                     'Level' => $profile->level,
                 ];
             });
-
-
+    
         return Excel::download(new class($profiles) implements FromCollection, WithHeadings, WithStyles, ShouldAutoSize {
             private $data;
-
+    
             public function __construct($data)
             {
                 $this->data = $data;
             }
-
+    
             public function collection()
             {
                 return collect($this->data);
             }
-
+    
             public function headings(): array
             {
                 return [
@@ -354,25 +244,27 @@ class JasProfileController extends Controller
                     'Level',
                 ];
             }
-
+    
             public function styles(Worksheet $sheet)
             {
                 // Bold the header
                 $sheet->getStyle('A1:U1')->getFont()->setBold(true);
-
+    
                 // Center all data
                 $sheet->getStyle('A1:U' . $sheet->getHighestRow())
                     ->getAlignment()
                     ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER)
                     ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-
+    
                 // Add borders to the cells
                 $sheet->getStyle('A1:U' . $sheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-
+    
                 return [];
             }
         }, 'Jas_Participants.xlsx');
     }
+    
+    
 
     
     public function getMonitoringImages(Request $request) {

@@ -38,6 +38,7 @@ class JasExportParticipants extends Model
         'batch',
         'area',
         'location',
+        'province_id',
         'duration',
         'address',
         'farm_id',
