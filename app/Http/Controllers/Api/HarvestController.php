@@ -108,7 +108,7 @@ class HarvestController extends Controller
 
         // Return the harvest records
         return response()->json([
-            'success' => true,
+            'message' => 'success', 
             'data' => $harvests,
         ], 200);
     }
