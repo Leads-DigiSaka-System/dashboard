@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use File, DB;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Illuminate\Support\Facades\Validator;
 
 class JasController extends Controller
 {
@@ -440,6 +441,34 @@ class JasController extends Controller
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         $dompdf->stream('document.pdf', ['Attachment' => false]);
+    }
+
+
+    public function updateFarmId(Request $request)
+    {
+        // Validate request parameters
+        $validator = Validator::make($request->all(), [
+            'farmer_id' => 'required|integer|exists:jas_profiles,farmer_id',
+            'farm_id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        $farmerId = $request->input('farmer_id');
+        $farmId = $request->input('farm_id');
+
+        // Update the farm_id in jas_profiles
+        $updated = DB::table('jas_profiles')
+            ->where('farmer_id', $farmerId)
+            ->update(['farm_id' => $farmId]);
+
+        if ($updated) {
+            return response()->json(['message' => 'Farm ID updated successfully.'], 200);
+        } else {
+            return response()->json(['error' => 'Update failed or no changes made.'], 400);
+        }
     }
 
 

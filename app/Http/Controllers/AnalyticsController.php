@@ -16,7 +16,7 @@ class AnalyticsController extends Controller
         $jas_area = JasProfile::groupBy('area')->pluck('area')->filter();
         $jas_product = JasMonitoring::groupBy('product')->pluck('product')->filter();
 
-        $jas_provinces = JasProfile::join('provinces', 'jas_profiles.province_id', '=', 'provinces.id')
+        $jas_provinces = JasProfile::join('provinces', 'jas_profiles.province_id', '=', 'provinces.provcode')
         ->groupBy('provinces.name')
         ->pluck('provinces.name')
         ->filter();

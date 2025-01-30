@@ -125,6 +125,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::get('/jas/getProfileByTps/{id?}', 'JasController@getByTps');
 			Route::get('/jas/getJasProfileData/{id}', 'JasController@getJasProfileData');
 			Route::get('/jaspertps/{technician_id}', 'JasPerTpsController@getParticipantsByTechnician');
+			Route::post('/jas/updateFarm', 'JasController@updateFarmId');
 
 			//jas-activities
 			Route::get('/jas/getActivities', 'JasController@getActivities');

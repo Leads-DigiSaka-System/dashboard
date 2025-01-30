@@ -191,10 +191,104 @@ const getAnalytics = async function () {
 };
 
 
+// const viewDetails = async function (activityName) {
+// 	try {
+// 	  $('#modalActivityName').text(activityName || 'N/A');
+// 	  const response = await fetch(`/getActivityDetails?activityName=${encodeURIComponent(activityName)}`);
+// 	  const data = await response.json();
+  
+// 	  if (!response.ok) {
+// 		alert(data.error || "Failed to fetch activity details.");
+// 		return;
+// 	  }
+  
+// 	  const baseURL = window.location.origin;
+// 	  const tableBody = $("#detailsTable tbody");
+// 	  tableBody.empty();
+  
+// 	  data.details.forEach((detail) => {
+// 		const images = [
+// 		  `${baseURL}/${detail.image1}`,
+// 		  `${baseURL}/${detail.image2}`,
+// 		  `${baseURL}/${detail.image3}`,
+// 		  `${baseURL}/${detail.image4}`,
+// 		].filter((url) => url); // Only keep non-empty URLs
+  
+// 		if (images.length > 0) {
+// 		  const imagesJson = JSON.stringify(images);
+// 		  tableBody.append(`
+// 			<tr>
+// 			  <td>${detail.full_name || "N/A"}</td>
+// 			  <td>${detail.product_used || "N/A"}</td>
+// 			  <td>${detail.disease || "N/A"}</td>
+// 			  <td>${detail.date_of_activity || "N/A"}</td>
+// 			  <td>${activityName || "N/A"}</td>
+// 			  <td>
+// 				<button class="btn btn-primary btn-sm view-images" data-images='${imagesJson}'>
+// 				  View Images
+// 				</button>
+// 			  </td>
+// 			</tr>
+// 		  `);
+// 		} else {
+// 		  tableBody.append(`
+// 			<tr>
+// 			  <td>${detail.full_name || "N/A"}</td>
+// 			  <td>${detail.product_used || "N/A"}</td>
+// 			  <td>${detail.disease || "N/A"}</td>
+// 			  <td>${detail.date_of_activity || "N/A"}</td>
+// 			  <td>${activityName || "N/A"}</td>
+// 			  <td>No Images Available</td>
+// 			</tr>
+// 		  `);
+// 		}
+// 	  });
+  
+// 	  // Image modal click handler
+// 	  $(".view-images").on("click", function () {
+// 		const imagesData = $(this).data("images");
+// 		if (imagesData) {
+// 		  const images = imagesData;
+// 		  let imageGridContent = "";
+  
+// 		  images.forEach((url, index) => {
+// 			if (url) {
+// 			  imageGridContent += `
+// 				<div class="col-3 mb-3">
+// 				  <img src="${url}" class="img-fluid zoom-image" style="height: 200px; object-fit: cover;" alt="Image ${index + 1}">
+// 				</div>
+// 			  `;
+// 			}
+// 		  });
+  
+// 		  $("#imageGrid").html(imageGridContent);
+// 		  $("#imageModal").modal("show");
+  
+// 		  // Apply zoom effect
+// 		  $(".zoom-image").on("mouseenter", function () {
+// 			$(this).css("transform", "scale(3)");
+// 		  }).on("mouseleave", function () {
+// 			$(this).css("transform", "scale(1)");
+// 		  });
+// 		}
+// 	  });
+  
+// 	  // Show the activity details modal
+// 	  $("#detailsModal").modal("show");
+  
+// 	} catch (error) {
+// 	  console.error("Error fetching activity details:", error);
+// 	  alert("An error occurred while loading details.");
+// 	}
+// };
+
+
 const viewDetails = async function (activityName) {
 	try {
+    const area = $("#area").val();
+    console.log(area);
 	  $('#modalActivityName').text(activityName || 'N/A');
-	  const response = await fetch(`/getActivityDetails?activityName=${encodeURIComponent(activityName)}`);
+    const response = await fetch(`/getActivityDetails?activityName=${encodeURIComponent(activityName)}&provinceId=${encodeURIComponent(area)}`);
 	  const data = await response.json();
   
 	  if (!response.ok) {
@@ -281,7 +375,6 @@ const viewDetails = async function (activityName) {
 	  alert("An error occurred while loading details.");
 	}
 };
-
 
 
   

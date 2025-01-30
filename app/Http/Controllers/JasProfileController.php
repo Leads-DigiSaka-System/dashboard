@@ -154,7 +154,7 @@ class JasProfileController extends Controller
     {
         $profiles = JasExportParticipants::with('farm')
             ->join('users', 'jas_profiles.technician', '=', 'users.id')
-            ->leftJoin('provinces', 'jas_profiles.province_id', '=', 'provinces.id') // Use leftJoin to include all rows
+            ->leftJoin('provinces', 'jas_profiles.province_id', '=', 'provinces.provcode') // Use leftJoin to include all rows
             ->select(
                 'jas_profiles.id',
                 'jas_profiles.first_name',
