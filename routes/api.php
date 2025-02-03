@@ -84,6 +84,10 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 		Route::post('/sendSMSotp', 'AuthController@sendSMSOTP')->name('sendOTP');
 		Route::post('/verifySMSotp', 'AuthController@verifySMSOTP')->name('verifyOTP');
 		Route::get('/get-proof/{farmerId}', 'AccountController@getProof')->name('getProof');
+
+        // TOKEN FOR DIGISAKA EXPLORER
+		Route::post('/fields/gettoken', 'DigiSakaExplorrerController@loginWithToken')->name('loginWithToken');
+
 		Route::middleware(['auth:sanctum'])->group(function () {
 
 			Route::get('/calendar/{month?}', 'AuthController@getCalendar')->name('getCalendar');
@@ -162,6 +166,12 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::post('/harvest/insert', 'HarvestController@insertHarvest')->name('insertHarvest');
 			Route::post('/harvest/getbyjasid', 'HarvestController@getHarvestsByJasId')->name('getHarvestsByJasId');
 
+
+			//DIGI SAKA EXPLORER
+			Route::post('/fields/create', 'DigiSakaExplorrerController@create')->name('create');
+			Route::get('/fields', 'DigiSakaExplorrerController@getFarmFields')->name('getFarmFields');
+			Route::get('/fields/{id}', 'DigiSakaExplorrerController@show')->name('show');
+			Route::delete('/fields/{id}/delete', 'DigiSakaExplorrerController@destroy')->name('destroy');
 
 			Route::post('/image/upsert/{id?}', function (Request $request, $id = null) {
 				$data = $request->all(); 

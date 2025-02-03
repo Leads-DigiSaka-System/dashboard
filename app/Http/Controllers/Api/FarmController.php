@@ -45,6 +45,7 @@ class FarmController extends Controller
     {
         $rules = array(
             //'farm_id' =>  'required|unique:farms,farm_id,NULL,id',
+            'name' => 'required',
             'area_location' => 'required',
             'farm_image'=>'required',
             'region' => 'required',
@@ -81,6 +82,7 @@ class FarmController extends Controller
             }
             
             $farmArr['farmer_id'] = isset($request->farmer_id) ? $request->farmer_id : Auth::id();
+            $farmArr['name']=$request->name;
             $farmArr['area_location']=$request->area_location;
             $farmArr['image_latitude']=$request->image_latitude;
             $farmArr['image_longitude']=$request->image_longitude;
@@ -121,7 +123,7 @@ class FarmController extends Controller
          return returnSuccessResponse('Farm detail', $farmObj);   
         }
          return returnNotFoundResponse('farm not found with this farm id');
-     }
+      }
 
 
      public function detailForPyweb(Request $request, Farms $farms)
