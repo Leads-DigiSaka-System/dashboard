@@ -151,6 +151,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::post('/jas/deleteMonitoringData/{id}', 'JasController@deleteMonitoringData');
 
 
+
 			Route::get('/search/{search}/{role?}', 'AuthController@searchUser')->name('searchUser');
 			Route::get('/search_employee/{first_name}/{last_name}', 'AuthController@searchEmployee')->name('searchEmployee');
 			Route::get('/search_by_area/{search}', 'AuthController@searchtps')->name('searchtps');
@@ -198,7 +199,11 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			
 		});
 	});
+	
+	//GHG-profiles
+	Route::get('/ghg/getProfiles/{id?}', 'GHGController@get');
 
+	
 	Route::post('/farms/upsertJournal/{id?}', 'JournalController@upsert');
 	Route::get('/farms/getJournals', 'JournalController@get');
 	Route::post('/farms/deleteJournal/{id}', 'JournalController@delete');

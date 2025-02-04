@@ -125,6 +125,11 @@
                             JAS <img src="/images/jasLogo.png" style="width:50px;    margin-left: 5px;" />
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link navs" data-toggle="tab" href="#ghg_tab">
+                            GHG <img src="/images/digisaka_logo.png" style="height:28px;    margin-left: 5px;" />
+                        </a>
+                    </li>
                     {{-- <li class="nav-item">
                         <a class="nav-link navs" id="tab1" data-toggle="tab" href="#content1">Summary</a>
                     </li> --}}
@@ -198,6 +203,7 @@
         @include('dashboard.tabs.links')
         @include('dashboard.tabs.other_activities')
         @include('dashboard.tabs.techno-demo')
+        @include('dashboard.tabs.ghg')
         <div class="tab-pane fade active show" id="content1">
             <div class="container-fluid px-6 pt-6">
                 <div class="row">
@@ -950,7 +956,8 @@
 @push('scripts')
     @include('include.dataTableScripts')
     <script src="{{ asset('js/pages/jas/index.js') }}?v={{ time() }}"></script>
-
+    <script src="{{ asset('js/pages/ghg/index.js') }}?v={{ time() }}"></script>
+    
     @include('dashboard.chartScript')
     @include('dashboard.chart_v2_script')
     <script>
