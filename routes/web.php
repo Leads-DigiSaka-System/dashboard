@@ -121,7 +121,9 @@ Route::middleware('prevent-back-history')->group(function () {
     Route::post('/jasProfiles/images','JasProfileController@getMonitoringImages');
     Route::get('/getActivityDetails', 'JasDetailsController@getActivityDetails');
 
-
+    Route::get('/ghg/getProfiles/{id?}', 'GHGController@get');
+    Route::get('/ghgProfiles/pdf/{id}', 'GHGController@profilePdf')->name('ghg.pdf');
+    Route::get('/ghgProfiles/summary/pdf', 'GHGController@viewSummaryReportPDF')->name('ghg.summary.pdf');
 
     // Calendar Routes
     Route::get('/events', 'EventController@index');

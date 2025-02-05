@@ -43,7 +43,7 @@
 </head>
 
 <body>
-    @foreach ($profiles->groupBy('area') as $location => $locationProfiles)
+    @foreach ($profiles as $location => $locationProfiles)
         <div class="section-title">{{ strtoupper($location) }}</div>
 
         @php 
@@ -51,7 +51,7 @@
             $no = 1;
         @endphp
 
-        @foreach ($locationProfiles->chunk(15) as $chunkedProfiles)
+        @foreach ($locationProfiles->chunks as $chunkedProfiles)
             <table>
                 <thead>
                     <tr>
@@ -75,35 +75,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
-                    @foreach ($chunkedProfiles->groupBy(function($profile) {
-                        return $profile->technician;
-                    }) as $technician => $technicianProfiles)
+                    @foreach($chunkedProfiles->technicians as $technician => $technicianProfiles)
 
                         @php 
-                            $rowspan = $technicianProfiles->count(); 
+                            $rowspan = count($technicianProfiles); 
                         @endphp
 
                         @foreach ($technicianProfiles as $index => $profile)
+                            
+                            
                             <tr>
                                 <td style="text-align: left">{{ $no }}. {{ optional($profile)->first_name ?? '' }} {{ optional($profile)->middle ?? '' }} {{ optional($profile)->last_name ?? '' }}</td>
                                 @if ($index == 0)
-                                    <td rowspan="{{ $rowspan }}">{{ is_numeric($technician) ?  $profile->technician_profile->full_name ?? 'N/A' : $technician }}</td>
+                                    <td rowspan="{{ $rowspan }}">{{ is_numeric($technician) ?  $profile->technician->full_name ?? 'N/A' : $technician }}</td>
                                 @endif
                                 <td class="green-background"></td>
                                 <td></td>
                                 @php
                                     $monitoring = $profile->monitoring;
                                 @endphp
-                                <td>{{ optional($monitoring->first())->batch ?? '' }}</td>
+
+                                <td>{{ !empty($monitoring) ? $monitoring[0]->batch : '' }}</td>
 
                                 @php
-                                    $monitoringData = $profile->monitoringData;
-                                    dd($monitoringData);
+                                    $monitoringData = $profile->monitoring_data;
+
+                                    
                                 @endphp
                                 @for ($i = 1; $i <= 12; $i++)
                                     @php
-                                        $md = $monitoringData->where('activity_id', $i)->first()->created_at ?? null;
+                                        $md = !empty($monitoringData) ? $monitoringData[0]->activity_id == $i ? $monitoringData[0]->created_at : null : null;
                                         $formattedDate = $md ? date('m-d', strtotime($md)) : '';
                                     @endphp
                                     <td class="{{ $md ? 'green-background' : '' }}">
@@ -116,7 +117,6 @@
                                 $totalRows++;
                             @endphp
                         @endforeach
-                        
                     @endforeach
                 </tbody>
             </table>

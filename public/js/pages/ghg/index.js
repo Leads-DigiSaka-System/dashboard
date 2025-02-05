@@ -1,7 +1,7 @@
 $(document).ready(function () {
   var table = $('#ghgProfilesTable').DataTable({
     ajax: {
-      url: site_url + "/api/v1/ghg/getProfiles",
+      url: site_url + "/ghg/getProfiles",
       data: function (d) {
         d.filter_column1 = $('input[name=filter_first_name]').val(); // First Name
         d.filter_column2 = $('input[name=filter_last_name]').val(); // Last Name

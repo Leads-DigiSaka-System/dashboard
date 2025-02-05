@@ -6,6 +6,9 @@
                     <div class="heading-text me-auto">
                         <h4 class="m-0"><i class="fas fa-users mr-2"></i>&nbsp;{{ __('GHG Profiles') }}</h4>
                     </div>
+                    <div>
+                            <a class="btn btn-primary" style="margin-right: 10px;" href="{{route('ghg.summary.pdf')}}" role="button">View Summary Report</a>
+                        </div>
                 </div>
 
                 <div class="card-body">

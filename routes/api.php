@@ -201,7 +201,8 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 	});
 	
 	//GHG-profiles
-	Route::get('/ghg/getProfiles/{id?}', 'GHGController@get');
+	//Route::get('/ghg/getProfiles/{id?}', 'GHGController@get');
+	//Route::get('/ghg/getGHGProfileData/{id?}', 'GHGController@getGHGProfileData')->name('getGHGProfileData');
 
 	
 	Route::post('/farms/upsertJournal/{id?}', 'JournalController@upsert');
