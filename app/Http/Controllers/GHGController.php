@@ -25,7 +25,7 @@ class GHGController extends Controller
     private $base_url;
 
     public function __construct() {
-        $this->base_url = 'http://192.168.1.3:81/ghg/public/api/v1/ghg/';
+        $this->base_url = 'http://64.23.128.91/api/v1/ghg/';
     }
 
     public function get(?int $id = 0) {
