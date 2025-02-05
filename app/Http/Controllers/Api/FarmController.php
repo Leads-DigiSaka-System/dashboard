@@ -105,7 +105,7 @@ class FarmController extends Controller
             return returnSuccessResponse('Farm added successfully!', $farmObj);
          }
 
-      public function detail(Request $request,Farms $farms)
+    public function detail(Request $request,Farms $farms)
       {
         $rules = array(
             'farm_id' =>  'required',
@@ -291,5 +291,73 @@ class FarmController extends Controller
         }
         return returnSuccessResponse('Farm list get successfully.', $listArr);
     }
+
+    public function newStoreFarm(Request $request, Farms $farm)
+    {
+        // Define validation rules
+        $rules = [
+            'farmer_id' => 'required|integer|exists:users,id', // Ensure farmer_id is provided, is an integer, and exists in the users table
+            'name' => 'required|string|max:255',
+            'area_location' => 'required|string|max:1000',
+            'farm_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate each file in the farm_image array
+            'region' => 'required|string|max:255',
+            'province' => 'required|string|max:255',
+            'municipality' => 'required|string|max:255',
+            'area' => 'required|numeric',
+            'image_latitude' => 'required|numeric',
+            'image_longitude' => 'required|numeric',
+            'barangay' => 'required|string|max:255',
+            'isDemo' => 'nullable|boolean',
+            'category' => 'nullable|string|max:255',
+        ];
+
+        // Validate the request
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $errorMessages = $validator->errors()->all();
+            throw new HttpResponseException(returnValidationErrorResponse($errorMessages[0]));
+        }
+
+        // Handle file uploads
+        $farm_images = [];
+        if ($files = $request->file('farm_image')) {
+            foreach ($files as $file) {
+                $name = time() . '_' . $file->getClientOriginalName();
+                $path = 'upload/images';
+                $file->move(public_path($path), $name);
+                $farm_images[] = $path . '/' . $name;
+            }
+        }
+
+        // Prepare data for insertion
+        $farmArr = [
+            'farmer_id' => $request->input('farmer_id'),
+            'name' => $request->input('name'),
+            'area_location' => $request->input('area_location'),
+            'image_latitude' => $request->input('image_latitude'),
+            'image_longitude' => $request->input('image_longitude'),
+            'region' => $request->input('region'),
+            'province' => $request->input('province'),
+            'municipality' => $request->input('municipality'),
+            'area' => $request->input('area'),
+            'barangay' => $request->input('barangay'),
+            'isDemo' => $request->input('isDemo', false),
+            'category' => $request->input('category'),
+            'farm_image' => implode(',', $farm_images),
+        ];
+
+        // Save the farm data
+        $farmObj = $farm->create($farmArr);
+        if (!$farmObj) {
+            return returnErrorResponse('Unable to add farm. Please try again later.');
+        }
+
+        // Update farm_id with a unique code
+        $farmObj->farm_id = 'FARM' . $farmObj->id;
+        $farmObj->save();
+
+        return returnSuccessResponse('Farm added successfully!', $farmObj);
+    }
+
        
 }

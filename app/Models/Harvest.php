@@ -25,5 +25,6 @@ class Harvest extends Model
         'total_yield_weight_tons',
         'validator',
         'validator_signature',
+        'kgs_per_cavan'
     ];
 }
