@@ -113,6 +113,7 @@ Route::middleware('prevent-back-history')->group(function () {
     Route::get('/dashboard/getAgriProducts', 'DashboardController@getAgriProducts');
     Route::get('/dashboard/getSurveyV2', 'DashboardController@getSurveyV2');
 
+    
     // JAS Profile
     Route::resource('jasProfiles', JasProfileController::class);
     Route::get('/jasProfiles/pdf/{id}', 'JasProfileController@viewJasProfilePDF')->name('jasProfiles.pdf');
