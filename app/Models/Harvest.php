@@ -27,4 +27,9 @@ class Harvest extends Model
         'validator_signature',
         'kgs_per_cavan'
     ];
+
+    public function jasProfile()
+    {
+        return $this->belongsTo(JasProfile::class, 'jasprofile_id', 'id');
+    }
 }

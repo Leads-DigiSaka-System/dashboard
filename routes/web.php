@@ -157,4 +157,10 @@ Route::middleware('prevent-back-history')->group(function () {
 
     Route::get('/jasActivities','JasActivityController@index')->name('jasActivities.index');
     Route::get('/getJasActivities/{id}','JasActivityController@getJasActivities')->name('jasActivities.getJasActivities');
+    
+
+    Route::get('/jasHarvest','HarvestController@index')->name('jasHarvest.index');
+    Route::get('/getJasHarvest/{id}','HarvestController@getJasHarvest')->name('jasHarvest.getJasHarvest');
+    Route::get('/jasHarvest/export', 'HarvestController@export')->name('jasHarvest.export');
+
 });
