@@ -174,6 +174,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::get('/fields', 'DigiSakaExplorrerController@getFarmFields')->name('getFarmFields');
 			Route::get('/fields/{id}', 'DigiSakaExplorrerController@show')->name('show');
 			Route::delete('/fields/{id}/delete', 'DigiSakaExplorrerController@destroy')->name('destroy');
+			
 
 			Route::post('/image/upsert/{id?}', function (Request $request, $id = null) {
 				$data = $request->all(); 
