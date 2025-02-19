@@ -88,6 +88,16 @@ Route::prefix('v1')->namespace('Api')->group(function () {
         // TOKEN FOR DIGISAKA EXPLORER
 		Route::post('/fields/gettoken', 'DigiSakaExplorrerController@loginWithToken')->name('loginWithToken');
 
+		// REQUEST NI NIKKO
+		Route::post('/new-farm-store', 'FarmController@newStoreFarm')->name('newStoreFarm');
+		Route::get('/jas/getProfiles/{id?}', 'JasController@get');
+		Route::delete('/farm-delete', 'FarmController@delete')->name('farm_delete');
+		Route::post('/farm-update', 'FarmController@update')->name('farm_update');
+
+
+
+
+
 		Route::middleware(['auth:sanctum'])->group(function () {
 
 			Route::get('/calendar/{month?}', 'AuthController@getCalendar')->name('getCalendar');
@@ -107,11 +117,11 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::get('/farm-list', 'FarmController@index')->name('farm_list');
 			Route::get('/farm-list-for-pyweb', 'FarmController@detailForPyweb')->name('farm_list_pyweb');
 			Route::post('/farm-store', 'FarmController@store')->name('farm_store');
-			Route::post('/new-farm-store', 'FarmController@newStoreFarm')->name('newStoreFarm');
+			// Route::post('/new-farm-store', 'FarmController@newStoreFarm')->name('newStoreFarm');
 			Route::get('/getPoints/{farmer_id}', 'HomeController@getPoints')->name('getPoints');
 			Route::get('/farm-detail', 'FarmController@detail')->name('farm_detail');
-			Route::post('/farm-update', 'FarmController@update')->name('farm_update');
-			Route::delete('/farm-delete', 'FarmController@delete')->name('farm_delete');
+			// Route::post('/farm-update', 'FarmController@update')->name('farm_update');
+			// Route::delete('/farm-delete', 'FarmController@delete')->name('farm_delete');
 			Route::post('/farmer-delete', 'FarmController@farmer_delete')->name('farm_delete');
 			Route::get('/get-weather', 'HomeController@getWeather')->name('getWeather');
 			Route::post('/survey-store', 'SurveyController@store')->name('survey_store');
@@ -125,7 +135,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 
 			//JAS-profile
 			Route::post('/jas/upsertProfile/{id?}', 'JasController@upsert');
-			Route::get('/jas/getProfiles/{id?}', 'JasController@get');
+			// Route::get('/jas/getProfiles/{id?}', 'JasController@get');
 			Route::post('/jas/delete/{id}', 'JasController@delete');
 			Route::get('/jas/getProfileByTps/{id?}', 'JasController@getByTps');
 			Route::get('/jas/getJasProfileData/{id}', 'JasController@getJasProfileData');
