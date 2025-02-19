@@ -299,7 +299,7 @@ class FarmController extends Controller
             'farmer_id' => 'required|integer|exists:users,id', // Ensure farmer_id is provided, is an integer, and exists in the users table
             'name' => 'required|string|max:255',
             'area_location' => 'required|string|max:1000',
-            'farm_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate each file in the farm_image array
+            'farm_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:10240', 
             'region' => 'required|string|max:255',
             'province' => 'required|string|max:255',
             'municipality' => 'required|string|max:255',
