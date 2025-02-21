@@ -94,9 +94,10 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 		Route::delete('/farm-delete', 'FarmController@delete')->name('farm_delete');
 		Route::post('/farm-update', 'FarmController@update')->name('farm_update');
 
+		Route::post('/insertSurvey', 'AiAgentSurveyController@store')->name('store');
 
-
-
+		// Route::middleware(['auth:validator'])->group(function () {
+		// });
 
 		Route::middleware(['auth:sanctum'])->group(function () {
 
