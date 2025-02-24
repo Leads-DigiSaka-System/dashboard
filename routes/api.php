@@ -26,9 +26,9 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 		Route::post('/verifyOtp', 'AuthController@verifyOtp')->name('verifyOtp');
 		Route::post('/exist', 'AuthController@doesExist')->name('doesExist');
 		Route::post('/upload', 'AuthController@uploadFile')->name('uploadFile');
-		Route::post('/uploadApp', 'AuthController@uploadApp')->name('uploadApp');
-		Route::get('/latest_app', 'AuthController@latest_app')->name('uploadApp');
-		Route::get('/app_details/{version}', 'AuthController@app_details')->name('uploadApp');
+		Route::post('/uploadApp', 'AuthController@uploadApp')->name('upload_App');
+		Route::get('/latest_app', 'AuthController@latest_app')->name('latest_App');
+		Route::get('/app_details/{version}', 'AuthController@app_details')->name('version_App');
 		Route::post('/verify_user/{id}', 'AuthController@verify_user')->name('verify_user');
 		// Role data fetching
 		Route::get('/getRoles', 'AuthController@getRoles')->name('getRole');
@@ -107,9 +107,9 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 
 
 			Route::get('/logout', 'AuthController@logout')->name('logout');
-			Route::post('/changePassword', 'AccountController@changePassword')->name('changePassword');
-			Route::get('/profile', 'AccountController@getProfile')->name('profile');
-			Route::post('/updateProfile', 'AccountController@updateProfile')->name('updateProfile');
+			Route::post('/changePassword', 'AccountController@changePassword')->name('change_Password');
+			Route::get('/profile', 'AccountController@getProfile')->name('acount_profile');
+			Route::post('/updateProfile', 'AccountController@updateProfile')->name('update-Profile');
 			Route::post('/updateRole/{user_id}', 'AccountController@updateRole')->name('updateRole');
 			Route::post('/updateProfileAdmin', 'AccountController@updateProfileAdmin')->name('updateProfileAdmin');
 			Route::post('/update_profile_pic', 'AccountController@updateProfilePic')->name('updateProfilePic');
@@ -123,12 +123,12 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 			Route::get('/farm-detail', 'FarmController@detail')->name('farm_detail');
 			// Route::post('/farm-update', 'FarmController@update')->name('farm_update');
 			// Route::delete('/farm-delete', 'FarmController@delete')->name('farm_delete');
-			Route::post('/farmer-delete', 'FarmController@farmer_delete')->name('farm_delete');
+			Route::post('/farmer-delete', 'FarmController@farmer_delete')->name('farmer_delete');
 			Route::get('/get-weather', 'HomeController@getWeather')->name('getWeather');
 			Route::post('/survey-store', 'SurveyController@store')->name('survey_store');
 			Route::get('/get-farmer-info/{farmerInfo}', 'AccountController@getFarmerInfo')->name('getFarmerInfo');
 			//this should have admin privellege
-			Route::get('/home', 'HomeController@index')->name('home');
+			Route::get('/home', 'HomeController@index')->name('home_index');
 			Route::get('/getAllMobile', 'AccountController@getAllMobile')->name('allMobile');
 			Route::post('/verify-farmer', 'AccountController@verifyFarmer')->name('verifyFarmer');
 			Route::get('/user-list/{role}', 'AccountController@userList')->name('userList');
