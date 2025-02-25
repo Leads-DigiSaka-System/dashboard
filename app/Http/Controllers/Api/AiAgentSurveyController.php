@@ -16,6 +16,16 @@ class AiAgentSurveyController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'client_id' => ['required', 'string', function ($attribute, $value, $fail) {
+                if ($value !== env('CLIENT_ID')) {
+                    $fail('The provided client ID is invalid.');
+                }
+            }],
+            'client_secret' => ['required', 'string', function ($attribute, $value, $fail) {
+                if ($value !== env('CLIENT_SECRET')) {
+                    $fail('The provided client secret is invalid.');
+                }
+            }],
             'survey_id' => 'nullable|integer',
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:survey_set,slug',
