@@ -17,12 +17,12 @@ class AiAgentSurveyController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'client_id' => ['required', 'string', function ($attribute, $value, $fail) {
-                if ($value !== env('CLIENT_ID')) {
+                if ($value !== '6fu1pldhb902m2eqg2870d1r2i') {
                     $fail('The provided client ID is invalid.');
                 }
             }],
             'client_secret' => ['required', 'string', function ($attribute, $value, $fail) {
-                if ($value !== env('CLIENT_SECRET')) {
+                if ($value !== '4fl5nmv0347ou93g3mcrgs2t7uqqmkhs7635g3dgt7u2hcsernf') {
                     $fail('The provided client secret is invalid.');
                 }
             }],
