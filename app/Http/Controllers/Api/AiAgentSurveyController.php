@@ -31,7 +31,7 @@ class AiAgentSurveyController extends Controller
             'slug' => 'required|string|max:255|unique:survey_set,slug',
             'description' => 'nullable|string',
             'reward_points' => 'required|integer',
-            'farm_category' => 'required|integer',
+            'farm_category' => 'required|integer', 
             'expiry_date' => 'nullable|date',
             'is_finalized' => 'required|integer|in:0,1',
             'questionnaires' => 'required|array',
