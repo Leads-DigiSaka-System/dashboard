@@ -296,9 +296,9 @@ class FarmController extends Controller
     {
         // Define validation rules
         $rules = [
-            'farmer_id' => 'required|integer|exists:users,id', // Ensure farmer_id is provided, is an integer, and exists in the users table
+            'farmer_id' => 'required|integer|exists:users,id',
             'name' => 'required|string|max:255',
-            'area_location' => 'required|string|max:1000',
+            'area_location' => 'required|string|max:9000',
             'farm_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:10240', 
             'region' => 'required|string|max:255',
             'province' => 'required|string|max:255',
