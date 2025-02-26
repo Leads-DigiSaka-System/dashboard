@@ -352,6 +352,7 @@ class FarmController extends Controller
             return returnErrorResponse('Unable to add farm. Please try again later.');
         }
 
+        
         // Update farm_id with a unique code
         $farmObj->farm_id = 'FARM' . $farmObj->id;
         $farmObj->save();
@@ -360,5 +361,5 @@ class FarmController extends Controller
     }
 
        
-    
+
 }
