@@ -15,17 +15,18 @@ class AiAgentSurveyController extends Controller
 {
     public function store(Request $request)
     {
+        $clientId = $request->header('Client-ID');
+        $clientSecret = $request->header('Client-Secret');
+    
+        if ($clientId !== '6fu1pldhb902m2eqg2870d1r2i') {
+            return response()->json(['error' => 'The provided client ID is invalid.'], 401);
+        }
+    
+        if ($clientSecret !== '4fl5nmv0347ou93g3mcrgs2t7uqqmkhs7635g3dgt7u2hcsernf') {
+            return response()->json(['error' => 'The provided client secret is invalid.'], 401);
+        }
+    
         $validator = Validator::make($request->all(), [
-            'client_id' => ['required', 'string', function ($attribute, $value, $fail) {
-                if ($value !== '6fu1pldhb902m2eqg2870d1r2i') {
-                    $fail('The provided client ID is invalid.');
-                }
-            }],
-            'client_secret' => ['required', 'string', function ($attribute, $value, $fail) {
-                if ($value !== '4fl5nmv0347ou93g3mcrgs2t7uqqmkhs7635g3dgt7u2hcsernf') {
-                    $fail('The provided client secret is invalid.');
-                }
-            }],
             'survey_id' => 'nullable|integer',
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:survey_set,slug',
@@ -93,7 +94,7 @@ class AiAgentSurveyController extends Controller
                         [
                             'field_name' => $questionData['field_name'],
                             'field_type' => $questionData['field_type'],
-                            'sub_field_type' => $questionData['choices'] ?? null,
+                            'sub_field_type' => $questionData['choices'] ?? 0,
                             'conditional' => $questionData['conditional'],
                             'sub_question_id' => $questionData['sub_questionnaire'],
                             'required_field' => $questionData['is_required'],
