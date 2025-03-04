@@ -208,17 +208,17 @@ class SurveyController extends Controller
         
 
         if(!empty($survey_set)) {
-        	$survey_version = SurveyVersion::where('survey_set_id',$decrypt_id)->orderBy('version','DESC')->first();
+        	$survey_version = SurveySet::where('id',$decrypt_id)->first();
         	$decoded_questionnare_ids = json_decode($survey_version->questionnaire_data);
         	$questionnaires = array();
-        	foreach($decoded_questionnare_ids->questionnaire_ids as $questionnaire_id) {
+        	foreach($decoded_questionnare_ids as $questionnaire_id) {
         		$questionnaire = Questionnaire::find($questionnaire_id);
 
         		if(!empty($questionnaire)) {
 		        	$decoded_ids = json_decode($questionnaire->question_data);
 
 		        	$questions = array();
-		        	foreach($decoded_ids->question_ids as $question_id) {
+		        	foreach($decoded_ids as $question_id) {
 		        		$question = Question::find($question_id);
 		        		$sub_field_type = json_decode($question->sub_field_type);
 
@@ -231,7 +231,7 @@ class SurveyController extends Controller
 								$decoded_sub_ids = json_decode($query_questionnaire->question_data);
 		
 								$sub_questionnaire_questions = array();
-								foreach($decoded_sub_ids->question_ids as $sub_question_id) {
+								foreach($decoded_sub_ids as $sub_question_id) {
 									$sub_question = Question::find($sub_question_id);
 									$sub_question_sub_field_type = json_decode($sub_question->sub_field_type);
 		

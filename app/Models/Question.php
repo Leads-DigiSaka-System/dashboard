@@ -14,6 +14,7 @@ class Question extends Model
         'field_type',
         'required_field',
         'conditional',
+        'id',
         'sub_field_type',
         'questionnaire_id',
         'farm_categ',

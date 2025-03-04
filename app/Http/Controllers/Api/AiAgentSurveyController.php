@@ -78,6 +78,7 @@ class AiAgentSurveyController extends Controller
                     ['id' => $qData['questionnaire_id']],
                     [
                         'title' => $qData['questionnaire_title'],
+                        'id' => $qData['questionnaire_id'],
                         'slug' => \Str::slug($qData['questionnaire_title']),
                         'description' => $qData['description'],
                         'question_data' => json_encode(array_column($qData['questions'], 'question_id')),
@@ -94,6 +95,7 @@ class AiAgentSurveyController extends Controller
                         [
                             'field_name' => $questionData['field_name'],
                             'field_type' => $questionData['field_type'],
+                            'id' => $questionData['question_id'],
                             'sub_field_type' => $questionData['choices'] ?? 0,
                             'conditional' => $questionData['conditional'],
                             'sub_question_id' => $questionData['sub_questionnaire'],
