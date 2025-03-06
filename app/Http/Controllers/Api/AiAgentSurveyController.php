@@ -68,6 +68,7 @@ class AiAgentSurveyController extends Controller
                     'is_finalized' => $request->is_finalized,
                     'questionnaire_data' => json_encode(array_column($request->questionnaires, 'questionnaire_id')),
                     'created_at' => now(),
+                    'from_api' => 1,
                     'updated_at' => now(),
                 ]
             );
