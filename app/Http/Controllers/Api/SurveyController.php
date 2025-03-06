@@ -222,9 +222,7 @@ class SurveyController extends Controller
 		        		$question = Question::find($question_id);
 		        		$sub_field_type = json_decode($question->sub_field_type);
 
-		        		$arr = !empty($sub_field_type->choices) ? implode(", ", $sub_field_type->choices) : "";
-
-
+						$arr = $question->sub_field_type;
 						if($question->conditional == 1) {
 							$query_questionnaire = Questionnaire::find($question->questionnaire_id);
 							if(!empty($query_questionnaire)) {
@@ -298,7 +296,6 @@ class SurveyController extends Controller
         		'questionnaires' => $questionnaires
         	];
         }
-
         return json_encode($survey);
     }
 
