@@ -48,38 +48,90 @@ class HarvestController extends Controller
             ], 500);
         }
     }
+    // public function index(Request $request)
+    // {
+    //     if ($request->ajax()) {
+    //         $results = Harvest::with('jasProfile')->get();
+
+    //         return datatables()
+    //             ->of($results)
+    //             ->addIndexColumn()
+    //             ->addColumn('fullname', function ($result) {
+    //                 return $result->jasProfile ? $result->jasProfile->first_name . ' ' . $result->jasProfile->middle . ' ' . $result->jasProfile->last_name : 'N/A';
+    //             })
+    //             ->addColumn('farm_location', function ($result) {
+    //                 return $result->farm_location ? $result->farm_location : 'N/A';
+    //             })
+    //             ->addColumn('planting_date', function ($result) {
+    //                 return $result->planting_date ? $result->planting_date : 'N/A';
+    //             })
+    //             ->addColumn('harvesting_date', function ($result) {
+    //                 return $result->harvesting_date ? $result->harvesting_date : 'N/A';
+    //             })
+    //             ->addColumn('method_harvesting', function ($result) {
+    //                 return $result->method_harvesting ? $result->method_harvesting : 'N/A';
+    //             })
+    //             ->addColumn('action', function ($result) {
+    //                 $btn = "";
+    //                 $btn .= '<button class="btn btn-primary" onclick="handleViewHarvest(\''.encrypt($result->id).'\')">View Details</button>&nbsp;&nbsp;';
+    //                 return $btn;
+    //             })
+    //             ->make(true);
+    //     }
+    //     return view('jasHarvest.index');
+    // }
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $results = Harvest::with('jasProfile')->get();
-
+            $results = Harvest::select(
+                    'harvest.jasprofile_id',
+                    Harvest::raw('MIN(harvest.id) AS id'), // Use MIN to aggregate id
+                    Harvest::raw('MIN(harvest.farm_location) AS farm_location'), // Aggregate farm_location
+                    Harvest::raw('MIN(harvest.planting_date) AS planting_date'), // Aggregate planting_date
+                    Harvest::raw('MIN(harvest.harvesting_date) AS harvesting_date'), // Aggregate harvesting_date
+                    Harvest::raw('MIN(harvest.method_harvesting) AS method_harvesting'), // Aggregate method_harvesting
+                    'jas_profiles.first_name',
+                    'jas_profiles.middle',
+                    'jas_profiles.last_name'
+                )
+                ->leftJoin('jas_profiles', 'jas_profiles.id', '=', 'harvest.jasprofile_id')
+                ->groupBy('harvest.jasprofile_id', 'jas_profiles.first_name', 'jas_profiles.middle', 'jas_profiles.last_name')
+                ->orderBy('harvest.jasprofile_id', 'asc')
+                ->get();
+    
             return datatables()
                 ->of($results)
                 ->addIndexColumn()
                 ->addColumn('fullname', function ($result) {
-                    return $result->jasProfile ? $result->jasProfile->first_name . ' ' . $result->jasProfile->middle . ' ' . $result->jasProfile->last_name : 'N/A';
+                    $firstName = ucwords(strtolower($result->first_name));
+                    $middleName = ucwords(strtolower($result->middle));
+                    $lastName = ucwords(strtolower($result->last_name));
+                    return trim("{$firstName} {$middleName} {$lastName}") ?: 'N/A';
                 })
                 ->addColumn('farm_location', function ($result) {
-                    return $result->farm_location ? $result->farm_location : 'N/A';
+                    return $result->farm_location ?: 'N/A';
                 })
                 ->addColumn('planting_date', function ($result) {
-                    return $result->planting_date ? $result->planting_date : 'N/A';
+                    return $result->planting_date ?: 'N/A';
                 })
                 ->addColumn('harvesting_date', function ($result) {
-                    return $result->harvesting_date ? $result->harvesting_date : 'N/A';
+                    return $result->harvesting_date ?: 'N/A';
                 })
                 ->addColumn('method_harvesting', function ($result) {
-                    return $result->method_harvesting ? $result->method_harvesting : 'N/A';
-                })
+                    return $result->method_harvesting ? ucwords(strtolower($result->method_harvesting)) : 'N/A';
+                })                
                 ->addColumn('action', function ($result) {
-                    $btn = "";
-                    $btn .= '<button class="btn btn-primary" onclick="handleViewHarvest(\''.encrypt($result->id).'\')">View Details</button>&nbsp;&nbsp;';
-                    return $btn;
+                    return '<button class="btn btn-success" onclick="handleViewHarvest(\''.encrypt($result->id).'\')">View Details</button>';
                 })
+                ->rawColumns(['action'])
                 ->make(true);
         }
+    
         return view('jasHarvest.index');
     }
+    
+
+    
 
     public function getJasHarvest($id)
     {
