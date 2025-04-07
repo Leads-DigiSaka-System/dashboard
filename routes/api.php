@@ -88,11 +88,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
         // TOKEN FOR DIGISAKA EXPLORER
 		Route::post('/fields/gettoken', 'DigiSakaExplorrerController@loginWithToken')->name('loginWithToken');
 
-		// REQUEST NI NIKKO
-		Route::post('/new-farm-store', 'FarmController@newStoreFarm')->name('newStoreFarm');
-		Route::get('/jas/getProfiles/{id?}', 'JasController@get');
-		Route::delete('/farm-delete', 'FarmController@delete')->name('farm_delete');
-		Route::post('/farm-update', 'FarmController@update')->name('farm_update');
+		
 
 		Route::post('/insertSurvey', 'AiAgentSurveyController@store')->name('store');
 
@@ -100,7 +96,12 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 		// });
 
 		Route::middleware(['auth:sanctum'])->group(function () {
-
+			// REQUEST NI NIKKO
+			Route::post('/new-farm-store', 'FarmController@newStoreFarm')->name('newStoreFarm');
+			Route::get('/jas/getProfiles/{id?}', 'JasController@get');
+			Route::delete('/farm-delete', 'FarmController@delete')->name('farm_delete');
+			Route::post('/farm-update', 'FarmController@update')->name('farm_update');
+			
 			Route::get('/calendar/{month?}', 'AuthController@getCalendar')->name('getCalendar');
 			Route::post('/calendar_upsert/{id?}', 'AuthController@upsertCalendar')->name('upsertCalendar');
 			Route::post('/calendar_delete/{id}', 'AuthController@delete');
@@ -210,8 +211,25 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 				return response()->json(Image::all());
 			});
 			
+			
+			
+
 		});
+		// DCA Planner routes
+		Route::get('/planner/factory', 'PlannerController@factory');
+		Route::post('/planner/upsert/{id?}', 'PlannerController@upsert');
+		Route::get('/planner/get/all/{id?}', 'PlannerController@getAll');
+		Route::get('/planner/get/all/{id?}/{type?}', 'PlannerController@getByType');
+		Route::get('/planner/get/{id?}', 'PlannerController@getByID');
+		Route::get('/planner/delete/{id}', 'PlannerController@destroy');
+		// Spraying routes
+		Route::post('/spraying/upsert/{id?}', 'SprayingController@upsert');
+		Route::get('/spraying/get/', 'SprayingController@get');
+		Route::get('/spraying/get/{id?}', 'SprayingController@get');
+		Route::get('/spraying/delete/{id}', 'SprayingController@destroy');
+		Route::get('/spraying/factory', 'SprayingController@factory');
 	});
+	
 	
 	//GHG-profiles
 	//Route::get('/ghg/getProfiles/{id?}', 'GHGController@get');
