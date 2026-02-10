@@ -127,7 +127,7 @@
                 <div class="sub-title">{{ $questionnaire->description }}</div>
                 @foreach ($questionnaire->questions as $no => $question)
                     <div class="question">
-                        <div class="question-title">{{ $no + 1 }}. {{ ucfirst($question->field_name) }} {{ $question->field_type }}</div>
+                        <div class="question-title">{{ $no + 1 }}. {{ ucfirst($question->field_name) }}</div>
 
                         <div class="question-details">
                             @if ($question->field_type == 'Checkbox')
@@ -154,20 +154,10 @@
                                     </div>
                                 @endforeach
                         
-                                {{-- @elseif ($question->field_type == 'Text')
-                                <input type="text" {{ $question->is_required == 'required' ? 'required' : '' }}> --}}
+                               
                             @elseif ($question->field_type == 'Textbox')
                                 <textarea {{ $question->is_required == 'required' ? 'required' : '' }}></textarea>
 
-                                {{-- @elseif ($question->field_type == 'Dropdown')
-                                @php
-                                    $choices = explode(',', $question->choices);
-                                @endphp
-                                <select {{ $question->is_required == 'required' ? 'required' : '' }}>
-                                    @foreach ($choices as $qc)
-                                        <option value="{{ $qc }}">{{ $qc }}</option>
-                                    @endforeach
-                                </select> --}}
                             @elseif ($question->field_type == 'Dropdown' || $question->field_type == 'Ratings')
                                 @php
                                     $choices = explode(',', $question->choices);

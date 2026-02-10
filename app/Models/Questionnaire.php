@@ -13,6 +13,7 @@ class Questionnaire extends Model
         'title',
         'slug',
         'description',
+        'id',
         'question_data',
         'status'
     ];

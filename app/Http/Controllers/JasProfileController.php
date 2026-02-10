@@ -36,58 +36,130 @@ function formatPhoneNumber($phone)
 class JasProfileController extends Controller
 {
     
+    // public function index(Request $request)
+    // {
+    //     if ($request->ajax()) {
+    //         $jasProfiles = JasProfile::select([
+    //             'jas_profiles.id',
+    //             'jas_profiles.first_name',
+    //             'jas_profiles.last_name',
+    //             'jas_profiles.phone',
+    //             'jas_profiles.year',
+    //             'jas_profiles.area',
+    //             'jas_profiles.created_at', 
+    //             'jas_profiles.modified_at',
+    //             DB::raw("CONCAT(users.full_name, ' (', users.email, ')') as technician_name"),
+    //         ])
+    //             ->leftJoin('users', 'jas_profiles.technician', '=', 'users.id');
+
+    //             if(Auth::user()->role == 5){
+    //                 $jasProfiles->where('jas_profiles.technician', auth()->user()->id);
+    //             }
+
+    //             $technician_searchValue = $request->input('columns.0.search.value');
+    //             if ($technician_searchValue) {
+    //                 $jasProfiles->where('users.full_name', 'like', '%' . $technician_searchValue . '%');
+    //             }
+
+    //         return DataTables::of($jasProfiles)
+    //             ->addColumn('formatted_created_at', function ($jasProfile) {
+    //                 // Format the created_at date
+    //                 return Carbon::parse($jasProfile->created_at)->format('M j, Y g:iA');
+    //             })
+    //             ->addColumn('formatted_modified_at', function ($jasProfile) {
+    //                 // Format the created_at date
+    //                 return Carbon::parse($jasProfile->modified_at)->format('M j, Y g:iA');
+    //             })
+    //             ->addColumn('action', function ($jasProfile) {
+    //                 $buttons = "";
+    //                 $buttons .=  '<a href="' . route('jasProfiles.pdf', encrypt($jasProfile->id)) . '" ><i class="fas fa-eye"></i></a>';
+
+    //                 if(!$jasProfile->monitoringData->isEmpty()) {
+    //                     $buttons .=' | 
+    //                     <a data-bs-toggle="modal" data-bs-target="#exampleModal" data-id="'.encrypt($jasProfile->id).'" class="viewImageBtn">
+    //                     <i class="fas fa-images"></i></a>
+    //                     ';
+    //                 }
+    //                 return $buttons;
+    //             })
+    //             ->rawColumns(['formatted_created_at', 'formatted_modified_at', 'action'  ])
+    //             ->addIndexColumn()
+    //             ->make(true);
+    //     }
+    //     return view('jasProfiles.index');
+    // }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
+            // Fetch jasProfiles with related technician info
             $jasProfiles = JasProfile::select([
-                'jas_profiles.id',
-                'jas_profiles.first_name',
-                'jas_profiles.last_name',
-                'jas_profiles.phone',
-                'jas_profiles.year',
-                'jas_profiles.area',
-                'jas_profiles.created_at', 
-                'jas_profiles.modified_at',
-                DB::raw("CONCAT(users.full_name, ' (', users.email, ')') as technician_name"),
-            ])
+                    'jas_profiles.id',
+                    'jas_profiles.first_name',
+                    'jas_profiles.last_name',
+                    'jas_profiles.phone',
+                    'jas_profiles.year',
+                    'jas_profiles.area',
+                    'jas_profiles.created_at', 
+                    'jas_profiles.modified_at',
+                    DB::raw("CONCAT(users.full_name, ' (', users.email, ')') as technician_name"),
+                ])
                 ->leftJoin('users', 'jas_profiles.technician', '=', 'users.id');
-
-                if(Auth::user()->role == 5){
-                    $jasProfiles->where('jas_profiles.technician', auth()->user()->id);
-                }
-
-                $technician_searchValue = $request->input('columns.0.search.value');
-                if ($technician_searchValue) {
-                    $jasProfiles->where('users.full_name', 'like', '%' . $technician_searchValue . '%');
-                }
-
+    
+            // Restrict results based on role
+            if (Auth::user()->role == 5) {
+                $jasProfiles->where('jas_profiles.technician', auth()->user()->id);
+            }
+    
+            // Filter results based on technician search value
+            $technician_searchValue = $request->input('columns.0.search.value');
+            if ($technician_searchValue) {
+                $jasProfiles->where('users.full_name', 'like', '%' . $technician_searchValue . '%');
+            }
+    
+            // Return data for DataTables with formatted columns
             return DataTables::of($jasProfiles)
                 ->addColumn('formatted_created_at', function ($jasProfile) {
                     // Format the created_at date
                     return Carbon::parse($jasProfile->created_at)->format('M j, Y g:iA');
                 })
                 ->addColumn('formatted_modified_at', function ($jasProfile) {
-                    // Format the created_at date
+                    // Format the modified_at date
                     return Carbon::parse($jasProfile->modified_at)->format('M j, Y g:iA');
                 })
+                ->addColumn('fullname', function ($jasProfile) {
+                    // Properly format first and last names
+                    $firstName = ucwords(strtolower(trim($jasProfile->first_name)));
+                    $lastName = ucwords(strtolower(trim($jasProfile->last_name)));
+                    return "{$firstName} {$lastName}";
+                })
+                ->addColumn('technician_name', function ($jasProfile) {
+                    // Properly format the technician's name
+                    return ucwords(strtolower(trim($jasProfile->technician_name)));
+                })
                 ->addColumn('action', function ($jasProfile) {
-                    $buttons = "";
-                    $buttons .=  '<a href="' . route('jasProfiles.pdf', encrypt($jasProfile->id)) . '" ><i class="fas fa-eye"></i></a>';
-
-                    if(!$jasProfile->monitoringData->isEmpty()) {
-                        $buttons .=' | 
-                        <a data-bs-toggle="modal" data-bs-target="#exampleModal" data-id="'.encrypt($jasProfile->id).'" class="viewImageBtn">
-                        <i class="fas fa-images"></i></a>
-                        ';
+                    // Generate the action buttons
+                    $buttons = '<a href="' . route('jasProfiles.pdf', encrypt($jasProfile->id)) . '"><i class="fas fa-eye"></i></a>';
+    
+                    if (!$jasProfile->monitoringData->isEmpty()) {
+                        $buttons .= ' | 
+                        <a data-bs-toggle="modal" data-bs-target="#exampleModal" data-id="' . encrypt($jasProfile->id) . '" class="viewImageBtn">
+                        <i class="fas fa-images"></i></a>';
                     }
+    
                     return $buttons;
                 })
-                ->rawColumns(['formatted_created_at', 'formatted_modified_at', 'action'  ])
+                ->rawColumns(['formatted_created_at', 'formatted_modified_at', 'action'])
                 ->addIndexColumn()
                 ->make(true);
         }
+    
+        // Return the index view
         return view('jasProfiles.index');
     }
+    
+
+
 
     public function viewJasProfilePDF($id)
     {

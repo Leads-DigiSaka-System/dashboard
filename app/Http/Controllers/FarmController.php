@@ -86,7 +86,8 @@ class FarmController extends Controller
                     if($restriction == "%%"){
                         $query->orWhereNull('farms.region');
                     }
-                })->get();
+                })
+                ->orderBy('farms.created_at', 'desc')->get();
 
             return datatables()
                     ->of($farms)
@@ -108,7 +109,7 @@ class FarmController extends Controller
                     })
                     ->addColumn('registered_date', function ($farm) {
                         // return $farm->registered_date ? $farm->registered_date : 'N/A';
-                        return $farm->created_at != NULL ? Carbon::parse($farm->created_at)->format('M d, Y g:iA') : 'N/A';
+                        return $farm->created_at != NULL ? '<span style="display:none;">'.$farm->created_at.'</span> '.Carbon::parse($farm->created_at)->format('M d, Y g:iA') : 'N/A';
                     })
                     ->addColumn('action', function ($farm) {
                             $btn = '';
@@ -120,6 +121,7 @@ class FarmController extends Controller
                     })
                     ->rawColumns([
                         'action',
+                        'registered_date',
                         'status'        
                     ])
                     // ->setTotalRecords($totalFarms)

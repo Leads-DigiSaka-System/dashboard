@@ -208,83 +208,87 @@ class SurveyController extends Controller
         
 
         if(!empty($survey_set)) {
-        	$survey_version = SurveyVersion::where('survey_set_id',$decrypt_id)->orderBy('version','DESC')->first();
+        	$survey_version = SurveySet::where('id',$decrypt_id)->first();
         	$decoded_questionnare_ids = json_decode($survey_version->questionnaire_data);
         	$questionnaires = array();
-        	foreach($decoded_questionnare_ids->questionnaire_ids as $questionnaire_id) {
-        		$questionnaire = Questionnaire::find($questionnaire_id);
-
-        		if(!empty($questionnaire)) {
-		        	$decoded_ids = json_decode($questionnaire->question_data);
-
-		        	$questions = array();
-		        	foreach($decoded_ids->question_ids as $question_id) {
-		        		$question = Question::find($question_id);
-		        		$sub_field_type = json_decode($question->sub_field_type);
-
-		        		$arr = !empty($sub_field_type->choices) ? implode(", ", $sub_field_type->choices) : "";
-
-
-						if($question->conditional == 1) {
-							$query_questionnaire = Questionnaire::find($question->questionnaire_id);
-							if(!empty($query_questionnaire)) {
-								$decoded_sub_ids = json_decode($query_questionnaire->question_data);
-		
-								$sub_questionnaire_questions = array();
-								foreach($decoded_sub_ids->question_ids as $sub_question_id) {
-									$sub_question = Question::find($sub_question_id);
-									$sub_question_sub_field_type = json_decode($sub_question->sub_field_type);
-		
-									$arr2 = !empty($sub_question_sub_field_type->choices) ? implode(", ", $sub_question_sub_field_type->choices) : "";
-		
-									$sub_questionnaire_questions[] = array(
-										'question_id' => $sub_question->id,
-										'field_name' => $sub_question->field_name,
-										'field_type' => $sub_question->field_type,
-										'choices' => $arr,
-										'conditional' => $sub_question->conditional == 1 ? true : false,
-										
-										'is_required' => $sub_question->required_field == 1 ? 'required' : 'not required'
+			if(!empty($decoded_questionnare_ids)){
+				foreach($decoded_questionnare_ids as $questionnaire_id) {
+					$questionnaire = Questionnaire::find($questionnaire_id);
+	
+					if(!empty($questionnaire)) {
+						$decoded_ids = json_decode($questionnaire->question_data);
+	
+						$questions = array();
+						foreach($decoded_ids as $question_id) {
+							$question = Question::find($question_id);
+							$sub_field_type = json_decode($question->sub_field_type);
+	
+							$arr = !empty($sub_field_type->choices) ? implode(", ", $sub_field_type->choices) : $question->sub_field_type;
+							if($question->conditional == 1) {
+								$query_questionnaire = Questionnaire::find($question->questionnaire_id);
+								if(!empty($query_questionnaire)) {
+									$decoded_sub_ids = json_decode($query_questionnaire->question_data);
+			
+									$sub_questionnaire_questions = array();
+									foreach($decoded_sub_ids as $sub_question_id) {
+										$sub_question = Question::find($sub_question_id);
+										$sub_question_sub_field_type = json_decode($sub_question->sub_field_type);
+			
+										$arr2 = !empty($sub_question_sub_field_type->choices) ? implode(", ", $sub_question_sub_field_type->choices) : "";
+			
+										$sub_questionnaire_questions[] = array(
+											'question_id' => $sub_question->id,
+											'field_name' => $sub_question->field_name,
+											'field_type' => $sub_question->field_type,
+											'choices' => $arr,
+											'conditional' => $sub_question->conditional == 1 ? true : false,
+											
+											'is_required' => $sub_question->required_field == 1 ? 'required' : 'not required'
+										);
+									}
+			
+									$sub_questionnaire = array(
+										'questionnaire_title' => $query_questionnaire->title,
+										'description' => $query_questionnaire->description,
+										'questionnaire_id' => $query_questionnaire->id,
+										'questions' => $sub_questionnaire_questions
 									);
 								}
-		
-								$sub_questionnaire = array(
-									'questionnaire_title' => $query_questionnaire->title,
-									'description' => $query_questionnaire->description,
-									'questionnaire_id' => $query_questionnaire->id,
-									'questions' => $sub_questionnaire_questions
-								);
+								else{
+									$sub_questionnaire = array();
+								}
+			
+							} else {
+								$sub_questionnaire = "N/A";
 							}
-							else{
-								$sub_questionnaire = array();
-							}
-		
-						} else {
-							$sub_questionnaire = "N/A";
+	
+							$questions[] = [
+								'question_id' => $question->id,
+								'field_name' => $question->field_name,
+								'field_type' => $question->field_type,
+								'choices' => $arr,
+								'conditional' => $question->conditional == 1 ? true : false,
+								
+								'sub_questionnaire' => $sub_questionnaire,
+								'is_required' => $question->required_field == 1 ? 'required' : 'not required'
+							];
+	
 						}
-
-		        		$questions[] = [
-		        			'question_id' => $question->id,
-		        			'field_name' => $question->field_name,
-		        			'field_type' => $question->field_type,
-		        			'choices' => $arr,
-		        			'conditional' => $question->conditional == 1 ? true : false,
-		        			
-							'sub_questionnaire' => $sub_questionnaire,
-		        			'is_required' => $question->required_field == 1 ? 'required' : 'not required'
-		        		];
-
-		        	}
-
-		        	$questionnaires[] = [
-		        		'questionnaire_id' => $questionnaire->id,
-		        		'questionnaire_title' => $questionnaire->title,
-		        		'description' => $questionnaire->description,
-		        		'questions' => $questions
-		        	];
-		        }
-
-        	}
+	
+						$questionnaires[] = [
+							'questionnaire_id' => $questionnaire->id,
+							'questionnaire_title' => $questionnaire->title,
+							'description' => $questionnaire->description,
+							'questions' => $questions
+						];
+					}
+	
+				}
+			}
+			else{
+				$questionnaires = [];
+			}
+        	
 
         	$survey = [
         		'survey_id' => encrypt($survey_set->id),
@@ -298,7 +302,6 @@ class SurveyController extends Controller
         		'questionnaires' => $questionnaires
         	];
         }
-
         return json_encode($survey);
     }
 

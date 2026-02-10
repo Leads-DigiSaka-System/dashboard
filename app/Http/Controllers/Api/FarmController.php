@@ -296,20 +296,21 @@ class FarmController extends Controller
     {
         // Define validation rules
         $rules = [
-            'farmer_id' => 'required|integer|exists:users,id', // Ensure farmer_id is provided, is an integer, and exists in the users table
-            'name' => 'required|string|max:255',
-            'area_location' => 'required|string|max:1000',
-            'farm_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate each file in the farm_image array
-            'region' => 'required|string|max:255',
-            'province' => 'required|string|max:255',
-            'municipality' => 'required|string|max:255',
+            'farmer_id' => 'required|integer|exists:users,id',
+            'name' => 'required|string',
+            'area_location' => 'required|string',
+            'farm_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg',
+            'region' => 'required|string',
+            'province' => 'required|string',
+            'municipality' => 'required|string',
             'area' => 'required|numeric',
             'image_latitude' => 'required|numeric',
             'image_longitude' => 'required|numeric',
-            'barangay' => 'required|string|max:255',
+            'barangay' => 'required|string',
             'isDemo' => 'nullable|boolean',
-            'category' => 'nullable|string|max:255',
+            'category' => 'nullable|string',
         ];
+        
 
         // Validate the request
         $validator = Validator::make($request->all(), $rules);
@@ -352,6 +353,7 @@ class FarmController extends Controller
             return returnErrorResponse('Unable to add farm. Please try again later.');
         }
 
+
         // Update farm_id with a unique code
         $farmObj->farm_id = 'FARM' . $farmObj->id;
         $farmObj->save();
@@ -360,4 +362,5 @@ class FarmController extends Controller
     }
 
        
+
 }
